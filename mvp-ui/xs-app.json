@@ -1,0 +1,21 @@
+{
+	"welcomeFile": "/mvp-ui/index.html",
+	"authenticationMethod": "route",
+	"logout": {
+		"logoutEndpoint": "/do/logout"
+	},
+	"routes": [{
+			"source": "^/mvp-ui/(.*)$",
+			"target": "$1",
+			"localDir": "webapp"
+		}, {
+			"source": "(.*)(.xsjs)",
+			"destination": "mvp-api",
+			"authenticationType": "xsuaa"
+		}, {
+			"source": "/demo.xsodata/.*$",
+			"destination": "mvp-api",
+			"authenticationType": "xsuaa"
+		}
+		]
+}

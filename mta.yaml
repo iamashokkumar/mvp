@@ -1,0 +1,58 @@
+ID: mvpadmin
+_schema-version: '2.1'
+version: 0.0.1
+modules:
+  - name: mvpdb
+    type: hdb
+    path: mvpdb
+    requires:
+      - name: myhanadb-hdi
+  - name: mvp-app-srv
+    type: nodejs
+    path: mvp-app-srv
+    provides:
+      - name: mvp-app-srv_api
+        properties:
+          url: '${default-url}'
+    requires:
+      - name: myhanadb-hdi
+      - name: uaa_mvpadmin
+      - name: mvpdb
+  - name: mvp-ui
+    type: html5
+    path: mvp-ui
+    parameters:
+      disk-quota: 256M
+      memory: 256M
+    build-parameters:
+      builder: grunt
+    requires:
+      - name: uaa_mvpadmin
+      - name: mvp-app-srv_api
+      - name: dest_MVP
+        group: destinations
+        properties:
+          name: mvp-api
+          url: '~{url}'
+          forwardAuthToken: true
+      - name: mvp-app-srv
+resources:
+  - name: myhanadb-hdi
+    parameters:
+      config:
+        schema: mvp
+        database_id: 930b7ed2-0392-482c-b552-6fdb27cf6384
+    properties:
+      hdi-container-name: '${service-name}'
+    type: com.sap.xs.hdi-container
+  - name: uaa_mvpadmin
+    parameters:
+      path: ./xs-security.json
+      service-plan: application
+      service: xsuaa
+    type: org.cloudfoundry.existing-service
+  - name: dest_MVP
+    parameters:
+      service-plan: lite
+      service: destination
+	type: org.cloudfoundry.managed-service

@@ -1,0 +1,9 @@
+namespace mvpadmin.mvpdb;
+
+context admin {
+    /*@@layout{"layoutInfo":undefined}*/
+    entity Entity_1 {
+        surveyid      : Integer;
+        CategoryTitle : String(50);
+    };
+};

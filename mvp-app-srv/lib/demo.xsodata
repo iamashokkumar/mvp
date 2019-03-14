@@ -1,0 +1,3 @@
+service {
+	"mvpadmin.mvpdb::admin.Entity_1" as "EntityDemo" key generate local "ID";
+}
