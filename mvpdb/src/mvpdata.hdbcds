@@ -1,0 +1,60 @@
+namespace mvpadmin.mvpdb;
+
+context mvp {
+    /*@@layout{"layoutInfo":undefined}*/
+    
+    type mvp_type {
+    	categoryId	  : Integer;
+    	nomineeId	  : Integer;
+    	userid		  : String(10);
+    	regionId	  : String(30);
+    	teamId	      : String(30);
+		timestamp	  : UTCDateTime;
+	};
+    
+    entity MVPCategory {
+        key MVPCategoryId   	  : Integer generated always as identity ( start with 1 increment by 1 );
+	        MVPCategoryName		  : String(50) not null;
+	        MVPCategoryStatusId   : String(20) not null;
+	        MVPCategoryStatusName : String(30);
+			MVPCategoryRegionId   : type of mvp_type.regionId;
+	        MVPCategoryTeamId     : type of mvp_type.teamId;
+			MVPCategoryOpenTill   : type of mvp_type.timestamp not null;
+			MVPCategoryVoteMode   : String(10) not null;
+			MVPCategoryCreatedBy  : type of mvp_type.userid;
+			MVPCategoryCreatedOn  : type of mvp_type.timestamp not null;
+			MVPCategoryChangedBy  : type of mvp_type.userid;
+			MVPCategoryChangedOn  : type of mvp_type.timestamp not null;
+    };
+    
+    entity MVPNominee {
+        key MVPCategoryId   			 : type of mvp_type.categoryId;
+        key MVPNomineeId				 : Integer generated always as identity ( start with 1 increment by 1 );
+	        MVPNomineeName				 : String(100) not null;
+			MVPNomineeAvatarFileName	 : String(50);
+			MVPNomineeAvatarFileNameExtn : String(10);
+			MVPNomineeAvatarFileData	 : LargeBinary;
+	        MVPNomineeAbstract  		 : String(300);
+			MVPNomineeKeyAchievements	 : String(300);
+			MVPNomineeCustomerQuotes	 : String(300);
+			MVPNominatedBy			     : type of mvp_type.userid;
+			MVPNominatedOn				 : type of mvp_type.timestamp not null;
+			MVPNomineeChangedBy 		 : type of mvp_type.userid;
+			MVPNomineeChangedOn 		 : type of mvp_type.timestamp not null;
+    };
+    
+    entity MVPVote {
+        key MVPCategoryId      : type of mvp_type.categoryId;
+        key MVPNomineeId	   : type of mvp_type.nomineeId;
+	    key MVPNomineeVotedBy  : type of mvp_type.userid;
+			MVPNomineeVotedOn  : type of mvp_type.timestamp not null;
+    };
+    
+    entity MVPUser {
+        key UserId  		: type of mvp_type.userid;
+			UserName		: String(100) not null;
+			UserEmail		: String(50);
+			UserRegionId	: type of mvp_type.regionId;
+			UserTeamId		: type of mvp_type.teamId;
+    };
+};
