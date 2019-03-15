@@ -16,10 +16,12 @@ context mvp {
         key MVPCategoryId   	  : Integer generated always as identity ( start with 1 increment by 1 );
 	        MVPCategoryName		  : String(50) not null;
 	        MVPCategoryStatusId   : String(20) not null;
-	        MVPCategoryStatusName : String(30);
 			MVPCategoryRegionId   : type of mvp_type.regionId;
 	        MVPCategoryTeamId     : type of mvp_type.teamId;
-			MVPCategoryOpenTill   : type of mvp_type.timestamp not null;
+			MVPCategoryNominateStartDate   : type of mvp_type.timestamp;
+			MVPCategoryNominateEndDate   : type of mvp_type.timestamp;
+			MVPCategoryVoteStartDate: type of mvp_type.timestamp;
+			MVPCategoryVoteEndDate: type of mvp_type.timestamp;
 			MVPCategoryVoteMode   : String(10) not null;
 			MVPCategoryCreatedBy  : type of mvp_type.userid;
 			MVPCategoryCreatedOn  : type of mvp_type.timestamp not null;
@@ -56,5 +58,10 @@ context mvp {
 			UserEmail		: String(50);
 			UserRegionId	: type of mvp_type.regionId;
 			UserTeamId		: type of mvp_type.teamId;
+    };
+    
+    entity MVPStatus {
+	    key StatusId   : String(20);
+	        StatusName : String(30);
     };
 };
