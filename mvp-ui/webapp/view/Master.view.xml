@@ -23,7 +23,7 @@
 				items="{
 					path: '/Categories',
 					sorter: {
-						path: 'CategoryName',
+						path: 'MVPCategoryName',
 						descending: false
 					},
 					groupHeaderFactory: '.createGroupHeader'

@@ -1,3 +1,3 @@
 service {
-	"mvpadmin.mvpdb::mvp.MVPCategory" as "Categories" key generate local "ID";
+	"mvpadmin.mvpdb::mvp.MVPCategory" as "Categories";
 }

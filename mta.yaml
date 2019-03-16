@@ -29,7 +29,6 @@ modules:
     requires:
       - name: uaa_mvpadmin
       - name: mvp-app-srv_api
-      - name: dest_MVP
         group: destinations
         properties:
           name: mvp-api
@@ -44,15 +43,15 @@ resources:
         database_id: 930b7ed2-0392-482c-b552-6fdb27cf6384
     properties:
       hdi-container-name: '${service-name}'
-    type: com.sap.xs.hdi-container
+    type: org.cloudfoundry.existing-service
   - name: uaa_mvpadmin
     parameters:
       path: ./xs-security.json
       service-plan: application
       service: xsuaa
-    type: org.cloudfoundry.existing-service
-  - name: dest_MVP
+    type: com.sap.xs.uaa-space
+  - name: destMVP
     parameters:
       service-plan: lite
       service: destination
-      type: org.cloudfoundry.managed-service
+    type: org.cloudfoundry.managed-service
