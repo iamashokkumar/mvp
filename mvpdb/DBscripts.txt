@@ -1,0 +1,17 @@
+INSERT INTO "E9D6A351ED754165B25D27AF57B4D4D6"."mvpadmin.mvpdb::mvp.MVPCategory" VALUES(
+	'MVP Q1 2019 Test'/*MVPCategoryName <NVARCHAR(50)>*/,
+	'OPEN'/*MVPCategoryStatusId <NVARCHAR(20)>*/,
+	'NA'/*MVPCategoryRegionId <NVARCHAR(30)>*/,
+	'CoE'/*MVPCategoryTeamId <NVARCHAR(30)>*/,
+	'2019-03-15 23:59:59'/*MVPCategoryNominateStartDate <SECONDDATE>*/,
+	'2019-03-18 23:59:59'/*MVPCategoryNominateEndDate <SECONDDATE>*/,
+	'2019-03-19 23:59:59'/*MVPCategoryVoteStartDate <SECONDDATE>*/,
+	'2019-03-26 23:59:59'/*MVPCategoryVoteEndDate <SECONDDATE>*/,
+	'SINGLE'/*MVPCategoryVoteMode <NVARCHAR(10)>*/,
+	'I066096'/*MVPCategoryCreatedBy <NVARCHAR(10)>*/,
+	'2019-03-03 23:59:59'/*MVPCategoryCreatedOn <SECONDDATE>*/,
+	'I066096'/*MVPCategoryChangedBy <NVARCHAR(10)>*/,
+	'2019-03-09 23:59:59'/*MVPCategoryChangedOn <SECONDDATE>*/
+);
+
+

@@ -9,7 +9,7 @@ var rs = connection.executeQuery(query);
 var currentUser = rs[0].CURRENT_USER;
 
 
-var greeting = 'Hello Application User: ' + $.session.getUsername() +
+var greeting = 'Hello Application User: ' + $.session.getUsername() +  $.session.samlAttribute + 
                ' Database User: ' + currentUser +
                '! Welcome to HANA ';
 

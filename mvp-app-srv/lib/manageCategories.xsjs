@@ -1,63 +1,75 @@
-function createMVPCategoriesResultsJson(rs) {
-	return {
-		"MVPCategoryId": rs.getString(1),
-		"MVPCategoryName": rs.getString(2),
-		"MVPCategoryStatusId": rs.getString(3),
-		"MVPCategoryRegionId": rs.getString(4),
-		"MVPCategoryTeamId": rs.getString(5),
-		"MVPCategoryOpenTill": rs.getString(6),
-		"MVPCategoryVoteMode": rs.getString(7),
-		"MVPCategoryCreatedBy": rs.getString(8),
-		"MVPCategoryCreatedOn": rs.getString(9),
-		"MVPCategoryChangedBy": rs.getString(10),
-		"MVPCategoryChangedOn": rs.getString(11),
-	};
-}
-
 if ($.request.method === $.net.http.GET) {
 	var connection = "";
+	var query = "";
 	var responseJSON = {
-		userid: [],
-		response: [],
+		Userid: [],
+		Response: [],
 		MVPCategories: [],
 		MVPNominees: [],
-		MVPResults: [],
-		errors: []
+		MVPResults: []
 	};
 
 	try {
-		connection = $.db.getConnection();
-		var MVPCategoryId = $.request.parameters.get("MVPCategoryId");
-		if (MVPCategoryId !== undefined && MVPCategoryId !== '') {
+		connection = $.hdb.getConnection();
+		var userEmailId = $.session.getUsername();
+		userEmailId = 'ashok.kumar.m01@sap.com';
+		if (userEmailId !== undefined && userEmailId !== '') {
+			
+/*			var UserId = 'I066096';
+			var UserName = 'Ashok Kumar M';
+			var UserEmail = 'ashok.kumar.m01@sap.com';
+			var UserRegionId = 'NA';
+			var UserTeamId = 'CoE';
+			
+			query = "INSERT INTO \"mvpadmin.mvpdb::mvp.MVPUser\" VALUES ('" 
+			+ UserId + "','"
+			+ UserName + "','"
+			+ UserEmail + "','"
+			+ UserRegionId + "','"
+			+ UserTeamId + "')";
+			
+			var UserInput = connection.executeUpdate(query);
+			connection.commit();*/
 
-			//if (optionID === 'FEEDBACK_DUMP') {
-			// /* Get survey results Feedback Dump*/
-			// var query = "call RUNINSPIRED.ADMIN_GET_SURVEY_FEEDBACK_DUMP(" + surveyId + ", ? )";
-			// var pstmt = connection.prepareCall(query);
-			// pstmt.execute();
-			// var result = pstmt.getResultSet();
-			// while (result.next()) {
-			// 	responseJSON.surveyResults.push(createFeedbackDumpResultsJson(result));
-			// } ""MVP".""MVPadmin."MVPdb::"MVP."MVPCategory"
-			// "SELECT * FROM \"S4HANA_CoE\".\"PARTICIPANTS\" where USERID = '" + userID + "'";
-			var query = "SELECT * FROM \"MVP\".\"mvpadmin.mvpdb::mvp.MVPCategory\" WHERE \"MVPCategoryId\" = " + MVPCategoryId;
-			var pstmt = connection.prepareStatement(query);
-			var MVPCategoryResult = pstmt.executeQuery();
-			while (MVPCategoryResult.next()) {
-				responseJSON.MVPCategories.push(createMVPCategoriesResultsJson(MVPCategoryResult));
+			// Validate User
+			query = "SELECT * FROM \"mvpadmin.mvpdb::mvp.MVPUser\" WHERE \"UserEmail\" = '" + userEmailId.toLowerCase() + "'";
+			var userResult = connection.executeQuery(query);
+			if (userResult) {
+				query = "SELECT * FROM \"mvpadmin.mvpdb::mvp.MVPCategory\"";
+				// var pstmt = connection.prepareStatement(query);
+				// var MVPCategoryResult = pstmt.executeQuery();
+				var MVPCategoryResult = connection.executeQuery(query);
+				for (var result of MVPCategoryResult) {
+					responseJSON.MVPCategories.push(result);
+				}
+				// }
+				responseJSON.Response = {
+					"CODE": "SUCCESS",
+					"Text": "MVP Categories Fetched"
+				};
+				$.response.setBody(JSON.stringify(responseJSON));
+				$.response.status = $.net.http.OK;
+			} else {
+				$.response.status = $.net.http.BAD_REQUEST;
+				responseJSON.Response = {
+					"CODE": "BADREQUEST",
+					"Text": "Sorry, You're not part of the user group to access the MVP app!"
+				};
+				$.response.setBody(JSON.stringify(responseJSON));
 			}
-		}
 
-		responseJSON.response = {
-			"CODE": "SUCCESS",
-			"Text": "MVP Categories Fetched"
-		};
-		$.response.setBody(JSON.stringify(responseJSON));
-		$.response.status = $.net.http.OK;
+		} else {
+			$.response.status = $.net.http.UNAUTHORIZED;
+			responseJSON.Response = {
+				"CODE": "UNAUTHORIZED",
+				"Text": "You're not authorized to use this app!"
+			};
+			$.response.setBody(JSON.stringify(responseJSON));
+		}
 	} catch (error) {
 		connection.rollback();
 		$.response.contentType = "text/plain";
-		responseJSON.response = {
+		responseJSON.Response = {
 			"CODE": "INTERNAL_ERROR",
 			"Text": JSON.stringify(error.message)
 		};
@@ -69,11 +81,19 @@ if ($.request.method === $.net.http.GET) {
 } else {
 	$.response.status = $.net.http.METHOD_NOT_ALLOWED;
 	var responseJSON = {
-		response: []
+		Response: []
 	};
-	responseJSON.response = {
+	responseJSON.Response = {
 		"CODE": "INVALID_METHOD",
 		"Text": "Invalid Method"
 	};
 	$.response.setBody(JSON.stringify(responseJSON));
 }
+
+// var query = "call RUNINSPIRED.ADMIN_GET_SURVEY_FEEDBACK_DUMP(" + surveyId + ", ? )";
+// var pstmt = connection.prepareCall(query);
+// pstmt.execute();
+// var result = pstmt.getResultSet();
+// while (result.next()) {
+// 	responseJSON.surveyResults.push(createFeedbackDumpResultsJson(result));
+// }

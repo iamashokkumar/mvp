@@ -1,3 +1,4 @@
 service {
 	"mvpadmin.mvpdb::mvp.MVPCategory" as "Categories";
+	"mvpadmin.mvpdb::mvp.MVPStatus" as "Status";
 }

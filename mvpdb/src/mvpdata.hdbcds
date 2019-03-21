@@ -2,7 +2,6 @@ namespace mvpadmin.mvpdb;
 
 context mvp {
     /*@@layout{"layoutInfo":undefined}*/
-    
     type mvp_type {
     	categoryId	  : Integer;
     	nomineeId	  : Integer;
