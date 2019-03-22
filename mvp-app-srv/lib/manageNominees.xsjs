@@ -1,15 +1,3 @@
-var connection = "";
-var query = "";
-var user = "";
-var payload = "";
-var responseJSON = {
-	Userid: [],
-	Response: [],
-	MVPCategories: [],
-	MVPNominees: [],
-	MVPResults: []
-};
-
 function validateLogonUser(userEmailId, connection) {
 	if (userEmailId !== undefined && userEmailId !== '') {
 		// Validate User
@@ -68,16 +56,41 @@ function isVotingAllowed(mvpCategory) {
 	}
 }
 
+function isUserAllowedToVote(mvpCategoryId, userEmailId, MVPNomineeId, connection) {
+	var isUserAlreadyVoted = false;
+	query = "SELECT * FROM \"mvpadmin.mvpdb::mvp.MVPVote\" WHERE \"MVPCategoryId\" = " + mvpCategoryId + " AND \"MVPNomineeId\" = " +
+		MVPNomineeId + " AND \"MVPNomineeVotedBy\" = '" + userEmailId + "'";
+	var MVPNomineeVote = connection.executeQuery(query);
+	if (MVPNomineeVote) {
+		isUserAlreadyVoted = true;
+	} else {
+		isUserAlreadyVoted = false;
+	}
+	return isUserAlreadyVoted;
+}
+
 //To do
 // Date Check, is nominated by user check.
 function dateCheck(connection) {
 
 }
 
+var connection = "";
+var query = "";
+var user = "";
+var payload = "";
+var responseJSON = {
+	Userid: [],
+	Response: [],
+	MVPCategories: [],
+	MVPNominees: [],
+	MVPResults: []
+};
+
 try {
 	connection = $.hdb.getConnection();
 	var userEmailId = $.session.getUsername();
-	// userEmailId = 'kevin.yang02@sap.com';
+	// userEmailId = 'ashok.kumar.m01@sap.com';
 	var actionId = $.request.parameters.get("ACTIONID");
 	var mvpCategoryId = $.request.parameters.get("MVPCategoryId");
 
@@ -120,29 +133,29 @@ try {
 
 					if (isNominationAllowed(mvpCategory)) {
 
-						/*		payload = JSON.parse($.request.body.asString());
+						payload = JSON.parse($.request.body.asString());
 
-								query = "INSERT INTO \"mvpadmin.mvpdb::mvp.MVPNominee\" VALUES(" + mvpCategory + ",'" + payload.MVPNomineeName + "','" +
-									payload.MVPNomineeAvatarFileName + "','" + payload.MVPNomineeAvatarFileNameExtn + "','" + payload.MVPNomineeAvatarFileData + "','" +
-									payload.MVPNomineeAbstract +
-									"','" + payload.MVPNomineeKeyAchievements + "','" + payload.MVPNomineeCustomerQuotes + "','" + payload.MVPNominatedBy +
-									"', current_timestamp,'" +
-									payload.MVPNomineeChangedBy + "', current_timestamp)";*/
-
-						var MVPNomineeName = "Test Nominee";
-						var MVPNomineeAvatarFileName = "";
-						var MVPNomineeAvatarFileNameExtn = "";
-						var MVPNomineeAvatarFileData = "";
-						var MVPNomineeAbstract = "This is a test abstract";
-						var MVPNomineeKeyAchievements = "This is demo key achievement";
-						var MVPNomineeCustomerQuotes = "This is demo customer quote";
-
-						query = "INSERT INTO \"mvpadmin.mvpdb::mvp.MVPNominee\" VALUES(" + mvpCategoryId + ",'" + MVPNomineeName + "','" +
-							MVPNomineeAvatarFileName + "','" + MVPNomineeAvatarFileNameExtn + "','" + MVPNomineeAvatarFileData + "','" +
-							MVPNomineeAbstract +
-							"','" + MVPNomineeKeyAchievements + "','" + MVPNomineeCustomerQuotes + "','" + userEmailId +
+						query = "INSERT INTO \"mvpadmin.mvpdb::mvp.MVPNominee\" VALUES(" + payload.MVPCategoryId + ",'" + payload.MVPNomineeName + "','" +
+							payload.MVPNomineeAvatarFileName + "','" + payload.MVPNomineeAvatarFileNameExtn + "','" + payload.MVPNomineeAvatarFileData + "','" +
+							payload.MVPNomineeAbstract +
+							"','" + payload.MVPNomineeKeyAchievements + "','" + payload.MVPNomineeCustomerQuotes + "','" + userEmailId +
 							"', current_timestamp,'" +
 							userEmailId + "', current_timestamp)";
+
+						/*						var MVPNomineeName = "Test Nominee";
+												var MVPNomineeAvatarFileName = "";
+												var MVPNomineeAvatarFileNameExtn = "";
+												var MVPNomineeAvatarFileData = "";
+												var MVPNomineeAbstract = "This is a test abstract";
+												var MVPNomineeKeyAchievements = "This is demo key achievement";
+												var MVPNomineeCustomerQuotes = "This is demo customer quote";
+
+												query = "INSERT INTO \"mvpadmin.mvpdb::mvp.MVPNominee\" VALUES(" + mvpCategoryId + ",'" + MVPNomineeName + "','" +
+													MVPNomineeAvatarFileName + "','" + MVPNomineeAvatarFileNameExtn + "','" + MVPNomineeAvatarFileData + "','" +
+													MVPNomineeAbstract +
+													"','" + MVPNomineeKeyAchievements + "','" + MVPNomineeCustomerQuotes + "','" + userEmailId +
+													"', current_timestamp,'" +
+													userEmailId + "', current_timestamp)";*/
 
 						var MVPNominee = connection.executeUpdate(query);
 						connection.commit();
@@ -188,7 +201,7 @@ try {
 									"', current_timestamp,'" +
 									payload.MVPNomineeChangedBy + "', current_timestamp)";*/
 
-						var MVPNomineeId = 6;
+						var MVPNomineeId = 10;
 						query = "DELETE  FROM \"mvpadmin.mvpdb::mvp.MVPNominee\" WHERE \"MVPCategoryId\" = " + mvpCategoryId + " and \"MVPNomineeId\" = " +
 							MVPNomineeId;
 						var MVPNominee = connection.executeUpdate(query);
@@ -298,17 +311,29 @@ try {
 									"', current_timestamp,'" +
 									payload.MVPNomineeChangedBy + "', current_timestamp)";*/
 
+						// Did user already vote?
+
 						var MVPNomineeId = "2";
 
-						query = "INSERT INTO \"mvpadmin.mvpdb::mvp.MVPVote\" VALUES(" + mvpCategoryId + "," + MVPNomineeId + ", '" + userEmailId + "', current_timestamp)";
+						if (!isUserAllowedToVote(mvpCategoryId, userEmailId, MVPNomineeId, connection)) {
 
-						var MVPNominee = connection.executeUpdate(query);
-						connection.commit();
-						$.response.status = $.net.http.OK;
-						responseJSON.Response = {
-							"CODE": "SUCCESS",
-							"Text": "Vote Saved Successfully."
-						};
+							query = "INSERT INTO \"mvpadmin.mvpdb::mvp.MVPVote\" VALUES(" + mvpCategoryId + "," + MVPNomineeId + ", '" + userEmailId +
+								"', current_timestamp)";
+
+							var MVPNominee = connection.executeUpdate(query);
+							connection.commit();
+							$.response.status = $.net.http.OK;
+							responseJSON.Response = {
+								"CODE": "SUCCESS",
+								"Text": "Vote Saved Successfully."
+							};
+						} else {
+							$.response.status = $.net.http.BAD_REQUEST;
+							responseJSON.Response = {
+								"CODE": "BAD_REQUEST",
+								"Text": "You voted for the nominee already!"
+							};
+						}
 					} else {
 						$.response.status = $.net.http.BAD_REQUEST;
 						responseJSON.Response = {
