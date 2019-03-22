@@ -8,7 +8,7 @@ context mvp {
     	userid		  : String(50);
     	regionId	  : String(30);
     	teamId	      : String(30);
-		timestamp	  : UTCDateTime;
+		timestamp	  : UTCTimestamp;
 	};
     
     entity MVPCategory {

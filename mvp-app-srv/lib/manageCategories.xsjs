@@ -1,6 +1,13 @@
+function getCurrentTimestamp(connection) {
+	var query = "SELECT current_timestamp FROM DUMMY";
+	var currentTimeStamp = connection.executeQuery(query);
+	return currentTimeStamp;
+}
+
 if ($.request.method === $.net.http.GET) {
 	var connection = "";
 	var query = "";
+	var currentTimeStamp = "";
 	var responseJSON = {
 		Userid: [],
 		Response: [],
@@ -19,19 +26,22 @@ if ($.request.method === $.net.http.GET) {
 			query = "SELECT * FROM \"mvpadmin.mvpdb::mvp.MVPUser\" WHERE \"UserEmail\" = '" + userEmailId.toLowerCase() + "'";
 			var userResult = connection.executeQuery(query);
 			if (userResult) {
-				query = "SELECT * FROM \"mvpadmin.mvpdb::mvp.MVPCategory\"";
-				// var pstmt = connection.prepareStatement(query);
-				// var MVPCategoryResult = pstmt.executeQuery();
+				query = "SELECT * FROM \"mvpadmin.mvpdb::mvp.MVPCategory\" order by \"MVPCategoryVoteEndDate\" desc";
 				var MVPCategories = connection.executeQuery(query);
+				currentTimeStamp = getCurrentTimestamp(connection);
 				for (var category of MVPCategories) {
+					
+					if(category.MVPCategoryNominateStartDate < currentTimeStamp & category.MVPCategoryNominateEndDate > currentTimeStamp) {
+						
+					}
+					
 					responseJSON.MVPCategories.push(category);
 				}
-				// }
+				$.response.status = $.net.http.OK;
 				responseJSON.Response = {
 					"CODE": "SUCCESS",
-					"Text": "MVP Categories Fetched"
+					"Text": "MVP Categories Fetched."
 				};
-				$.response.status = $.net.http.OK;
 			} else {
 				$.response.status = $.net.http.BAD_REQUEST;
 				responseJSON.Response = {
