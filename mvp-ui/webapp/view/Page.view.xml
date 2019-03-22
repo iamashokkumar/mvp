@@ -1,0 +1,90 @@
+<mvc:View xmlns:mvc="sap.ui.core.mvc" xmlns="sap.m" xmlns:m="sap.m" 
+xmlns:form="sap.ui.layout.form" xmlns:tnt="sap.tnt" xmlns:core="sap.ui.core"
+xmlns:chart="sap.chart" xmlns:data="sap.chart.data" xmlns:microchart="sap.suite.ui.microchart"
+	controllerName="com.sap.build.leonardo.votingApp.controller.Page" 	xmlns:l="sap.ui.layout"  xmlns:w="sap.ui.integration.widgets" xmlns:f="sap.ui.layout.form" xmlns:fn="sap.f">
+	<m:Page showHeader="true" title="{CategoryModel>/category/MVPCategoryName}" showFooter="true" showNavButton="false" navButtonPress="_onPageNavButtonPress" backgroundDesign="Standard">
+		<m:headerContent>
+			<m:Button icon="sap-icon://full-screen" press="handleFullScreen" tooltip="Enter Full Screen Mode" />
+			<m:Button icon="sap-icon://exit-full-screen" press="handleExitFullScreen" tooltip="Exit Full Screen Mode" visible="{= ${/actionButtonsInfo/midColumn/exitFullScreen} !== null }"/>
+			<m:Button icon="sap-icon://decline" press="handleClose"  tooltip="Close column" visible="{= ${/actionButtonsInfo/midColumn/closeColumn} !== null }"/>
+		</m:headerContent>
+		<m:content>
+		<m:ObjectHeader
+		title="{CategoryModel>/category/MVPCategoryName}"
+		numberUnit="RMB" >
+		<m:statuses>
+			<m:ObjectStatus
+				title="Status"
+				text="{CategoryModel>/category/MVPCategoryStatusId}"
+				state="Success" />
+		</m:statuses>
+		<m:attributes>
+			<m:ObjectAttribute title="Region" text="{CategoryModel>/category/MVPCategoryRegionId}" />
+		<!--	<m:ObjectAttribute title="Team" text="{CategoryModel>/category/MVPCategoryTeamId}" />
+		-->
+			<m:ObjectAttribute title="Nomination opens:" text="
+				{path:'CategoryModel>/category/MVPCategoryNominateStartDate',
+				 formatter: '.formatter.formatDate'
+				}" />			
+				<m:ObjectAttribute title="Nomination ends" text="
+				{path:'CategoryModel>/category/MVPCategoryNominateEndDate',
+				 formatter: '.formatter.formatDate'
+				}" />
+
+					<m:ObjectAttribute title="Voting opens:" text="
+				{path:'CategoryModel>/category/MVPCategoryVoteStartDate',
+				 formatter: '.formatter.formatDate'
+				}" />			
+				<m:ObjectAttribute title="Voting ends:" text="
+				{path:'CategoryModel>/category/MVPCategoryVoteEndDate',
+				 formatter: '.formatter.formatDate'
+				}" />
+		</m:attributes>
+	</m:ObjectHeader>
+			<m:MessageStrip
+				text="Voting Mode: {CategoryModel>/category/MVPCategoryVoteMode}"
+				type="Success"
+				showIcon="false"
+				showCloseButton="false"
+				class="sapUiMediumMarginBottom">
+			</m:MessageStrip>
+	<IconTabBar expandable="false" expanded="true" applyContentPadding="false" backgroundDesign="Solid" upperCase="false" visible="true" selectedKey="Ok">
+				<items>
+					<IconTabFilter icon="sap-icon://family-care" iconColor="Neutral" text="Nominees" count="12" design="Vertical" showAll="false"
+						textDirection="Inherit" enabled="true" visible="true" iconDensityAware="false">
+						<content>
+						<l:VerticalLayout class="sapUiContentPadding" id ="NomineeLayout">
+							
+						</l:VerticalLayout>
+
+					  </content>
+					</IconTabFilter>
+				<IconTabSeparator icon="" iconDensityAware="false"/>
+				<IconTabFilter icon="sap-icon://business-objects-experience" iconColor="Neutral" text="Results" count="" design="Vertical" showAll="false"
+						textDirection="Inherit" enabled="true" visible="true" iconDensityAware="false">
+						<content>
+							<chart:Chart id="sap_IconTabBar_Page_0-content-sap_m_IconTabBar-2-items-sap_m_IconTabFilter-3-content-sap_chart_BarChart-1547754764051"
+								width="100%" height="450px" visibleDimensions="__id" visibleMeasures="Number of Votes"
+								vizProperties="{staticDataModel>/sap_IconTabBar_Page_0-content-sap_m_IconTabBar-2-items-sap_m_IconTabFilter-3-content-sap_chart_BarChart-1547754764051/vizProperties}"
+								chartType="bar" selectionMode="Single" uiConfig="{}">
+								<chart:dimensions>
+									<data:Dimension name="__id" label="Nominees" role="category" textProperty="Nominees"/>
+								</chart:dimensions>
+								<chart:measures>
+									<data:Measure name="Number of Votes" label="Number of Votes" role="axis2"/>
+								</chart:measures>
+							</chart:Chart>
+						</content>
+					</IconTabFilter>
+				</items>
+			</IconTabBar>
+		</m:content>
+	<m:footer>
+			<m:Toolbar>
+				<m:ToolbarSpacer/>
+	<m:Button text="Nominee" type="Emphasized" icon="sap-icon://add" iconFirst="true" width="auto" enabled="true" visible="true"
+						iconDensityAware="false" press="onAddNominee"/>
+			</m:Toolbar>
+		</m:footer>
+	</m:Page>
+</mvc:View>

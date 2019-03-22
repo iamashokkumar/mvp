@@ -8,10 +8,7 @@
 		"applicationVersion": {
 			"version": "1.2.2"
 		},
-		"dataSources": {
-			"Category":"/manageCategories.xsjs?$format=json",
-			"Nominee":"/manageNominees.xsjs"
-		},
+		"dataSources": {},
 		"title": "{{appTitle}}",
 		"description": "{{appDescription}}",
 		"ach": "ach",
@@ -41,7 +38,7 @@
 	"sap.ui5": {
 		"_version": "1.3.0",
 		"rootView": {
-			"viewName": "generated.app.view.Page",
+			"viewName": "generated.app.view.Page1",
 			"type": "XML"
 		},
 		"dependencies": {
@@ -75,7 +72,7 @@
 				"controlAggregation": "pages",
 				"bypassed": {
 					"target": [
-						"Page"
+						"Page1"
 					]
 				}
 			},
@@ -85,19 +82,19 @@
 					"viewId": "fcl",
 					"viewLevel": 1
 				},
-				"Page": {
+				"Page1": {
 					"controlAggregation": "pages",
-					"viewName": "Page",
-					"viewId": "Page",
+					"viewName": "Page1",
+					"viewId": "Page1",
 					"viewLevel": 1,
 					"transition": "slide"
 				}
 			},
 			"routes": [{
-				"pattern": "Page/:context:",
-				"name": "Page",
+				"pattern": "Page1/:context:",
+				"name": "Page1",
 				"target": [
-					"Page"
+					"Page1"
 				]
 			}, {
 				"pattern": "",

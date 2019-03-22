@@ -1,18 +1,4 @@
-<mvc:View
-	controllerName="com.sap.dbs.mvp.mvp-ui.controller.App"
-	displayBlock="true"
-	height="100%"
-	xmlns="sap.m"
-	xmlns:f="sap.f"
-	xmlns:mvc="sap.ui.core.mvc">
-	<App
-		id="app"
-		busy="{appView>/busy}"
-		busyIndicatorDelay="{appView>/delay}">
-		<f:FlexibleColumnLayout
-			id="layout"
-			layout="{appView>/layout}"
-			backgroundDesign="Translucent">
-		</f:FlexibleColumnLayout>
-	</App>
+<mvc:View controllerName="com.sap.build.leonardo.mvpNomination.controller.App" xmlns:mvc="sap.ui.core.mvc" displayBlock="true"
+	busy="{appView>/busy}" busyIndicatorDelay="{appView>/delay}" xmlns="sap.m">
+	<SplitApp id="idAppControl"/>
 </mvc:View>

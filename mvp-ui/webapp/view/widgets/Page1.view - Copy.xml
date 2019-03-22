@@ -1,0 +1,125 @@
+<mvc:View xmlns:mvc="sap.ui.core.mvc" xmlns="sap.m" controllerName="com.sap.build.leonardo.votingApp.controller.Page1">
+	<Page showHeader="true" title="MVP - Individual - Q1 2019" showFooter="true" showNavButton="false" navButtonPress="_onPageNavButtonPress">
+		
+		<headerContent>
+			<Title text="Vote before: 5 PM EST, 31st March 2019" width="auto" wrapping="false" textAlign="Begin"
+				visible="true" level="H6" titleStyle="H6"/>
+		</headerContent>
+		<subHeader/>
+		<customHeader/>
+		<content>
+			
+					<Carousel class="sapUiContentPadding" loop="true">
+						<pages>
+							<VBox width="100%" id="vbox1">
+								<items>
+									<HBox width="100%" >
+										<VBox width="100%" class="imgCenter">
+											<layoutData>
+												<FlexItemData maxWidth="20%"/>
+											</layoutData>
+											<Image src="https://the-big-bang-theory.com/images/uploads/5/rs_3463ec66edb459bd1dd.jpg" width="100%" height="100%" class="imgCenter"/>
+											<Label text="Sheldon Cooper" class="sapUiSmallMarginTop" textAlign="Center" design="Bold">
+												<layoutData>
+												<FlexItemData alignSelf="Center"/>
+											</layoutData>
+											</Label>
+											<Button class="sapUiTinyMarginTop" text="Vote" type="Accept" icon="sap-icon://accept" iconFirst="true" width="auto" enabled="true" visible="true"
+						iconDensityAware="false" press="_onButtonPress">
+												<layoutData>
+												<FlexItemData alignSelf="Center"/>
+											</layoutData>
+												</Button>
+										</VBox>
+										<VBox width="100%">
+											<sap.ui.layout.form:SimpleForm xmlns:sap.ui.layout.form="sap.ui.layout.form" xmlns:sap.ui.core="sap.ui.core" editable="true"
+												layout="ResponsiveGridLayout" id="form1">
+												<sap.ui.layout.form:content>
+													<Label text="Customer(s)/Project(s)"/>
+													<Label text="Abstract" design="Bold"/>
+													<Text xmlns="sap.m"
+														text="Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum."/>
+													<Label text="Key Achievements" design="Bold"/>
+													<Text xmlns="sap.m"
+														text="There are many variations of passages of Lorem Ipsum available, but the majority have suffered alteration in some form, by injected humour, or randomised words which don't look even slightly believable. If you are going to use a passage of Lorem Ipsum, you need to be sure there isn't anything embarrassing hidden in the middle of text."/>
+													<Label text="Customer Quotes" design="Bold"/>
+													<Text xmlns="sap.m"
+														text="Contrary to popular belief, Lorem Ipsum is not simply random text. It has roots in a piece of classical Latin literature from 45 BC, making it over 2000 years old. Richard McClintock, a Latin professor at Hampden-Sydney College in Virginia, looked up one of the more obscure Latin words, consectetur, from a Lorem Ipsum passage, and going through the cites of the word in classical literature, discovered the undoubtable source."/>
+												</sap.ui.layout.form:content>
+											</sap.ui.layout.form:SimpleForm>
+										</VBox>
+									</HBox>
+								</items>
+							</VBox>
+							<VBox width="100%" direction="Column" id="vbox2">
+								<items>
+									<HBox width="100%" >
+										<VBox width="100%" class="imgCenter">
+											<layoutData>
+												<FlexItemData maxWidth="20%"/>
+											</layoutData>
+									<Image
+										src="https://vignette.wikia.nocookie.net/warner-bros-entertainment/images/8/81/Leonard_with_his_nerd_glasses.jpeg/revision/latest?cb=20160803070317"
+										width="100%" height="100%"/>
+									<Label text="Leonard Hofstadter" class="sapUiSmallMarginTop" textAlign="Center" design="Bold">
+										<layoutData>
+												<FlexItemData alignSelf="Center"/>
+											</layoutData>
+											</Label>
+									</VBox>
+									<sap.ui.layout.form:SimpleForm xmlns:sap.ui.layout.form="sap.ui.layout.form" xmlns:sap.ui.core="sap.ui.core" editable="true"
+										layout="ResponsiveGridLayout" id="form2">
+										<sap.ui.layout.form:content>
+											<Label text="Customer(s)/Project(s)"/>
+											<Label text="Abstract" design="Bold"/>
+											<Text xmlns="sap.m"
+												text="Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum."/>
+											<Label text="Key Achievements" design="Bold"/>
+											<Text xmlns="sap.m"
+												text="There are many variations of passages of Lorem Ipsum available, but the majority have suffered alteration in some form, by injected humour, or randomised words which don't look even slightly believable. If you are going to use a passage of Lorem Ipsum, you need to be sure there isn't anything embarrassing hidden in the middle of text."/>
+											<Label text="Customer Quotes" design="Bold"/>
+											<Text xmlns="sap.m"
+												text="Contrary to popular belief, Lorem Ipsum is not simply random text. It has roots in a piece of classical Latin literature from 45 BC, making it over 2000 years old. Richard McClintock, a Latin professor at Hampden-Sydney College in Virginia, looked up one of the more obscure Latin words, consectetur, from a Lorem Ipsum passage, and going through the cites of the word in classical literature, discovered the undoubtable source."/>
+										</sap.ui.layout.form:content>
+									</sap.ui.layout.form:SimpleForm>
+									</HBox>
+								</items>
+							</VBox>
+							<VBox width="100%" direction="Column" id="vbox3">
+								<items>
+									<HBox width="100%" >
+										<VBox width="100%" class="imgCenter">
+											<layoutData>
+												<FlexItemData maxWidth="20%"/>
+											</layoutData>
+									<Image src="https://the-big-bang-theory.com/images/characters/Howard.png" width="100%" height="100%"/>
+									<Label text="Howard Wolowitz" class="sapUiSmallMarginTop" textAlign="Center" design="Bold">
+										<layoutData>
+												<FlexItemData alignSelf="Center"/>
+											</layoutData>
+											</Label>
+									</VBox>
+									<sap.ui.layout.form:SimpleForm xmlns:sap.ui.layout.form="sap.ui.layout.form" xmlns:sap.ui.core="sap.ui.core" editable="true"
+										layout="ResponsiveGridLayout" id="form3">
+										<sap.ui.layout.form:content>
+											<Label text="Customer(s)/Project(s)"/>
+											<Label text="Abstract" design="Bold"/>
+											<Text xmlns="sap.m"
+												text="Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum."/>
+											<Label text="Key Achievements" design="Bold"/>
+											<Text xmlns="sap.m"
+												text="There are many variations of passages of Lorem Ipsum available, but the majority have suffered alteration in some form, by injected humour, or randomised words which don't look even slightly believable. If you are going to use a passage of Lorem Ipsum, you need to be sure there isn't anything embarrassing hidden in the middle of text."/>
+											<Label text="Customer Quotes" design="Bold"/>
+											<Text xmlns="sap.m"
+												text="Contrary to popular belief, Lorem Ipsum is not simply random text. It has roots in a piece of classical Latin literature from 45 BC, making it over 2000 years old. Richard McClintock, a Latin professor at Hampden-Sydney College in Virginia, looked up one of the more obscure Latin words, consectetur, from a Lorem Ipsum passage, and going through the cites of the word in classical literature, discovered the undoubtable source."/>
+										</sap.ui.layout.form:content>
+									</sap.ui.layout.form:SimpleForm>
+									</HBox>
+								</items>
+							</VBox>
+						</pages>
+					</Carousel>
+				
+		</content>
+	</Page>
+</mvc:View>

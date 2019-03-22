@@ -1,0 +1,19 @@
+<core:FragmentDefinition xmlns:core="sap.ui.core" controllerName="com.sap.build.leonardo.votingApp.controller.Dialog2" xmlns="sap.m">
+	<Dialog horizontalScrolling="true" icon="sap-icon://lightbulb" showHeader="true" state="None" stretch="false" title="Please Confirm"
+		type="Standard" verticalScrolling="true">
+		<content>
+			<Text text="Are you sure you want to vote for 'Sheldon Cooper'?" width="auto" maxLines="1" wrapping="false" textAlign="Begin"
+				textDirection="Inherit" visible="true"/>
+		</content>
+		<beginButton/>
+		<buttons>
+			<Button text="Submit" type="Default" iconFirst="true" width="auto" enabled="true" visible="true" iconDensityAware="false"
+				press="_onButtonPress"/>
+			<Button text="Cancel" type="Default" iconFirst="true" width="auto" enabled="true" visible="true" iconDensityAware="false"
+				press="_onButtonPress1"/>
+		</buttons>
+		<customHeader/>
+		<endButton/>
+		<subHeader/>
+	</Dialog>
+</core:FragmentDefinition>

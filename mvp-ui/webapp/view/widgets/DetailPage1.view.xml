@@ -1,0 +1,116 @@
+<mvc:View xmlns:mvc="sap.ui.core.mvc" xmlns="sap.m" xmlns:form="sap.ui.layout.form" xmlns:f="sap.f" xmlns:l="sap.ui.layout"
+	xmlns:core="sap.ui.core" xmlns:chart="sap.chart" xmlns:data="sap.chart.data" xmlns:microchart="sap.suite.ui.microchart"
+	xmlns:w="sap.ui.integration.widgets" controllerName="com.sap.build.leonardo.mvpNomination.controller.DetailPage1">
+	<Page title="Nomination Details" showHeader="true" showFooter="true" showNavButton="false">
+		<content>
+			<ObjectHeader intro="" title="MVP - Individual - Q1 2019" numberState="None" titleActive="false" backgroundDesign="Translucent"
+				condensed="false" visible="true">
+				<attributes/>
+				<statuses/>
+				<markers/>
+			</ObjectHeader>
+			<!--<microchart:RadialMicroChart percentage="40" size="M" valueColor="Good"/>-->
+			<IconTabBar expandable="false" expanded="true" applyContentPadding="false" backgroundDesign="Solid" upperCase="false" visible="true"
+				selectedKey="Ok">
+				<items>
+					<IconTabFilter icon="sap-icon://family-care" iconColor="Neutral" text="Nominees" count="" design="Vertical" showAll="false"
+						textDirection="Inherit" enabled="true" visible="true" iconDensityAware="false">
+						<content>
+							<Panel/>
+							<Panel>
+								<content>
+									<VBox backgroundDesign="Solid">
+										<HBox>
+											<VBox class="sapUiSmallMarginTop">
+												<layoutData>
+													<FlexItemData maxWidth="15%" alignSelf="Start"/>
+												</layoutData>
+												<Image src="http://dehayf5mhw1h7.cloudfront.net/wp-content/uploads/sites/470/2015/10/23122001/CommonMan.jpg" densityAware="false"
+													width="100%" height="100%"></Image>
+											</VBox>
+											<form:Form id="FormToolbar" editable="true" ariaLabelledBy="Title1">
+												<form:title>
+													<core:Title text="John Doe"/>
+												</form:title>
+												<form:layout>
+													<form:ResponsiveGridLayout labelSpanXL="4" labelSpanL="3" labelSpanM="4" labelSpanS="12" adjustLabelSpan="false" emptySpanXL="0"
+														emptySpanL="4" emptySpanM="0" emptySpanS="0" columnsXL="2" columnsL="1" columnsM="1" singleContainerFullSize="false"/>
+												</form:layout>
+												<form:formContainers>
+													<form:FormContainer ariaLabelledBy="Title2">
+														<form:toolbar>
+															<Toolbar>
+																<!--<Title id="Title2" text="Office" level="H5" titleStyle="H5"/>-->
+																<ToolbarSpacer/>
+																<Button icon="sap-icon://delete"/>
+															</Toolbar>
+														</form:toolbar>
+														<form:formElements>
+															<form:FormElement label="Abstract">
+																<form:fields>
+																	<Text
+																		text="Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum."
+																		id="name"/>
+																</form:fields>
+															</form:FormElement>
+															<form:FormElement label="Key Achievements">
+																<form:fields>
+																	<Text
+																		text="Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum."/>
+																</form:fields>
+															</form:FormElement>
+															<form:FormElement label="Customer Quotes">
+																<form:fields>
+																	<Text
+																		text="Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum."/>
+																</form:fields>
+															</form:FormElement>
+														</form:formElements>
+													</form:FormContainer>
+												</form:formContainers>
+											</form:Form>
+										</HBox>
+									</VBox>
+								</content>
+							</Panel>
+							<Panel/>
+						</content>
+					</IconTabFilter>
+					<IconTabSeparator icon="" iconDensityAware="false"/>
+					<IconTabFilter icon="sap-icon://business-objects-experience" iconColor="Neutral" text="Results" count="" design="Vertical" showAll="false"
+						textDirection="Inherit" enabled="true" visible="true" iconDensityAware="false">
+						<content>
+							<chart:Chart id="sap_IconTabBar_Page_0-content-sap_m_IconTabBar-2-items-sap_m_IconTabFilter-3-content-sap_chart_BarChart-1547754764051"
+								width="100%" height="450px" visibleDimensions="__id" visibleMeasures="Number of Votes"
+								vizProperties="{staticDataModel>/sap_IconTabBar_Page_0-content-sap_m_IconTabBar-2-items-sap_m_IconTabFilter-3-content-sap_chart_BarChart-1547754764051/vizProperties}"
+								chartType="bar" selectionMode="Single" uiConfig="{}">
+								<chart:dimensions>
+									<data:Dimension name="__id" label="Nominees" role="category" textProperty="Nominees"/>
+								</chart:dimensions>
+								<chart:measures>
+									<data:Measure name="Number of Votes" label="Number of Votes" role="axis2"/>
+								</chart:measures>
+							</chart:Chart>
+						</content>
+					</IconTabFilter>
+				</items>
+				<content/>
+			</IconTabBar>
+		</content>
+		<footer>
+			<OverflowToolbar width="100%" height="46px" design="Auto" enabled="true" visible="true">
+				<content>
+					<ToolbarSpacer width=""/>
+					<Button text="Nominee" type="Emphasized" icon="sap-icon://add" iconFirst="true" width="auto" enabled="true" visible="true"
+						iconDensityAware="false" press="onAddNominee"/>
+					<!--
+					<Button text="Save" type="Accept" icon="sap-icon://save" iconFirst="true" width="auto" enabled="true" visible="true"
+						iconDensityAware="false"/>-->
+					<Button text="Cancel" type="Reject" icon="sap-icon://cancel" iconFirst="true" width="auto" enabled="true" visible="true"
+						iconDensityAware="false"/>
+				</content>
+			</OverflowToolbar>
+		</footer>
+		<headerContent/>
+	</Page>
+</mvc:View>

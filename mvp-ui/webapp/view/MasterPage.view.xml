@@ -1,0 +1,32 @@
+<mvc:View xmlns:mvc="sap.ui.core.mvc" xmlns="sap.m" controllerName="com.sap.build.leonardo.votingApp.controller.MasterPage">
+	<Page title="Nomination Categories" showHeader="true" showFooter="true" showNavButton="false">
+		<content>
+			<List mode="SingleSelectMaster" width="100%" headerText="Header" footerText="" backgroundDesign="Solid"
+			items="{ path: 'CategoryModel>/category' }"
+			 showSeparators="All" growing="true" growingThreshold="20" growingScrollToLoad="true" visible="true" itemPress="onClick">
+				<infoToolbar/>
+				<headerToolbar>
+					<Toolbar enabled="true" visible="true" width="" design="Solid">
+						<content>
+							<SearchField placeholder="Search" showSearchButton="true" visible="true" width="100%"/>
+						</content>
+					</Toolbar>
+				</headerToolbar>
+				<items>
+					<ObjectListItem intro="" title="{CategoryModel>MVPCategoryName}" number="0%" numberUnit="" numberState="None" type="Active" selected="false" showMarkers="false">
+						<firstStatus>
+							<ObjectStatus text="{CategoryModel>MVPCategoryStatusId}" state="Success" visible="true"/>
+						</firstStatus>
+					</ObjectListItem>
+				</items>
+			</List>
+		</content>
+		<footer>
+			<OverflowToolbar width="100%" height="46px" design="Auto" enabled="true" visible="true">
+				<content><Button text="Nomination Category" icon="sap-icon://add" iconFirst="true" width="auto" enabled="true" visible="false" tooltip="Nomination Category" iconDensityAware="false" type="Emphasized" textDirection="LTR"/>
+				</content>
+			</OverflowToolbar>
+		</footer>
+		<headerContent/>
+	</Page>
+</mvc:View>

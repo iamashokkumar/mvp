@@ -1,0 +1,56 @@
+<core:FragmentDefinition xmlns="sap.m" xmlns:core="sap.ui.core" xmlns:f="sap.ui.layout.form"  xmlns:l="sap.ui.layout">
+	<Dialog id="addDialog" title="Add a Nominee" contentWidth="48em" contentHeight="17em">
+		<content>
+			<l:HorizontalLayout class="sapUiContentPadding" >
+			<VBox class="sapUiSmallMarginTop centerVBox">
+				<Image src="http://dehayf5mhw1h7.cloudfront.net/wp-content/uploads/sites/470/2015/10/23122001/CommonMan.jpg" densityAware="false"
+				width="300px"></Image>
+								<HBox class="centerVBox	">
+								<Button text="upload" type="Accept" />
+							</HBox>
+			</VBox>
+
+			<f:Form editable="true" ariaLabelledBy="Title1">
+				<f:layout>
+					<f:ResponsiveGridLayout labelSpanXL="4" labelSpanL="3" labelSpanM="4" labelSpanS="12" adjustLabelSpan="false" emptySpanXL="0" emptySpanL="4"
+						emptySpanM="0" emptySpanS="0" columnsXL="2" columnsL="1" columnsM="1" singleContainerFullSize="false"/>
+				</f:layout>
+				<f:formContainers>
+					<f:FormContainer ariaLabelledBy="Title2">
+						
+						<f:formElements>
+							<f:FormElement label="Name">
+								<f:fields>
+									<Input value="{EditNomineeModel>/MVPNomineeName}"/>
+								</f:fields>
+							</f:FormElement>
+							<f:FormElement label="Abstract">
+								<f:fields>
+									<TextArea value="{EditNomineeModel>/MVPNomineeAbstract}"/>
+									
+								</f:fields>
+							</f:FormElement>
+							<f:FormElement label="Key Achievements">
+								<f:fields>
+									<TextArea value="{EditNomineeModel>/MVPNomineeKeyAchievements}"/>
+								</f:fields>
+							</f:FormElement>
+							<f:FormElement label="Customer Quotes">
+								<f:fields>
+									<TextArea value="{EditNomineeModel>/MVPNomineeCustomerQuotes}"/>
+								</f:fields>
+							</f:FormElement>
+						</f:formElements>
+					</f:FormContainer>
+				</f:formContainers>
+			</f:Form>
+		</l:HorizontalLayout>
+		</content>
+		<beginButton>
+			<Button text="{i18n>Cancel}" press="onCloseNominee"/>
+		</beginButton>
+		<endButton>
+			<Button text="{i18n>Submit}" press="onSubmitNominee"/>
+		</endButton>
+	</Dialog>
+</core:FragmentDefinition>

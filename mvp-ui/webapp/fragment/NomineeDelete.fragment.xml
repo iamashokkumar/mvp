@@ -1,0 +1,22 @@
+<core:FragmentDefinition xmlns:core="sap.ui.core"  xmlns="sap.m">
+	<Dialog horizontalScrolling="true" icon="sap-icon://lightbulb" showHeader="true" state="None" stretch="false" title="Please Confirm"
+		type="Standard" verticalScrolling="true">
+		<content>
+			<Text text="Are you sure you want to Delete for '" width="auto" maxLines="1" wrapping="false" textAlign="Begin"
+				textDirection="Inherit" visible="true"/>
+				<Text text="{Nominee>/NomineeName}" />
+				<Text text="'?" />
+
+		</content>
+		<beginButton/>
+		<buttons>
+			<Button text="Yes" type="Default" iconFirst="true" width="auto" enabled="true" visible="true" iconDensityAware="false"
+				press="onDeleteNomineeConfirm"/>
+			<Button text="No" type="Default" iconFirst="true" width="auto" enabled="true" visible="true" iconDensityAware="false"
+				press="onCloseDeleteDialog"/>
+		</buttons>
+		<customHeader/>
+		<endButton/>
+		<subHeader/>
+	</Dialog>
+</core:FragmentDefinition>

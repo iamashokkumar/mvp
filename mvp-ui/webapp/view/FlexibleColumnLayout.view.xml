@@ -1,0 +1,6 @@
+<View xmlns="sap.f" xmlns:m="sap.m" xmlns:mvc="sap.ui.core.mvc"
+	displayBlock="true" controllerName="com.sap.build.leonardo.votingApp.controller.FlexibleColumnLayout"
+	height="100%">
+		<FlexibleColumnLayout id="fcl">
+ 		</FlexibleColumnLayout>
+</View>
