@@ -5,7 +5,7 @@ context mvp {
     type mvp_type {
     	categoryId	  : Integer;
     	nomineeId	  : Integer;
-    	userid		  : String(10);
+    	userid		  : String(50);
     	regionId	  : String(30);
     	teamId	      : String(30);
 		timestamp	  : UTCDateTime;
@@ -23,9 +23,9 @@ context mvp {
 			MVPCategoryVoteEndDate: type of mvp_type.timestamp;
 			MVPCategoryVoteMode   : String(10) not null;
 			MVPCategoryCreatedBy  : type of mvp_type.userid;
-			MVPCategoryCreatedOn  : type of mvp_type.timestamp not null;
+			MVPCategoryCreatedOn  : type of mvp_type.timestamp default current_timestamp;
 			MVPCategoryChangedBy  : type of mvp_type.userid;
-			MVPCategoryChangedOn  : type of mvp_type.timestamp not null;
+			MVPCategoryChangedOn  : type of mvp_type.timestamp default current_timestamp;
     };
     
     entity MVPNominee {
@@ -35,20 +35,20 @@ context mvp {
 			MVPNomineeAvatarFileName	 : String(50);
 			MVPNomineeAvatarFileNameExtn : String(10);
 			MVPNomineeAvatarFileData	 : LargeBinary;
-	        MVPNomineeAbstract  		 : String(300);
-			MVPNomineeKeyAchievements	 : String(300);
-			MVPNomineeCustomerQuotes	 : String(300);
+	        MVPNomineeAbstract  		 : String(500);
+			MVPNomineeKeyAchievements	 : String(500);
+			MVPNomineeCustomerQuotes	 : String(500);
 			MVPNominatedBy			     : type of mvp_type.userid;
-			MVPNominatedOn				 : type of mvp_type.timestamp not null;
+			MVPNominatedOn				 : type of mvp_type.timestamp default current_timestamp;
 			MVPNomineeChangedBy 		 : type of mvp_type.userid;
-			MVPNomineeChangedOn 		 : type of mvp_type.timestamp not null;
+			MVPNomineeChangedOn 		 : type of mvp_type.timestamp default current_timestamp;
     };
     
     entity MVPVote {
         key MVPCategoryId      : type of mvp_type.categoryId;
         key MVPNomineeId	   : type of mvp_type.nomineeId;
 	    key MVPNomineeVotedBy  : type of mvp_type.userid;
-			MVPNomineeVotedOn  : type of mvp_type.timestamp not null;
+			MVPNomineeVotedOn  : type of mvp_type.timestamp default current_timestamp;
     };
     
     entity MVPUser {

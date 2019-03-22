@@ -12,25 +12,9 @@ if ($.request.method === $.net.http.GET) {
 	try {
 		connection = $.hdb.getConnection();
 		var userEmailId = $.session.getUsername();
-		userEmailId = 'ashok.kumar.m01@sap.com';
+		// userEmailId = 'ashok.kumar.m01@sap.com';
 		if (userEmailId !== undefined && userEmailId !== '') {
 			
-/*			var UserId = 'I066096';
-			var UserName = 'Ashok Kumar M';
-			var UserEmail = 'ashok.kumar.m01@sap.com';
-			var UserRegionId = 'NA';
-			var UserTeamId = 'CoE';
-			
-			query = "INSERT INTO \"mvpadmin.mvpdb::mvp.MVPUser\" VALUES ('" 
-			+ UserId + "','"
-			+ UserName + "','"
-			+ UserEmail + "','"
-			+ UserRegionId + "','"
-			+ UserTeamId + "')";
-			
-			var UserInput = connection.executeUpdate(query);
-			connection.commit();*/
-
 			// Validate User
 			query = "SELECT * FROM \"mvpadmin.mvpdb::mvp.MVPUser\" WHERE \"UserEmail\" = '" + userEmailId.toLowerCase() + "'";
 			var userResult = connection.executeQuery(query);
@@ -38,16 +22,15 @@ if ($.request.method === $.net.http.GET) {
 				query = "SELECT * FROM \"mvpadmin.mvpdb::mvp.MVPCategory\"";
 				// var pstmt = connection.prepareStatement(query);
 				// var MVPCategoryResult = pstmt.executeQuery();
-				var MVPCategoryResult = connection.executeQuery(query);
-				for (var result of MVPCategoryResult) {
-					responseJSON.MVPCategories.push(result);
+				var MVPCategories = connection.executeQuery(query);
+				for (var category of MVPCategories) {
+					responseJSON.MVPCategories.push(category);
 				}
 				// }
 				responseJSON.Response = {
 					"CODE": "SUCCESS",
 					"Text": "MVP Categories Fetched"
 				};
-				$.response.setBody(JSON.stringify(responseJSON));
 				$.response.status = $.net.http.OK;
 			} else {
 				$.response.status = $.net.http.BAD_REQUEST;
@@ -55,28 +38,26 @@ if ($.request.method === $.net.http.GET) {
 					"CODE": "BADREQUEST",
 					"Text": "Sorry, You're not part of the user group to access the MVP app!"
 				};
-				$.response.setBody(JSON.stringify(responseJSON));
 			}
-
 		} else {
 			$.response.status = $.net.http.UNAUTHORIZED;
 			responseJSON.Response = {
 				"CODE": "UNAUTHORIZED",
 				"Text": "You're not authorized to use this app!"
 			};
-			$.response.setBody(JSON.stringify(responseJSON));
 		}
 	} catch (error) {
 		connection.rollback();
 		$.response.contentType = "text/plain";
+		$.response.status = $.net.http.INTERNAL_SERVER_ERROR;
 		responseJSON.Response = {
 			"CODE": "INTERNAL_ERROR",
 			"Text": JSON.stringify(error.message)
 		};
-		$.response.setBody(JSON.stringify(responseJSON));
-		$.response.status = $.net.http.INTERNAL_SERVER_ERROR;
 	} finally {
 		connection.close();
+		responseJSON.Userid = { userEmailId };
+		$.response.setBody(JSON.stringify(responseJSON));
 	}
 } else {
 	$.response.status = $.net.http.METHOD_NOT_ALLOWED;
