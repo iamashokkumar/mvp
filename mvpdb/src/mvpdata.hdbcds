@@ -14,7 +14,7 @@ context mvp {
     entity MVPCategory {
         key MVPCategoryId   	  : Integer generated always as identity ( start with 1 increment by 1 );
 	        MVPCategoryName		  : String(50) not null;
-	        MVPCategoryStatusId   : String(20) not null;
+	        MVPCategoryStatusId   : String(30) not null;
 			MVPCategoryRegionId   : type of mvp_type.regionId;
 	        MVPCategoryTeamId     : type of mvp_type.teamId;
 			MVPCategoryNominateStartDate   : type of mvp_type.timestamp;
@@ -34,7 +34,7 @@ context mvp {
 	        MVPNomineeName				 : String(100) not null;
 			MVPNomineeAvatarFileName	 : String(50);
 			MVPNomineeAvatarFileNameExtn : String(10);
-			MVPNomineeAvatarFileData	 : LargeBinary;
+			MVPNomineeAvatarFileData	 : LargeString;
 	        MVPNomineeAbstract  		 : String(500);
 			MVPNomineeKeyAchievements	 : String(500);
 			MVPNomineeCustomerQuotes	 : String(500);
@@ -57,10 +57,5 @@ context mvp {
 			UserEmail		: String(50);
 			UserRegionId	: type of mvp_type.regionId;
 			UserTeamId		: type of mvp_type.teamId;
-    };
-    
-    entity MVPStatus {
-	    key StatusId   : String(20);
-	        StatusName : String(30);
     };
 };

@@ -1,7 +1,7 @@
 function getCurrentTimestamp(connection) {
 	var query = "SELECT current_timestamp FROM DUMMY";
 	var currentTimeStamp = connection.executeQuery(query);
-	return currentTimeStamp;
+	return currentTimeStamp[0].CURRENT_TIMESTAMP;
 }
 
 if ($.request.method === $.net.http.GET) {
@@ -19,22 +19,41 @@ if ($.request.method === $.net.http.GET) {
 	try {
 		connection = $.hdb.getConnection();
 		var userEmailId = $.session.getUsername();
-		// userEmailId = 'ashok.kumar.m01@sap.com';
+		userEmailId = 'ashok.kumar.m01@sap.com';
 		if (userEmailId !== undefined && userEmailId !== '') {
-			
+
 			// Validate User
 			query = "SELECT * FROM \"mvpadmin.mvpdb::mvp.MVPUser\" WHERE \"UserEmail\" = '" + userEmailId.toLowerCase() + "'";
 			var userResult = connection.executeQuery(query);
-			if (userResult) {
-				query = "SELECT * FROM \"mvpadmin.mvpdb::mvp.MVPCategory\" order by \"MVPCategoryVoteEndDate\" desc";
+			if (userResult.length > 0) {
+				query =
+					"SELECT * FROM \"mvpadmin.mvpdb::mvp.MVPCategory\" WHERE \"MVPCategoryStatusId\" NOT IN ('DRAFT','CANCELED') ORDER BY \"MVPCategoryVoteEndDate\" DESC";
 				var MVPCategories = connection.executeQuery(query);
 				currentTimeStamp = getCurrentTimestamp(connection);
 				for (var category of MVPCategories) {
-					
-					if(category.MVPCategoryNominateStartDate < currentTimeStamp & category.MVPCategoryNominateEndDate > currentTimeStamp) {
-						
+
+					if (category.MVPCategoryNominateStartDate > currentTimeStamp) {
+						category.MVPCategoryNominationStatus = 'NOT_OPEN_FOR_NOMINATION';
+					} else if (category.MVPCategoryNominateStartDate < currentTimeStamp & category.MVPCategoryNominateEndDate > currentTimeStamp) {
+						category.MVPCategoryNominationStatus = 'OPEN_FOR_NOMINATION';
+					} else if (category.MVPCategoryNominateEndDate < currentTimeStamp) {
+						category.MVPCategoryNominationStatus = 'CLOSED_FOR_NOMINATION';
 					}
-					
+
+					if (category.MVPCategoryVoteStartDate > currentTimeStamp) {
+						category.MVPCategoryVotingStatus = 'NOT_OPEN_FOR_VOTING';
+					} else if (category.MVPCategoryVoteStartDate < currentTimeStamp & category.MVPCategoryVoteEndDate > currentTimeStamp) {
+						category.MVPCategoryVotingStatus = 'OPEN_FOR_VOTING';
+					} else if (category.MVPCategoryVoteEndDate < currentTimeStamp) {
+						category.MVPCategoryVotingStatus = 'CLOSED_FOR_VOTING';
+					}
+
+					if (category.MVPCategoryVoteMode === 'SINGLE') {
+						category.MVPCategoryVoteModeText = 'Note: You can vote for only one nominee.';
+					} else if (category.MVPCategoryVoteMode === 'MULTI') {
+						category.MVPCategoryVoteModeText = 'Note: You can vote for multiple nominees.'
+					}
+
 					responseJSON.MVPCategories.push(category);
 				}
 				$.response.status = $.net.http.OK;
@@ -66,7 +85,9 @@ if ($.request.method === $.net.http.GET) {
 		};
 	} finally {
 		connection.close();
-		responseJSON.Userid = { userEmailId };
+		responseJSON.Userid = {
+			userEmailId
+		};
 		$.response.setBody(JSON.stringify(responseJSON));
 	}
 } else {

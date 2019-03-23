@@ -3,7 +3,7 @@ function validateLogonUser(userEmailId, connection) {
 		// Validate User
 		query = "SELECT * FROM \"mvpadmin.mvpdb::mvp.MVPUser\" WHERE \"UserEmail\" = '" + userEmailId.toLowerCase() + "'";
 		var MVPUser = connection.executeQuery(query);
-		if (!MVPUser) {
+		if (!MVPUser.length > 0) {
 			$.response.status = $.net.http.BAD_REQUEST;
 			responseJSON.Response = {
 				"CODE": "BADREQUEST",
@@ -19,10 +19,16 @@ function validateLogonUser(userEmailId, connection) {
 	}
 }
 
+function getCurrentTimestamp(connection) {
+	var query = "SELECT current_timestamp FROM DUMMY";
+	var currentTimeStamp = connection.executeQuery(query);
+	return currentTimeStamp[0].CURRENT_TIMESTAMP;
+}
+
 function getMVPCategory(mvpCategoryId, connection) {
 	query = "SELECT * FROM \"mvpadmin.mvpdb::mvp.MVPCategory\" WHERE \"MVPCategoryId\" = " + mvpCategoryId;
 	var MVPCategory = connection.executeQuery(query);
-	if (!MVPCategory) {
+	if (!MVPCategory.length > 0) {
 		$.response.status = $.net.http.BAD_REQUEST;
 		responseJSON.Response = {
 			"CODE": "BAD_REQUEST",
@@ -32,53 +38,79 @@ function getMVPCategory(mvpCategoryId, connection) {
 	return MVPCategory;
 }
 
-function isNominationAllowed(mvpCategory) {
+function isCategoryOpen(mvpCategory) {
 	if (mvpCategory[0].MVPCategoryStatusId === 'OPEN') {
 		return true;
 	}
 }
 
-function isNominationDeletionAllowed(mvpCategory) {
-	if (mvpCategory[0].MVPCategoryStatusId === 'OPEN') {
-		return true;
+function isNominationEditOpen(mvpCategory) {
+	var isEditAllowed = false;
+
+	currentTimeStamp = getCurrentTimestamp(connection);
+
+	if (mvpCategory[0].MVPCategoryNominateStartDate > currentTimeStamp) {
+		isEditAllowed = false;
+	} else if (mvpCategory[0].MVPCategoryNominateStartDate < currentTimeStamp & mvpCategory[0].MVPCategoryNominateEndDate > currentTimeStamp) {
+		isEditAllowed = true;
+	} else if (mvpCategory[0].MVPCategoryNominateEndDate < currentTimeStamp) {
+		isEditAllowed = false;
 	}
+	return isEditAllowed;
 }
 
-function isNominationUpdateAllowed(mvpCategory) {
-	if (mvpCategory[0].MVPCategoryStatusId === 'OPEN') {
-		return true;
+function isVotingOnCategoryOpen(mvpCategory) {
+	var isVotingAllowed = false;
+
+	currentTimeStamp = getCurrentTimestamp(connection);
+
+	if (mvpCategory[0].MVPCategoryVoteStartDate > currentTimeStamp) {
+		isVotingAllowed = false;
+	} else if (mvpCategory[0].MVPCategoryVoteStartDate < currentTimeStamp & mvpCategory[0].MVPCategoryVoteEndDate > currentTimeStamp) {
+		isVotingAllowed = true;
+	} else if (mvpCategory[0].MVPCategoryVoteEndDate < currentTimeStamp) {
+		isVotingAllowed = false;
 	}
+	return isVotingAllowed;
 }
 
-function isVotingAllowed(mvpCategory) {
-	if (mvpCategory[0].MVPCategoryStatusId === 'OPEN') {
-		return true;
+function isNomineeInCategory(mvpCategoryId, mvpNomineeId, connection) {
+	var isNomineeValid = false;
+	query = "SELECT * FROM \"mvpadmin.mvpdb::mvp.MVPNominee\" WHERE \"MVPCategoryId\" = " + mvpCategoryId + " AND \"MVPNomineeId\" = " + mvpNomineeId;
+	var MVPNomineeInCategory = connection.executeQuery(query);
+	if (MVPNomineeInCategory.length > 0) {
+		isNomineeValid = true;
 	}
+	return isNomineeValid;
 }
 
-function isUserAllowedToVote(mvpCategoryId, userEmailId, MVPNomineeId, connection) {
-	var isUserAlreadyVoted = false;
+function hasUserAlreadyVotedForNominee(mvpCategoryId, userEmailId, MVPNomineeId, connection) {
+	var isUserAlreadyVotedForNominee = false;
 	query = "SELECT * FROM \"mvpadmin.mvpdb::mvp.MVPVote\" WHERE \"MVPCategoryId\" = " + mvpCategoryId + " AND \"MVPNomineeId\" = " +
 		MVPNomineeId + " AND \"MVPNomineeVotedBy\" = '" + userEmailId + "'";
 	var MVPNomineeVote = connection.executeQuery(query);
-	if (MVPNomineeVote) {
-		isUserAlreadyVoted = true;
-	} else {
-		isUserAlreadyVoted = false;
+	if (MVPNomineeVote.length > 0) {
+		isUserAlreadyVotedForNominee = true;
 	}
-	return isUserAlreadyVoted;
+	return isUserAlreadyVotedForNominee;
 }
 
-//To do
-// Date Check, is nominated by user check.
-function dateCheck(connection) {
-
+function hasUserAlreadyVoted(mvpCategoryId, userEmailId, connection) {
+	var isUserAlreadyVoted = false;
+	query = "SELECT * FROM \"mvpadmin.mvpdb::mvp.MVPVote\" WHERE \"MVPCategoryId\" = " + mvpCategoryId + " AND \"MVPNomineeVotedBy\" = '" +
+		userEmailId + "'";
+	var MVPUserVote = connection.executeQuery(query);
+	if (MVPUserVote.length > 0) {
+		isUserAlreadyVoted = true;
+	}
+	return isUserAlreadyVoted;
 }
 
 var connection = "";
 var query = "";
 var user = "";
 var payload = "";
+var currentTimeStamp = "";
 var responseJSON = {
 	Userid: [],
 	Response: [],
@@ -90,7 +122,7 @@ var responseJSON = {
 try {
 	connection = $.hdb.getConnection();
 	var userEmailId = $.session.getUsername();
-	// userEmailId = 'ashok.kumar.m01@sap.com';
+	userEmailId = 'ashok.kumar.m01@sap.com';
 	var actionId = $.request.parameters.get("ACTIONID");
 	var mvpCategoryId = $.request.parameters.get("MVPCategoryId");
 
@@ -102,10 +134,15 @@ try {
 			if (mvpCategoryId !== undefined && mvpCategoryId !== '') {
 				var mvpCategory = getMVPCategory(mvpCategoryId, connection);
 
-				if (mvpCategory) {
+				if (mvpCategory.length > 0) {
 					query = "SELECT * FROM \"mvpadmin.mvpdb::mvp.MVPNominee\" WHERE \"MVPCategoryId\" = " + mvpCategoryId;
 					var MVPNominees = connection.executeQuery(query);
 					for (var nominee of MVPNominees) {
+						// Did user already vote for nominee?
+						nominee.HAS_VOTED = false;
+						if (hasUserAlreadyVotedForNominee(mvpCategoryId, userEmailId, nominee.MVPNomineeId, connection)) {
+							nominee.HAS_VOTED = true;
+						}
 						responseJSON.MVPNominees.push(nominee);
 					}
 					$.response.status = $.net.http.OK;
@@ -129,9 +166,9 @@ try {
 			if (mvpCategoryId !== undefined && mvpCategoryId !== '') {
 				var mvpCategory = getMVPCategory(mvpCategoryId, connection);
 
-				if (mvpCategory) {
+				if (mvpCategory.length > 0) {
 
-					if (isNominationAllowed(mvpCategory)) {
+					if (isCategoryOpen(mvpCategory) & isNominationEditOpen(mvpCategory)) {
 
 						payload = JSON.parse($.request.body.asString());
 
@@ -188,23 +225,21 @@ try {
 			if (mvpCategoryId !== undefined && mvpCategoryId !== '') {
 				var mvpCategory = getMVPCategory(mvpCategoryId, connection);
 
-				if (mvpCategory) {
+				if (mvpCategory.length > 0) {
 
-					if (isNominationDeletionAllowed(mvpCategory)) {
+					if (isCategoryOpen(mvpCategory) & isNominationEditOpen(mvpCategory)) {
 
-						/*		payload = JSON.parse($.request.body.asString());
-
-								query = "INSERT INTO \"mvpadmin.mvpdb::mvp.MVPNominee\" VALUES(" + mvpCategory + ",'" + payload.MVPNomineeName + "','" +
-									payload.MVPNomineeAvatarFileName + "','" + payload.MVPNomineeAvatarFileNameExtn + "','" + payload.MVPNomineeAvatarFileData + "','" +
-									payload.MVPNomineeAbstract +
-									"','" + payload.MVPNomineeKeyAchievements + "','" + payload.MVPNomineeCustomerQuotes + "','" + payload.MVPNominatedBy +
-									"', current_timestamp,'" +
-									payload.MVPNomineeChangedBy + "', current_timestamp)";*/
-
-						var MVPNomineeId = 10;
+						payload = JSON.parse($.request.body.asString());
+						// Delete Nominee
 						query = "DELETE  FROM \"mvpadmin.mvpdb::mvp.MVPNominee\" WHERE \"MVPCategoryId\" = " + mvpCategoryId + " and \"MVPNomineeId\" = " +
-							MVPNomineeId;
+							payload.MVPNomineeId;
 						var MVPNominee = connection.executeUpdate(query);
+
+						// Delete Votes VALUES(" + mvpCategoryId + "," + payload.MVPNomineeId + ", '" + userEmailId +
+						query = "DELETE  FROM \"mvpadmin.mvpdb::mvp.MVPVote\" WHERE \"MVPCategoryId\" = " + mvpCategoryId + " and \"MVPNomineeId\" = " +
+							payload.MVPNomineeId;
+						var MVPNomineeVotes = connection.executeUpdate(query);
+
 						connection.commit();
 						$.response.status = $.net.http.OK;
 						responseJSON.Response = {
@@ -236,35 +271,38 @@ try {
 			if (mvpCategoryId !== undefined && mvpCategoryId !== '') {
 				var mvpCategory = getMVPCategory(mvpCategoryId, connection);
 
-				if (mvpCategory) {
+				if (mvpCategory.length > 0) {
 
-					if (isNominationUpdateAllowed(mvpCategory)) {
+					if (isCategoryOpen(mvpCategory) & isNominationEditOpen(mvpCategory)) {
 
-						/*		payload = JSON.parse($.request.body.asString());
+						payload = JSON.parse($.request.body.asString());
 
-								query = "INSERT INTO \"mvpadmin.mvpdb::mvp.MVPNominee\" VALUES(" + mvpCategory + ",'" + payload.MVPNomineeName + "','" +
-									payload.MVPNomineeAvatarFileName + "','" + payload.MVPNomineeAvatarFileNameExtn + "','" + payload.MVPNomineeAvatarFileData + "','" +
-									payload.MVPNomineeAbstract +
-									"','" + payload.MVPNomineeKeyAchievements + "','" + payload.MVPNomineeCustomerQuotes + "','" + payload.MVPNominatedBy +
-									"', current_timestamp,'" +
-									payload.MVPNomineeChangedBy + "', current_timestamp)";*/
-
-						var MVPNomineeId = "7";
-						var MVPNomineeName = "Update Nominee";
-						var MVPNomineeAvatarFileName = "";
-						var MVPNomineeAvatarFileNameExtn = "";
-						var MVPNomineeAvatarFileData = "";
-						var MVPNomineeAbstract = "This is a test abstract";
-						var MVPNomineeKeyAchievements = "This is demo key achievement";
-						var MVPNomineeCustomerQuotes = "This is demo customer quote";
-
-						query = "UPDATE \"mvpadmin.mvpdb::mvp.MVPNominee\" SET \"MVPNomineeName\" = '" + MVPNomineeName +
-							"', \"MVPNomineeAvatarFileName\" = '" + MVPNomineeAvatarFileName + "', \"MVPNomineeAvatarFileNameExtn\" = '" +
-							MVPNomineeAvatarFileNameExtn + "', \"MVPNomineeAvatarFileData\" = '" + MVPNomineeAvatarFileData + "', \"MVPNomineeAbstract\" = '" +
-							MVPNomineeAbstract + "', \"MVPNomineeKeyAchievements\" = '" + MVPNomineeKeyAchievements + "', \"MVPNomineeCustomerQuotes\" = '" +
-							MVPNomineeCustomerQuotes + "', \"MVPNomineeChangedBy\" = '" + userEmailId +
+						query = "UPDATE \"mvpadmin.mvpdb::mvp.MVPNominee\" SET \"MVPNomineeName\" = '" + payload.MVPNomineeName +
+							"', \"MVPNomineeAvatarFileName\" = '" + payload.MVPNomineeAvatarFileName + "', \"MVPNomineeAvatarFileNameExtn\" = '" +
+							payload.MVPNomineeAvatarFileNameExtn + "', \"MVPNomineeAvatarFileData\" = '" + payload.MVPNomineeAvatarFileData +
+							"', \"MVPNomineeAbstract\" = '" +
+							payload.MVPNomineeAbstract + "', \"MVPNomineeKeyAchievements\" = '" + payload.MVPNomineeKeyAchievements +
+							"', \"MVPNomineeCustomerQuotes\" = '" +
+							payload.MVPNomineeCustomerQuotes + "', \"MVPNomineeChangedBy\" = '" + userEmailId +
 							"', \"MVPNomineeChangedOn\" =  current_timestamp WHERE \"MVPCategoryId\" = " + mvpCategoryId + " and \"MVPNomineeId\" = " +
-							MVPNomineeId;
+							payload.MVPNomineeId;
+
+						/*						var MVPNomineeId = "7";
+												var MVPNomineeName = "Update Nominee";
+												var MVPNomineeAvatarFileName = "";
+												var MVPNomineeAvatarFileNameExtn = "";
+												var MVPNomineeAvatarFileData = "";
+												var MVPNomineeAbstract = "This is a test abstract";
+												var MVPNomineeKeyAchievements = "This is demo key achievement";
+												var MVPNomineeCustomerQuotes = "This is demo customer quote";
+
+												query = "UPDATE \"mvpadmin.mvpdb::mvp.MVPNominee\" SET \"MVPNomineeName\" = '" + MVPNomineeName +
+													"', \"MVPNomineeAvatarFileName\" = '" + MVPNomineeAvatarFileName + "', \"MVPNomineeAvatarFileNameExtn\" = '" +
+													MVPNomineeAvatarFileNameExtn + "', \"MVPNomineeAvatarFileData\" = '" + MVPNomineeAvatarFileData + "', \"MVPNomineeAbstract\" = '" +
+													MVPNomineeAbstract + "', \"MVPNomineeKeyAchievements\" = '" + MVPNomineeKeyAchievements + "', \"MVPNomineeCustomerQuotes\" = '" +
+													MVPNomineeCustomerQuotes + "', \"MVPNomineeChangedBy\" = '" + userEmailId +
+													"', \"MVPNomineeChangedOn\" =  current_timestamp WHERE \"MVPCategoryId\" = " + mvpCategoryId + " and \"MVPNomineeId\" = " +
+													MVPNomineeId;*/
 
 						var MVPNominee = connection.executeUpdate(query);
 						connection.commit();
@@ -298,42 +336,61 @@ try {
 			if (mvpCategoryId !== undefined && mvpCategoryId !== '') {
 				var mvpCategory = getMVPCategory(mvpCategoryId, connection);
 
-				if (mvpCategory) {
+				if (mvpCategory.length > 0) {
 
-					if (isVotingAllowed(mvpCategory)) {
+					if (isCategoryOpen(mvpCategory) & isVotingOnCategoryOpen(mvpCategory)) {
 
-						/*		payload = JSON.parse($.request.body.asString());
+						payload = JSON.parse($.request.body.asString());
 
-								query = "INSERT INTO \"mvpadmin.mvpdb::mvp.MVPNominee\" VALUES(" + mvpCategory + ",'" + payload.MVPNomineeName + "','" +
-									payload.MVPNomineeAvatarFileName + "','" + payload.MVPNomineeAvatarFileNameExtn + "','" + payload.MVPNomineeAvatarFileData + "','" +
-									payload.MVPNomineeAbstract +
-									"','" + payload.MVPNomineeKeyAchievements + "','" + payload.MVPNomineeCustomerQuotes + "','" + payload.MVPNominatedBy +
-									"', current_timestamp,'" +
-									payload.MVPNomineeChangedBy + "', current_timestamp)";*/
+						if (payload.MVPNomineeId !== undefined && payload.MVPNomineeId !== '') {
+							// Is Nominee in Category
+							if (isNomineeInCategory(mvpCategoryId, payload.MVPNomineeId, connection)) {
+								// Did user already vote for nominee?
+								if (!hasUserAlreadyVotedForNominee(mvpCategoryId, userEmailId, payload.MVPNomineeId, connection)) {
+									// Did user already vote? If 'No' or voting mode is 'MULTI', then proceed
+									if ((mvpCategory[0].MVPCategoryVoteMode === 'SINGLE' & !hasUserAlreadyVoted(mvpCategoryId, userEmailId, connection)) || (
+											mvpCategory[0].MVPCategoryVoteMode ===
+											'MULTI')) {
 
-						// Did user already vote?
+										query = "INSERT INTO \"mvpadmin.mvpdb::mvp.MVPVote\" VALUES(" + mvpCategoryId + "," + payload.MVPNomineeId + ", '" + userEmailId +
+											"', current_timestamp)";
 
-						var MVPNomineeId = "2";
-
-						if (!isUserAllowedToVote(mvpCategoryId, userEmailId, MVPNomineeId, connection)) {
-
-							query = "INSERT INTO \"mvpadmin.mvpdb::mvp.MVPVote\" VALUES(" + mvpCategoryId + "," + MVPNomineeId + ", '" + userEmailId +
-								"', current_timestamp)";
-
-							var MVPNominee = connection.executeUpdate(query);
-							connection.commit();
-							$.response.status = $.net.http.OK;
-							responseJSON.Response = {
-								"CODE": "SUCCESS",
-								"Text": "Vote Saved Successfully."
-							};
+										var MVPNominee = connection.executeUpdate(query);
+										connection.commit();
+										$.response.status = $.net.http.OK;
+										responseJSON.Response = {
+											"CODE": "SUCCESS",
+											"Text": "Vote Saved Successfully."
+										};
+									} else {
+										$.response.status = $.net.http.BAD_REQUEST;
+										responseJSON.Response = {
+											"CODE": "BAD_REQUEST",
+											"Text": "You already voted for a nominee in this category!"
+										};
+									}
+								} else {
+									$.response.status = $.net.http.BAD_REQUEST;
+									responseJSON.Response = {
+										"CODE": "BAD_REQUEST",
+										"Text": "You voted for this nominee already!"
+									};
+								}
+							} else {
+								$.response.status = $.net.http.BAD_REQUEST;
+								responseJSON.Response = {
+									"CODE": "BAD_REQUEST",
+									"Text": "Nominee is invalid or not part of Category."
+								};
+							}
 						} else {
 							$.response.status = $.net.http.BAD_REQUEST;
 							responseJSON.Response = {
 								"CODE": "BAD_REQUEST",
-								"Text": "You voted for the nominee already!"
+								"Text": "Nominee ID is Empty or Invalid."
 							};
 						}
+
 					} else {
 						$.response.status = $.net.http.BAD_REQUEST;
 						responseJSON.Response = {
@@ -350,14 +407,12 @@ try {
 				};
 			}
 		}
-
 	} else {
 		$.response.status = $.net.http.BAD_REQUEST;
 		responseJSON.Response = {
 			"CODE": "BAD_REQUEST",
 			"Text": "Bad Request"
 		};
-		// $.response.setBody(JSON.stringify(responseJSON));
 	}
 } catch (error) {
 	connection.rollback();

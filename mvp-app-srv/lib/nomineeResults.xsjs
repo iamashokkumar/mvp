@@ -11,17 +11,17 @@ if ($.request.method === $.net.http.GET) {
 	try {
 		connection = $.hdb.getConnection();
 		var userEmailId = $.session.getUsername();
-		// userEmailId = 'ashok.kumar.m01@sap.com';
+		userEmailId = 'ashok.kumar.m01@sap.com';
 		var mvpCategoryId = $.request.parameters.get("MVPCategoryId");
 
 		if (userEmailId !== undefined && userEmailId !== '') {
 			// Validate User
 			query = "SELECT * FROM \"mvpadmin.mvpdb::mvp.MVPUser\" WHERE \"UserEmail\" = '" + userEmailId.toLowerCase() + "'";
 			var userResult = connection.executeQuery(query);
-			if (userResult) {
+			if (userResult.length > 0) {
 
 				if (mvpCategoryId !== undefined && mvpCategoryId !== '') {
-					query =	"SELECT nominee.\"MVPNomineeId\", nominee.\"MVPNomineeName\", count(nominee.\"MVPNomineeId\") as \"MVPVotes\" FROM \"mvpadmin.mvpdb::mvp.MVPNominee\" AS nominee LEFT OUTER JOIN \"mvpadmin.mvpdb::mvp.MVPVote\" AS vote ON nominee.\"MVPCategoryId\" = vote.\"MVPCategoryId\" and nominee.\"MVPNomineeId\" = vote.\"MVPNomineeId\" where nominee.\"MVPCategoryId\" = " + mvpCategoryId + " GROUP BY nominee.\"MVPNomineeId\", nominee.\"MVPNomineeName\" ORDER BY COUNT(nominee.\"MVPNomineeId\") DESC";
+					query = "SELECT nominee.\"MVPNomineeId\", nominee.\"MVPNomineeName\", count(nominee.\"MVPNomineeId\") as \"MVPVotes\" FROM \"mvpadmin.mvpdb::mvp.MVPNominee\" AS nominee RIGHT OUTER JOIN \"mvpadmin.mvpdb::mvp.MVPVote\" AS vote ON nominee.\"MVPCategoryId\" = vote.\"MVPCategoryId\" and nominee.\"MVPNomineeId\" = vote.\"MVPNomineeId\" where nominee.\"MVPCategoryId\" = " + mvpCategoryId + " GROUP BY nominee.\"MVPNomineeId\", nominee.\"MVPNomineeName\" ORDER BY COUNT(nominee.\"MVPNomineeId\") DESC";
 
 					var MVPNomineeVotes = connection.executeQuery(query);
 					for (var nominee of MVPNomineeVotes) {
@@ -30,7 +30,7 @@ if ($.request.method === $.net.http.GET) {
 					$.response.status = $.net.http.OK;
 					responseJSON.Response = {
 						"CODE": "SUCCESS",
-						"Text": "Results Fetched."
+						"Text": "Votes Fetched."
 					};
 				} else {
 					$.response.status = $.net.http.BAD_REQUEST;
