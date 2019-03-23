@@ -16,7 +16,8 @@ if ($.request.method === $.net.http.GET) {
 
 		if (userEmailId !== undefined && userEmailId !== '') {
 			// Validate User
-			query = "SELECT * FROM \"mvpadmin.mvpdb::mvp.MVPUser\" WHERE \"UserEmail\" = '" + userEmailId.toLowerCase() + "'";
+			userEmailId = userEmailId.toLowerCase();
+			query = "SELECT * FROM \"mvpadmin.mvpdb::mvp.MVPUser\" WHERE \"UserEmail\" = '" + userEmailId + "'";
 			var userResult = connection.executeQuery(query);
 			if (userResult.length > 0) {
 
@@ -64,7 +65,7 @@ if ($.request.method === $.net.http.GET) {
 	} finally {
 		connection.close();
 		responseJSON.Userid = {
-			userEmailId
+			userEmailId.toLowerCase();
 		};
 		$.response.setBody(JSON.stringify(responseJSON));
 	}

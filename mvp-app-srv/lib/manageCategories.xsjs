@@ -92,7 +92,7 @@ if ($.request.method === $.net.http.GET) {
 	} finally {
 		connection.close();
 		responseJSON.Userid = {
-			userEmailId
+			userEmailId.toLowerCase();
 		};
 		$.response.setBody(JSON.stringify(responseJSON));
 	}
