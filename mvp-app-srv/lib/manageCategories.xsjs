@@ -34,18 +34,24 @@ if ($.request.method === $.net.http.GET) {
 
 					if (category.MVPCategoryNominateStartDate > currentTimeStamp) {
 						category.MVPCategoryNominationStatus = 'NOT_OPEN_FOR_NOMINATION';
+						category.MVPCategoryNominationStatusText = 'Not Open For Nomination';
 					} else if (category.MVPCategoryNominateStartDate < currentTimeStamp & category.MVPCategoryNominateEndDate > currentTimeStamp) {
 						category.MVPCategoryNominationStatus = 'OPEN_FOR_NOMINATION';
+						category.MVPCategoryNominationStatusText = 'Open For Nomination';
 					} else if (category.MVPCategoryNominateEndDate < currentTimeStamp) {
 						category.MVPCategoryNominationStatus = 'CLOSED_FOR_NOMINATION';
+						category.MVPCategoryNominationStatusText = 'Closed For Nomination';
 					}
 
 					if (category.MVPCategoryVoteStartDate > currentTimeStamp) {
 						category.MVPCategoryVotingStatus = 'NOT_OPEN_FOR_VOTING';
+						category.MVPCategoryVotingStatusText = 'Not Open For Voting';
 					} else if (category.MVPCategoryVoteStartDate < currentTimeStamp & category.MVPCategoryVoteEndDate > currentTimeStamp) {
 						category.MVPCategoryVotingStatus = 'OPEN_FOR_VOTING';
+						category.MVPCategoryVotingStatusText = 'Open For Voting';
 					} else if (category.MVPCategoryVoteEndDate < currentTimeStamp) {
 						category.MVPCategoryVotingStatus = 'CLOSED_FOR_VOTING';
+						category.MVPCategoryVotingStatusText = 'Closed For Voting';
 					}
 
 					if (category.MVPCategoryVoteMode === 'SINGLE') {
