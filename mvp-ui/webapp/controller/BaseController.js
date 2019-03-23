@@ -2,8 +2,9 @@
 sap.ui.define([
     "sap/ui/core/mvc/Controller",
     "sap/ui/core/routing/History",
-    "sap/m/BusyDialog"
-], function(Controller, History,BusyDialog) {
+    "sap/m/BusyDialog",
+    "sap/ui/model/json/JSONModel"
+], function(Controller, History,BusyDialog,JSONModel) {
     "use strict";
 
     return Controller.extend("com.sap.build.leonardo.mvpNomination.controller.BaseController", {

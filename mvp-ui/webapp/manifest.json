@@ -10,7 +10,8 @@
 		},
 		"dataSources": {
 			"Category":"/manageCategories.xsjs?$format=json",
-			"Nominee":"/manageNominees.xsjs"
+			"Nominee":"/manageNominees.xsjs",
+			"NomineeResults":"/nomineeResults.xsjs"
 		},
 		"title": "{{appTitle}}",
 		"description": "{{appDescription}}",
