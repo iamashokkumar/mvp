@@ -1,6 +1,6 @@
 <mvc:View xmlns:mvc="sap.ui.core.mvc" xmlns="sap.m" xmlns:m="sap.m" 
 xmlns:form="sap.ui.layout.form" xmlns:tnt="sap.tnt" xmlns:core="sap.ui.core"
-xmlns:chart="sap.chart" xmlns:data="sap.chart.data" xmlns:microchart="sap.suite.ui.microchart"
+xmlns:chart="sap.suite.ui.commons" 
 	controllerName="com.sap.build.leonardo.votingApp.controller.Page" 	xmlns:l="sap.ui.layout"  xmlns:w="sap.ui.integration.widgets" xmlns:f="sap.ui.layout.form" xmlns:fn="sap.f">
 	<m:Page showHeader="true" title="{CategoryModel>/category/MVPCategoryName}" showFooter="true" showNavButton="false" navButtonPress="_onPageNavButtonPress" backgroundDesign="Standard">
 		<m:headerContent>
@@ -50,7 +50,7 @@ xmlns:chart="sap.chart" xmlns:data="sap.chart.data" xmlns:microchart="sap.suite.
 			</m:MessageStrip>
 	<IconTabBar expandable="false" expanded="true" applyContentPadding="false" backgroundDesign="Solid" upperCase="false" visible="true" selectedKey="Ok">
 				<items>
-					<IconTabFilter icon="sap-icon://family-care" iconColor="Neutral" text="Nominees" count="12" design="Vertical" showAll="false"
+					<IconTabFilter icon="sap-icon://family-care" iconColor="Neutral" text="Nominees" count="{NomineeModel>/nomineescount}" design="Vertical" showAll="false"
 						textDirection="Inherit" enabled="true" visible="true" iconDensityAware="false">
 						<content>
 						<l:VerticalLayout class="sapUiContentPadding" id ="NomineeLayout">
@@ -63,18 +63,15 @@ xmlns:chart="sap.chart" xmlns:data="sap.chart.data" xmlns:microchart="sap.suite.
 				<IconTabFilter icon="sap-icon://business-objects-experience" iconColor="Neutral" text="Results" count="" design="Vertical" showAll="false"
 						textDirection="Inherit" enabled="true" visible="true" iconDensityAware="false">
 						<content>
-							<chart:Chart id="sap_IconTabBar_Page_0-content-sap_m_IconTabBar-2-items-sap_m_IconTabFilter-3-content-sap_chart_BarChart-1547754764051"
-								width="100%" height="450px" visibleDimensions="__id" visibleMeasures="Number of Votes"
-								vizProperties="{staticDataModel>/sap_IconTabBar_Page_0-content-sap_m_IconTabBar-2-items-sap_m_IconTabFilter-3-content-sap_chart_BarChart-1547754764051/vizProperties}"
-								chartType="bar" selectionMode="Single" uiConfig="{}">
-								<chart:dimensions>
-									<data:Dimension name="__id" label="Nominees" role="category" textProperty="Nominees"/>
-								</chart:dimensions>
-								<chart:measures>
-									<data:Measure name="Number of Votes" label="Number of Votes" role="axis2"/>
-								</chart:measures>
-							</chart:Chart>
-						</content>
+					<chart:ChartContainer
+									id="chartContainer"
+									showFullScreen="true"
+									showPersonalization="false"
+									autoAdjustHeight="false"
+									showSelectionDetails="true"
+									title="Votes">
+								</chart:ChartContainer>					
+							</content>
 					</IconTabFilter>
 				</items>
 			</IconTabBar>

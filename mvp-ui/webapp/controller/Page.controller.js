@@ -15,6 +15,57 @@ sap.ui.define(
 
             formatter: formatter,
 
+// charts
+            _constants: {
+            chartContainerId: "chartContainer",
+            vizFrames: {
+                config: {
+                    height: "700px",
+                    width: "100%",
+                    uiConfig: {
+                        applicationSet: "fiori"
+                    }
+                },
+                result: {
+                    icon: "sap-icon://vertical-bar-chart",
+                    title: "Bar Chart",
+                    dataset: {
+                        dimensions: [{
+                            name: "Name",
+                            value: "{MVPNomineeName}"
+                        }],
+                        measures: [{
+                            name: "Votes",
+                            value: "{MVPVotes}"
+                        }],
+                        data: {
+                            path: "/MVPResults"
+                        }
+                    },
+                    feedItems: [{
+                        uid: "primaryValues",
+                        type: "Measure",
+                        values: [ "Votes" ]
+                    }, {
+                        uid: "axisLabels",
+                        type: "Dimension",
+                        values: []
+                    }],
+                    analysisObjectProps: {
+                        uid: "Name",
+                        type: "Dimension",
+                        name: "Name"
+                    },
+                    vizType: "column"
+                }
+            }
+        },
+
+//end of charts
+
+
+
+
             handleRouteMatched: function(oEvent) {
                 var sAppId = "App5c40f79c5bdf300110f25772";
                 // cards
@@ -118,10 +169,14 @@ sap.ui.define(
                 var getCategoryURL = this.getOwnerComponent().getManifestEntry("/sap.app/dataSources/Nominee")
                 var serviceURL = getCategoryURL + "?ACTIONID=GET_NOMINEE&MVPCategoryId=" + oData.Category.MVPCategoryId;
                 var oControl = this;
+
+                //get nominees
                 MVPApi.get(serviceURL, null).then(function(data) {
                     var nominees = JSON.parse(data).MVPNominees;
                     var userName = JSON.parse(data).Userid
+
                     oControl._setModel("/nominees", nominees, "NomineeModel");
+                    oControl._setModel("/nomineescount", nominees.length, "NomineeModel");
                     if (nominees.length > 0) {
                         for (var i = 0; i < nominees.length; i++) {
                             var cardFragment = sap.ui.xmlfragment("com.sap.build.leonardo.votingApp.fragment.Card", oControl);
@@ -137,8 +192,48 @@ sap.ui.define(
                         }
                     }
                 });
+                //get Results;
+                serviceURL=this.getOwnerComponent().getManifestEntry("/sap.app/dataSources/NomineeResults")+"?MVPCategoryId="+oData.Category.MVPCategoryId;
+                MVPApi.get(serviceURL,null).then(function(data){
+                    var nomineeResults = JSON.parse(data);
+                    oControl._setModel("/", nomineeResults, "NomineeResultModel");
+                    oControl.initViz();
+                });
             },
+            initViz:function(){
+            var oCountryVizFrame = this._constants.vizFrames.result;
+            var oAnalysisObject = new sap.viz.ui5.controls.common.feeds.AnalysisObject(oCountryVizFrame.analysisObjectProps);
+            var aValues = oCountryVizFrame.feedItems[1].values;
+            if (aValues.length === 0) {
+                aValues.push(oAnalysisObject);
+            }
 
+            var oContent = new sap.suite.ui.commons.ChartContainerContent({
+                icon: oCountryVizFrame.icon,
+                title: oCountryVizFrame.title
+            });
+            oContent.setContent(this._createVizFrame(this._constants.vizFrames.result));
+            var oChartContainer = this.getView().byId(this._constants.chartContainerId);
+            oChartContainer.removeAllContent();
+            oChartContainer.addContent(oContent);
+
+
+            },
+            _createVizFrame:function(vizFrameConfig){
+             var oVizFrame = new sap.viz.ui5.controls.VizFrame(this._constants.vizFrames.config);
+            var oModel = this.getModel("NomineeResultModel");   
+            var oDataSet = new sap.viz.ui5.data.FlattenedDataset(vizFrameConfig.dataset);
+            oVizFrame.setDataset(oDataSet);
+            oVizFrame.setModel(oModel);
+            this._addFeedItems(oVizFrame, vizFrameConfig.feedItems);
+            oVizFrame.setVizType(vizFrameConfig.vizType);
+            return oVizFrame;
+            },
+            _addFeedItems: function(vizFrame, feedItems) {
+            for (var i = 0; i < feedItems.length; i++) {
+                vizFrame.addFeed(new sap.viz.ui5.controls.common.feeds.FeedItem(feedItems[i]));
+            }
+        },
             onAddNominee: function() {
                 var oView = this.getView();
                 var dialog = oView.byId("addDialog");
@@ -180,9 +275,6 @@ sap.ui.define(
             },
 
             onEditNominee: function(oEvent) {
-
-
-
                 var oView = this.getView();
                 var dialog = oView.byId("addDialog");
                 if (!dialog) {
