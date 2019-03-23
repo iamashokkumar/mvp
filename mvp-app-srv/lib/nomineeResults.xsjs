@@ -11,7 +11,7 @@ if ($.request.method === $.net.http.GET) {
 	try {
 		connection = $.hdb.getConnection();
 		var userEmailId = $.session.getUsername();
-		userEmailId = 'ashok.kumar.m01@sap.com';
+		// userEmailId = 'ashok.kumar.m01@sap.com';
 		var mvpCategoryId = $.request.parameters.get("MVPCategoryId");
 
 		if (userEmailId !== undefined && userEmailId !== '') {

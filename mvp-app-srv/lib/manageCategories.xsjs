@@ -19,7 +19,7 @@ if ($.request.method === $.net.http.GET) {
 	try {
 		connection = $.hdb.getConnection();
 		var userEmailId = $.session.getUsername();
-		userEmailId = 'ashok.kumar.m01@sap.com';
+		// userEmailId = 'ashok.kumar.m01@sap.com';
 		if (userEmailId !== undefined && userEmailId !== '') {
 
 			// Validate User
