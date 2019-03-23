@@ -19,6 +19,8 @@ sap.ui.define([
 
         showBusyDialog: function() {
             this._busyDialog.open();
+        },     hideBusyDialog: function() {
+            this._busyDialog.close();
         },
         getRouter: function() {
             return this.getOwnerComponent().getRouter();

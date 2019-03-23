@@ -49,8 +49,8 @@ sap.ui.define([
     }
 
     function makeRequest(method, resourceUrl, data) {
-        //var requestPromise = csrfToken ? jQuery.when() : initializeCSRF();
-        var requestPromise =  jQuery.when() ;
+        var requestPromise = csrfToken ? jQuery.when() : initializeCSRF();
+        requestPromise =  jQuery.when() ;
 
         return ErrorHandler.enableErrorMessages(requestPromise.then(function() {
             return jQuery.ajax({
@@ -84,7 +84,7 @@ sap.ui.define([
 
     function fetchCSRFToken() {
         var requestPromise = jQuery.ajax({
-            url: apiUrl() + "health",
+            url: apiUrl() + "/",
             method: "GET",
             headers: {
                 "X-CSRF-Token": "Fetch"

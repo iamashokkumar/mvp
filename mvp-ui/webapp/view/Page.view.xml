@@ -4,14 +4,16 @@ xmlns:chart="sap.suite.ui.commons"
 	controllerName="com.sap.build.leonardo.votingApp.controller.Page" 	xmlns:l="sap.ui.layout"  xmlns:w="sap.ui.integration.widgets" xmlns:f="sap.ui.layout.form" xmlns:fn="sap.f">
 	<m:Page showHeader="true" title="{CategoryModel>/category/MVPCategoryName}" showFooter="true" showNavButton="false" navButtonPress="_onPageNavButtonPress" backgroundDesign="Standard">
 		<m:headerContent>
-			<m:Button icon="sap-icon://full-screen" press="handleFullScreen" tooltip="Enter Full Screen Mode" />
-			<m:Button icon="sap-icon://exit-full-screen" press="handleExitFullScreen" tooltip="Exit Full Screen Mode" visible="{= ${/actionButtonsInfo/midColumn/exitFullScreen} !== null }"/>
+			<m:Button icon="sap-icon://refresh" press="" tooltip="Refresh" />
+			<m:Button icon="sap-icon://full-screen" press="onSetFullScreen" tooltip="Enter Full Screen Mode" id="setFullScreen"/>
+			<m:Button icon="sap-icon://exit-full-screen" press="onExitFullScreen" tooltip="Exit Full Screen Mode" id="exitFullScreen" visible="false"/>
 			<m:Button icon="sap-icon://decline" press="handleClose"  tooltip="Close column" visible="{= ${/actionButtonsInfo/midColumn/closeColumn} !== null }"/>
 		</m:headerContent>
 		<m:content>
 		<m:ObjectHeader
+		responsive="true"
 		title="{CategoryModel>/category/MVPCategoryName}"
-		numberUnit="RMB" >
+		 >
 		<m:statuses>
 			<m:ObjectStatus
 				title="Status"
@@ -19,10 +21,10 @@ xmlns:chart="sap.suite.ui.commons"
 				state="Success" />
 		</m:statuses>
 		<m:attributes>
-			<m:ObjectAttribute title="Region" text="{CategoryModel>/category/MVPCategoryRegionId}" />
+			
 		<!--	<m:ObjectAttribute title="Team" text="{CategoryModel>/category/MVPCategoryTeamId}" />
 		-->
-			<m:ObjectAttribute title="Nomination opens:" text="
+			<m:ObjectAttribute title="Nomination opens" text="
 				{path:'CategoryModel>/category/MVPCategoryNominateStartDate',
 				 formatter: '.formatter.formatDate'
 				}" />			
@@ -31,14 +33,18 @@ xmlns:chart="sap.suite.ui.commons"
 				 formatter: '.formatter.formatDate'
 				}" />
 
-					<m:ObjectAttribute title="Voting opens:" text="
+					<m:ObjectAttribute title="Voting opens" text="
 				{path:'CategoryModel>/category/MVPCategoryVoteStartDate',
 				 formatter: '.formatter.formatDate'
-				}" />			
-				<m:ObjectAttribute title="Voting ends:" text="
+				}" />	
+				<m:ObjectAttribute title="Voting ends" text="
 				{path:'CategoryModel>/category/MVPCategoryVoteEndDate',
 				 formatter: '.formatter.formatDate'
 				}" />
+
+				<m:ObjectAttribute title="Voting Status" text="{CategoryModel>/category/MVPCategoryVotingStatusText}" />	
+				<m:ObjectAttribute title="Nomination Status" text="{CategoryModel>/category/MVPCategoryNominationStatusText}" />	
+				<m:ObjectAttribute title="Region" text="{CategoryModel>/category/MVPCategoryRegionId}" />	
 		</m:attributes>
 	</m:ObjectHeader>
 			<m:MessageStrip
@@ -46,7 +52,7 @@ xmlns:chart="sap.suite.ui.commons"
 				type="Success"
 				showIcon="false"
 				showCloseButton="false"
-				class="sapUiMediumMarginBottom">
+				>
 			</m:MessageStrip>
 	<IconTabBar expandable="false" expanded="true" applyContentPadding="false" backgroundDesign="Solid" upperCase="false" visible="true" selectedKey="Ok">
 				<items>
@@ -79,7 +85,7 @@ xmlns:chart="sap.suite.ui.commons"
 	<m:footer>
 			<m:Toolbar>
 				<m:ToolbarSpacer/>
-	<m:Button text="Nominee" type="Emphasized" icon="sap-icon://add" iconFirst="true" width="auto" enabled="true" visible="true"
+	<m:Button text="Nominee" type="Emphasized" icon="sap-icon://add" iconFirst="true" width="auto" enabled="{= ${CategoryModel>/category/MVPCategoryNominationStatus} === 'OPEN_FOR_NOMINATION'  }" visible="true"
 						iconDensityAware="false" press="onAddNominee"/>
 			</m:Toolbar>
 		</m:footer>

@@ -1,6 +1,6 @@
 <core:FragmentDefinition xmlns:core="sap.ui.core"  xmlns="sap.m">
 	<Dialog horizontalScrolling="true" icon="sap-icon://lightbulb" showHeader="true" state="None" stretch="false" title="Please Confirm"
-		type="Standard" verticalScrolling="true">
+		type="Message" verticalScrolling="true">
 		<content>
 			<Text text="Are you sure you want to vote for '" width="auto" maxLines="1" wrapping="false" textAlign="Begin"
 				textDirection="Inherit" visible="true"/>

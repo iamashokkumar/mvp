@@ -1,12 +1,20 @@
-<core:FragmentDefinition xmlns="sap.m" xmlns:core="sap.ui.core" xmlns:f="sap.ui.layout.form"  xmlns:l="sap.ui.layout">
-	<Dialog id="addDialog" title="Add a Nominee" contentWidth="48em" contentHeight="17em">
+<core:FragmentDefinition xmlns="sap.m" xmlns:core="sap.ui.core" xmlns:f="sap.ui.layout.form"  xmlns:l="sap.ui.layout" 	xmlns:u="sap.ui.unified">
+	<Dialog id="addDialog" title="{EditNomineeModel>/mode} a Nominee" contentWidth="48em" contentHeight="17em">
 		<content>
 			<l:HorizontalLayout class="sapUiContentPadding" >
 			<VBox class="sapUiSmallMarginTop centerVBox">
-				<Image src="http://dehayf5mhw1h7.cloudfront.net/wp-content/uploads/sites/470/2015/10/23122001/CommonMan.jpg" densityAware="false"
+				<Image id="image_preview" src="{EditNomineeModel>/MVPNomineeAvatarFileData}" densityAware="false"
 				width="300px"></Image>
 								<HBox class="centerVBox	">
-								<Button text="upload" type="Accept" />
+			<u:FileUploader
+			id="fileUploader"
+			name="myFileUpload"
+			uploadUrl="upload/"
+			tooltip="Upload your file to the local server"
+			uploadComplete="handleUploadComplete"/>
+		<Button
+			text="Upload File"
+			press="handleUploadPress"/>
 							</HBox>
 			</VBox>
 
@@ -26,18 +34,18 @@
 							</f:FormElement>
 							<f:FormElement label="Abstract">
 								<f:fields>
-									<TextArea value="{EditNomineeModel>/MVPNomineeAbstract}"/>
-									
+									<TextArea value="{EditNomineeModel>/MVPNomineeAbstract}" maxLength="500"/>
+		
 								</f:fields>
 							</f:FormElement>
 							<f:FormElement label="Key Achievements">
 								<f:fields>
-									<TextArea value="{EditNomineeModel>/MVPNomineeKeyAchievements}"/>
+									<TextArea value="{EditNomineeModel>/MVPNomineeKeyAchievements}" maxLength="500" />
 								</f:fields>
 							</f:FormElement>
 							<f:FormElement label="Customer Quotes">
 								<f:fields>
-									<TextArea value="{EditNomineeModel>/MVPNomineeCustomerQuotes}"/>
+									<TextArea value="{EditNomineeModel>/MVPNomineeCustomerQuotes}" maxLength="500"/>
 								</f:fields>
 							</f:FormElement>
 						</f:formElements>

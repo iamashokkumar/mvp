@@ -1,84 +1,79 @@
 sap.ui.define(
     [
         "com/sap/build/leonardo/votingApp/controller/BaseController",
-        "sap/m/MessageBox",
+        "sap/m/MessageToast",
         "./dialogs/NomineeDialog",
         "./utilities",
         "sap/ui/core/routing/History",
         "sap/ui/model/json/JSONModel",
         "com/sap/build/leonardo/votingApp/service/formatter",
-        "com/sap/build/leonardo/votingApp/service/MVPApi"
+        "com/sap/build/leonardo/votingApp/service/MVPApi",
+        "sap/m/MessageBox"
     ],
-    function(BaseController, MessageBox, NomineeDialog, Utilities, History, JSONModel, formatter, MVPApi) {
+    function(BaseController, MessageToast, NomineeDialog, Utilities, History, JSONModel, formatter, MVPApi, MessageBox) {
         "use strict";
         return BaseController.extend("com.sap.build.leonardo.votingApp.controller.Page", {
 
             formatter: formatter,
 
-// charts
+            // charts
             _constants: {
-            chartContainerId: "chartContainer",
-            vizFrames: {
-                config: {
-                    height: "700px",
-                    width: "100%",
-                    uiConfig: {
-                        applicationSet: "fiori"
-                    }
-                },
-                result: {
-                    icon: "sap-icon://vertical-bar-chart",
-                    title: "Bar Chart",
-                    dataset: {
-                        dimensions: [{
-                            name: "Name",
-                            value: "{MVPNomineeName}"
-                        }],
-                        measures: [{
-                            name: "Votes",
-                            value: "{MVPVotes}"
-                        }],
-                        data: {
-                            path: "/MVPResults"
+                chartContainerId: "chartContainer",
+                vizFrames: {
+                    config: {
+                        height: "700px",
+                        width: "100%",
+                        uiConfig: {
+                            applicationSet: "fiori"
                         }
                     },
-                    feedItems: [{
-                        uid: "primaryValues",
-                        type: "Measure",
-                        values: [ "Votes" ]
-                    }, {
-                        uid: "axisLabels",
-                        type: "Dimension",
-                        values: []
-                    }],
-                    analysisObjectProps: {
-                        uid: "Name",
-                        type: "Dimension",
-                        name: "Name"
-                    },
-                    vizType: "column"
+                    result: {
+                        icon: "sap-icon://vertical-bar-chart",
+                        title: {
+                            text: "MVP Votes"
+                        },
+                        dataset: {
+                            dimensions: [{
+                                name: "Name",
+                                value: "{MVPNomineeName}"
+                            }],
+                            measures: [{
+                                name: "Votes",
+                                value: "{MVPVotes}"
+                            }],
+                            data: {
+                                path: "/MVPResults"
+                            }
+                        },
+                        feedItems: [{
+                            uid: "primaryValues",
+                            type: "Measure",
+                            values: ["Votes"]
+                        }, {
+                            uid: "axisLabels",
+                            type: "Dimension",
+                            values: []
+                        }],
+                        analysisObjectProps: {
+                            uid: "Name",
+                            type: "Dimension",
+                            name: "Name"
+                        },
+                        vizType: "bar"
+                    }
                 }
-            }
-        },
+            },
 
-//end of charts
-
-
-
-
+            //end of charts
             handleRouteMatched: function(oEvent) {
                 var sAppId = "App5c40f79c5bdf300110f25772";
                 // cards
                 var cardManifests = new JSONModel();
                 cardManifests.loadData(sap.ui.require.toUrl("com/sap/build/leonardo/mvpNomination/public/manifests.json"));
-
                 this.getView().setModel(cardManifests, "manifests");
-
                 var oParams = {};
-
                 if (oEvent.mParameters.data.context) {
                     this.sContext = oEvent.mParameters.data.context;
-
                 } else {
                     if (this.getOwnerComponent().getComponentData()) {
                         var patternConvert = function(oParam) {
@@ -90,9 +85,7 @@ sap.ui.define(
                                 }
                             }
                         };
-
                         this.sContext = patternConvert(this.getOwnerComponent().getComponentData().startupParameters);
-
                     }
                 }
 
@@ -151,6 +144,8 @@ sap.ui.define(
                 sap.ui.getCore().getEventBus().publish("flexible", "setColumnFullScreen", {
                     id: this.getView().getId()
                 });
+                this.byId("setFullScreen").setVisible(false);
+                this.byId("exitFullScreen").setVisible(true);
             },
 
             onExitFullScreen: function() {
@@ -158,17 +153,30 @@ sap.ui.define(
                 // var oI18n = this.getResourceBundle();
                 sap.ui.getCore().getEventBus().publish("flexible", "setColumnExitScreen");
 
+                this.byId("setFullScreen").setVisible(true);
+                this.byId("exitFullScreen").setVisible(false);
             },
 
             _loadData: function(sChannel, sEvent, oData) {
                 console.log(oData);
+                this.showBusyDialog();
                 this._setModel("/category", oData.Category, "CategoryModel");
+                this.refreshData(oData.Category.MVPCategoryId)
+            },
+
+
+            refreshData: function(mvpCategoryId) {
                 var oView = this.getView();
                 var nomineeLayout = this.byId("NomineeLayout");
                 nomineeLayout.removeAllContent();
                 var getCategoryURL = this.getOwnerComponent().getManifestEntry("/sap.app/dataSources/Nominee")
-                var serviceURL = getCategoryURL + "?ACTIONID=GET_NOMINEE&MVPCategoryId=" + oData.Category.MVPCategoryId;
+                var serviceURL = getCategoryURL + "?ACTIONID=GET_NOMINEE&MVPCategoryId=" + mvpCategoryId;
                 var oControl = this;
+
+                //diable all vote if the status is  not open
+                
+                var votingMode = this.getModel("CategoryModel").getData().category.MVPCategoryVotingStatus;
+
 
                 //get nominees
                 MVPApi.get(serviceURL, null).then(function(data) {
@@ -177,64 +185,104 @@ sap.ui.define(
 
                     oControl._setModel("/nominees", nominees, "NomineeModel");
                     oControl._setModel("/nomineescount", nominees.length, "NomineeModel");
+                    oControl._setModel("/userId", userName, "NomineeModel");
+
+
+
+                    //get nominee
                     if (nominees.length > 0) {
                         for (var i = 0; i < nominees.length; i++) {
                             var cardFragment = sap.ui.xmlfragment("com.sap.build.leonardo.votingApp.fragment.Card", oControl);
+                            if (nominees[i].MVPNomineeAvatarFileData == "" || nominees[i].MVPNomineeAvatarFileData == null || nominees[i].MVPNomineeAvatarFileData == "null"||nominees[i].MVPNomineeAvatarFileData=="[object Object]") {
+                                nominees[i].MVPNomineeAvatarFileData = "http://dehayf5mhw1h7.cloudfront.net/wp-content/uploads/sites/470/2015/10/23122001/CommonMan.jpg"
+                            }
                             cardFragment.setModel(new JSONModel({
                                 "Nominee": nominees[i],
                                 //edit or not
                                 "mode": nominees[i].MVPNominatedBy.toUpperCase() == userName.userEmailId.toUpperCase(),
-                                "voted": true
+                                "voted": votingMode=="OPEN_FOR_VOTING"?nominees[i].HAS_VOTED:true
                             }), "Nominee");
 
                             oView.addDependent(cardFragment);
                             nomineeLayout.addContent(cardFragment);
                         }
                     }
+                    oControl.hideBusyDialog();
                 });
                 //get Results;
-                serviceURL=this.getOwnerComponent().getManifestEntry("/sap.app/dataSources/NomineeResults")+"?MVPCategoryId="+oData.Category.MVPCategoryId;
-                MVPApi.get(serviceURL,null).then(function(data){
+                serviceURL = this.getOwnerComponent().getManifestEntry("/sap.app/dataSources/NomineeResults") + "?MVPCategoryId=" + mvpCategoryId;
+                MVPApi.get(serviceURL, null).then(function(data) {
                     var nomineeResults = JSON.parse(data);
                     oControl._setModel("/", nomineeResults, "NomineeResultModel");
                     oControl.initViz();
+
                 });
-            },
-            initViz:function(){
-            var oCountryVizFrame = this._constants.vizFrames.result;
-            var oAnalysisObject = new sap.viz.ui5.controls.common.feeds.AnalysisObject(oCountryVizFrame.analysisObjectProps);
-            var aValues = oCountryVizFrame.feedItems[1].values;
-            if (aValues.length === 0) {
-                aValues.push(oAnalysisObject);
-            }
 
-            var oContent = new sap.suite.ui.commons.ChartContainerContent({
-                icon: oCountryVizFrame.icon,
-                title: oCountryVizFrame.title
-            });
-            oContent.setContent(this._createVizFrame(this._constants.vizFrames.result));
-            var oChartContainer = this.getView().byId(this._constants.chartContainerId);
-            oChartContainer.removeAllContent();
-            oChartContainer.addContent(oContent);
 
 
             },
-            _createVizFrame:function(vizFrameConfig){
-             var oVizFrame = new sap.viz.ui5.controls.VizFrame(this._constants.vizFrames.config);
-            var oModel = this.getModel("NomineeResultModel");   
-            var oDataSet = new sap.viz.ui5.data.FlattenedDataset(vizFrameConfig.dataset);
-            oVizFrame.setDataset(oDataSet);
-            oVizFrame.setModel(oModel);
-            this._addFeedItems(oVizFrame, vizFrameConfig.feedItems);
-            oVizFrame.setVizType(vizFrameConfig.vizType);
-            return oVizFrame;
+            initViz: function() {
+                var oCountryVizFrame = this._constants.vizFrames.result;
+                var oAnalysisObject = new sap.viz.ui5.controls.common.feeds.AnalysisObject(oCountryVizFrame.analysisObjectProps);
+                var aValues = oCountryVizFrame.feedItems[1].values;
+                if (aValues.length === 0) {
+                    aValues.push(oAnalysisObject);
+                }
+
+                var oContent = new sap.suite.ui.commons.ChartContainerContent({
+                    icon: oCountryVizFrame.icon,
+                    title: oCountryVizFrame.title
+                });
+                oContent.setContent(this._createVizFrame(this._constants.vizFrames.result));
+                var oChartContainer = this.getView().byId(this._constants.chartContainerId);
+                oChartContainer.removeAllContent();
+                oChartContainer.addContent(oContent);
+
+
+            },
+            _createVizFrame: function(vizFrameConfig) {
+                var oVizFrame = new sap.viz.ui5.controls.VizFrame(this._constants.vizFrames.config);
+                var oModel = this.getModel("NomineeResultModel");
+                var oDataSet = new sap.viz.ui5.data.FlattenedDataset(vizFrameConfig.dataset);
+                oVizFrame.setDataset(oDataSet);
+                oVizFrame.setModel(oModel);
+                oVizFrame.setVizProperties({
+                    title: {
+                        visible: false,
+                        text: "MVP Votes"
+                    }
+                });
+                this._addFeedItems(oVizFrame, vizFrameConfig.feedItems);
+                oVizFrame.setVizType(vizFrameConfig.vizType);
+                return oVizFrame;
             },
             _addFeedItems: function(vizFrame, feedItems) {
-            for (var i = 0; i < feedItems.length; i++) {
-                vizFrame.addFeed(new sap.viz.ui5.controls.common.feeds.FeedItem(feedItems[i]));
-            }
-        },
+                for (var i = 0; i < feedItems.length; i++) {
+                    vizFrame.addFeed(new sap.viz.ui5.controls.common.feeds.FeedItem(feedItems[i]));
+                }
+            },
             onAddNominee: function() {
+                if (this.addDialog) {
+                    this.addDialog.destroy();
+                }
+                // new one 
+                var EditNomineeModel = new JSONModel({
+                    "MVPNomineeId": null,
+                    "MVPNomineeName": null,
+                    "MVPNomineeAvatarFileName": "",
+                    "MVPNomineeAvatarFileNameExtn": "",
+                    "MVPNomineeAvatarFileData": null,
+                    "MVPNomineeAbstract": "New",
+                    "MVPNomineeKeyAchievements": null,
+                    "MVPNomineeCustomerQuotes": null,
+                    "MVPNominatedBy": null,
+                    "MVPNominatedOn": null,
+                    "MVPNomineeChangedBy": null,
+                    "MVPNomineeChangedOn": null
+                });
+                this.setModel(EditNomineeModel, "EditNomineeModel")
+                var editNominate = this.getModel("EditNomineeModel").getData();
+                editNominate.mode = "Add";
                 var oView = this.getView();
                 var dialog = oView.byId("addDialog");
                 if (!dialog) {
@@ -244,49 +292,104 @@ sap.ui.define(
                     oView.addDependent(dialog);
                 }
                 dialog.open();
+                this.initUpload();
+
+
             },
             onSubmitNominee: function() {
-
                 //validation
 
 
-
-                this._saveNominee(this.getModel("EditNomineeModel").getData());
-
+                if (this.getModel("EditNomineeModel").getProperty("/mode") == "Add") {
+                    this._saveNominee(this.getModel("EditNomineeModel").getData());
+                } else {
+                    this._updateNominee(this.getModel("EditNomineeModel").getData());
+                }
+            },
+            _updateNominee: function(editNominee) {
+                var NomineeURL = this.getOwnerComponent().getManifestEntry("/sap.app/dataSources/Nominee")
+                var serviceURL = NomineeURL + "?ACTIONID=UPDATE_NOMINEE&MVPCategoryId=" + editNominee.MVPCategoryId;
+                var oControl = this;
+                oControl.showBusyDialog();
+                MVPApi.put(serviceURL, editNominee)
+                    .fail(function(data) {
+                        oControl.addDialog.close();
+                        oControl.hideBusyDialog();
+                        var errorText = JSON.parse(data.responseText);
+                        var bCompact = !!oControl.getView().$().closest(".sapUiSizeCompact").length;
+                        MessageBox.error(
+                            errorText.Response.Text, {
+                                styleClass: bCompact ? "sapUiSizeCompact" : ""
+                            }
+                        );
+                    })
+                    .done(function(data) {
+                        console.log(data);
+                        oControl.addDialog.close();
+                        MessageToast.show("Nominee has been updated", {
+                            duration: 1000,
+                            onClose: function() {}
+                        });
+                        oControl.refreshData(editNominee.MVPCategoryId);
+                        oControl.hideBusyDialog();
+                    });
             },
 
-
             _saveNominee: function(newNominee) {
-                newNominee.MVPCategoryId = this.getModel("CategoryModel").getData().category.MVPCategoryId; 
+                newNominee.MVPCategoryId = this.getModel("CategoryModel").getData().category.MVPCategoryId;
+                newNominee.MVPNominatedOn = new Date();
+                newNominee.MVPNominatedBy = this.getModel("NomineeModel").getProperty("/userId");
+                newNominee.MVPNomineeChangedOn = new Date();
+                newNominee.MVPNomineeChangedBy = this.getModel("NomineeModel").getProperty("/userId");
+                if (newNominee.MVPNomineeCustomerQuotes == "") {
+                    newNominee.MVPNomineeCustomerQuotes = " ";
+                }
+
                 var NomineeURL = this.getOwnerComponent().getManifestEntry("/sap.app/dataSources/Nominee")
-                var serviceURL = NomineeURL + "?ACTIONID=CREATE_NOMINEE";
+                var serviceURL = NomineeURL + "?ACTIONID=CREATE_NOMINEE&MVPCategoryId=" + newNominee.MVPCategoryId;
+
                 var oControl = this;
-                MVPApi.post(serviceURL,newNominee).done(function(data){
+                oControl.showBusyDialog();
+                MVPApi.post(serviceURL, newNominee).done(function(data) {
                     console.log(data);
                     oControl.addDialog.close();
                     MessageToast.show("Nominee has been created", {
                         duration: 1000,
-                        onClose:function(){
-                            oControl.showBusyDialog();
-                        }
+                        onClose: function() {}
                     });
+                    oControl.refreshData(newNominee.MVPCategoryId);
                 });
 
             },
 
             onEditNominee: function(oEvent) {
+                if (this.addDialog) {
+                    this.addDialog.destroy();
+                }
+                var editNominate = this.getModel("EditNomineeModel").getProperty("/");
+                editNominate.mode = "edit";
+                var targetNomineeId = oEvent.getSource().data("NomineeId");
+                var nominees = this.getModel("NomineeModel").getProperty("/nominees");
+                if (nominees.length > 0) {
+                    $.map(nominees, function(value) {
+                        if (value.MVPNomineeId == targetNomineeId) {
+                            editNominate = value;
+                            editNominate.mode = "edit";
+
+                        }
+                    })
+                }
+                this.getModel("EditNomineeModel").setProperty("/", editNominate);
                 var oView = this.getView();
                 var dialog = oView.byId("addDialog");
                 if (!dialog) {
                     // create dialog via fragment factory
                     dialog = sap.ui.xmlfragment(oView.getId(), "com.sap.build.leonardo.votingApp.fragment.EditPage", this);
+                    this.addDialog = dialog;
                     oView.addDependent(dialog);
                 }
                 dialog.open();
-            },
-
-            onTest: function() {
-                alert("test");
+                this.initUpload();
             },
             onDeleteNominee: function(oEvent) {
                 var targetNomineeId = oEvent.getSource().data("NomineeId");
@@ -299,22 +402,18 @@ sap.ui.define(
                     this.deleteDialog = dialog;
                     oView.addDependent(dialog);
                 }
-
+                this.setModel(new JSONModel({
+                    NomineeId: targetNomineeId,
+                    NomineeName: targetNomineeName
+                }), "TargetNominee");
                 dialog.setModel(new JSONModel({
                     NomineeId: targetNomineeId,
                     NomineeName: targetNomineeName
                 }), "Nominee");
-
-                this.setModel(new JSONModel({
-                    NomineeId: targetNomineeId,
-                    NomineeName: targetNomineeName
-                }), "targetDeleteNominee");
-
                 dialog.open();
             },
 
             onVoteNominee: function(oEvent) {
-
                 var targetNomineeId = oEvent.getSource().data("NomineeId");
                 var targetNomineeName = oEvent.getSource().data("NomineeName");
                 var oView = this.getView();
@@ -331,16 +430,46 @@ sap.ui.define(
                     NomineeName: targetNomineeName
                 }), "Nominee");
 
+
                 this.setModel(new JSONModel({
                     NomineeId: targetNomineeId,
                     NomineeName: targetNomineeName
-                }), "targetDeleteNominee");
-
+                }), "TargetNominee");
                 dialog.open();
 
             },
             onVoteConfirm: function() {
-                this.voteDialog.close();
+
+                var mvpCategoryId = this.getModel("CategoryModel").getData().category.MVPCategoryId;
+                var NomineeURL = this.getOwnerComponent().getManifestEntry("/sap.app/dataSources/Nominee")
+                var serviceURL = NomineeURL + "?ACTIONID=VOTE_NOMINEE&MVPCategoryId=" + mvpCategoryId;
+
+                var postData = {
+                    MVPNomineeId: this.getModel("TargetNominee").getProperty("/NomineeId")
+                }
+                var oControl = this;
+                oControl.showBusyDialog();
+                MVPApi.post(serviceURL, postData).fail(function(data) {
+                    console.log(data);
+                    oControl.voteDialog.close();
+                    var errorText = JSON.parse(data.responseText);
+                    oControl.hideBusyDialog();
+                    var bCompact = !!oControl.getView().$().closest(".sapUiSizeCompact").length;
+                    MessageBox.error(
+                        errorText.Response.Text, {
+                            styleClass: bCompact ? "sapUiSizeCompact" : ""
+                        }
+                    );
+                }).done(function(data) {
+                    console.log(data);
+                    oControl.voteDialog.close();
+                    MessageToast.show("Nominee has been voted", {
+                        duration: 1000,
+                        onClose: function() {}
+                    });
+                    oControl.refreshData(mvpCategoryId);
+                    oControl.hideBusyDialog();
+                });
 
             },
             onVoteCancel: function() {
@@ -348,12 +477,44 @@ sap.ui.define(
                 this.voteDialog.close();
             },
             onDeleteNomineeConfirm: function() {
-                var deleteNominee = this.getModel("targetDeleteNominee").getData();
-                //MPIApi.delete("")
+                var mvpCategoryId = this.getModel("CategoryModel").getData().category.MVPCategoryId;
+                var NomineeURL = this.getOwnerComponent().getManifestEntry("/sap.app/dataSources/Nominee")
+                var serviceURL = NomineeURL + "?ACTIONID=DELETE_NOMINEE&MVPCategoryId=" + mvpCategoryId;
+
+                var postData = {
+                    MVPNomineeId: this.getModel("TargetNominee").getProperty("/NomineeId")
+                }
+                var oControl = this;
+                oControl.showBusyDialog();
+                MVPApi.post(serviceURL, postData).fail(function(data) {
+                    oControl.deleteDialog.close();
+                    oControl.hideBusyDialog();
+                    var errorText = JSON.parse(data.responseText);
+                    var bCompact = !!oControl.getView().$().closest(".sapUiSizeCompact").length;
+                    MessageBox.error(
+                        errorText.Response.Text, {
+                            styleClass: bCompact ? "sapUiSizeCompact" : ""
+                        }
+                    );
+                }).done(function(data) {
+                    oControl.deleteDialog.close();
+                    MessageToast.show("Nominee has been deleted", {
+                        duration: 1000,
+                        onClose: function() {}
+                    });
+                    oControl.refreshData(mvpCategoryId);
+                    oControl.hideBusyDialog();
+                });
                 this.deleteDialog.close();
             },
             onCloseDeleteDialog: function() {
                 this.deleteDialog.close();
+            },
+
+            onCloseNominee:function()
+            {
+                this.addDialog.close()
+
             },
             initModels: function() {
                 var CategoryModel = new JSONModel({});
@@ -362,7 +523,7 @@ sap.ui.define(
                 this.setModel(NomineeModel, "NomineeModel");
 
                 var EditNomineeModel = new JSONModel({
-                    "MVPNomineeId":null,
+                    "MVPNomineeId": null,
                     "MVPNomineeName": null,
                     "MVPNomineeAvatarFileName": "",
                     "MVPNomineeAvatarFileNameExtn": "",
@@ -377,6 +538,39 @@ sap.ui.define(
                 });
                 this.setModel(EditNomineeModel, "EditNomineeModel")
             },
+
+            //init upload
+            initUpload: function() {
+                //init upload 
+
+                var oControl = this;
+                var uploadControl = this.byId("fileUploader");
+                uploadControl.attachBrowserEvent("change", function(oEvent) {
+                    var reader = new FileReader();
+                    if (!!(window.File) && !!(window.FileReader) && !!(window.FileList) && !!(window.Blob)) {
+                        var files = oEvent.target.files;
+                        if (files != undefined) {
+                            var fileName = files[0].name.substr(files[0].name.indexOf('.') + 1, files[0].name.length);
+                            if (fileName == 'jpg' || fileName == 'png') {
+                                reader.onload = function(oEvent) {
+                                    oControl.byId("image_preview").setSrc(oEvent.target.result);
+                                    //document.getElementById("midView--image_preview").src = oEvent.target.result;
+                                }
+                            }
+                        }
+                        reader.readAsDataURL(oEvent.target.files.item(0));
+                    }
+                });
+
+            },
+            handleUploadPress: function() {
+
+                var image = this.byId("image_preview").getSrc();
+                this.getModel("EditNomineeModel").setProperty("/MVPNomineeAvatarFileData", image);
+                console.log(this.getModel("EditNomineeModel").getData());
+                MessageToast.show("Image Uploaded");
+
+            },
             onInit: function() {
                 //init Model
                 this.initModels();
@@ -386,6 +580,9 @@ sap.ui.define(
                 var cardManifests = new sap.ui.model.json.JSONModel();
                 cardManifests.loadData(sap.ui.require.toUrl("com/sap/build/leonardo/votingApp/public/manifests.json"));
                 this.getView().setModel(cardManifests, "manifests");
+
+
+
 
             }
         });
