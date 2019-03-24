@@ -7,6 +7,7 @@ function getCurrentTimestamp(connection) {
 if ($.request.method === $.net.http.GET) {
 	var connection = "";
 	var query = "";
+	var userEmailId = "";
 	var currentTimeStamp = "";
 	var responseJSON = {
 		Userid: [],
@@ -18,12 +19,12 @@ if ($.request.method === $.net.http.GET) {
 
 	try {
 		connection = $.hdb.getConnection();
-		var userEmailId = $.session.getUsername();
+		userEmailId = $.session.getUsername();
 		// userEmailId = 'ashok.kumar.m01@sap.com';
 		if (userEmailId !== undefined && userEmailId !== '') {
-
+			userEmailId = (userEmailId !== undefined && userEmailId !== '') ? userEmailId.toLowerCase() : '';
 			// Validate User
-			query = "SELECT * FROM \"mvpadmin.mvpdb::mvp.MVPUser\" WHERE \"UserEmail\" = '" + userEmailId.toLowerCase() + "'";
+			query = "SELECT * FROM \"mvpadmin.mvpdb::mvp.MVPUser\" WHERE \"UserEmail\" = '" + userEmailId + "'";
 			var userResult = connection.executeQuery(query);
 			if (userResult.length > 0) {
 				query =
@@ -92,7 +93,7 @@ if ($.request.method === $.net.http.GET) {
 	} finally {
 		connection.close();
 		responseJSON.Userid = {
-			userEmailId.toLowerCase();
+			userEmailId
 		};
 		$.response.setBody(JSON.stringify(responseJSON));
 	}

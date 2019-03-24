@@ -1,5 +1,6 @@
 if ($.request.method === $.net.http.GET) {
 	var connection = "";
+	var userEmailId = "";	
 	var responseJSON = {
 		Userid: [],
 		Response: [],
@@ -10,13 +11,13 @@ if ($.request.method === $.net.http.GET) {
 
 	try {
 		connection = $.hdb.getConnection();
-		var userEmailId = $.session.getUsername();
+		userEmailId = $.session.getUsername();
 		// userEmailId = 'ashok.kumar.m01@sap.com';
 		var mvpCategoryId = $.request.parameters.get("MVPCategoryId");
 
 		if (userEmailId !== undefined && userEmailId !== '') {
 			// Validate User
-			userEmailId = userEmailId.toLowerCase();
+			userEmailId = (userEmailId !== undefined && userEmailId !== '') ? userEmailId.toLowerCase() : '';
 			query = "SELECT * FROM \"mvpadmin.mvpdb::mvp.MVPUser\" WHERE \"UserEmail\" = '" + userEmailId + "'";
 			var userResult = connection.executeQuery(query);
 			if (userResult.length > 0) {
@@ -65,7 +66,7 @@ if ($.request.method === $.net.http.GET) {
 	} finally {
 		connection.close();
 		responseJSON.Userid = {
-			userEmailId.toLowerCase();
+			userEmailId
 		};
 		$.response.setBody(JSON.stringify(responseJSON));
 	}

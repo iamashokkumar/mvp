@@ -1,7 +1,7 @@
 function validateLogonUser(userEmailId, connection) {
 	if (userEmailId !== undefined && userEmailId !== '') {
 		// Validate User
-		query = "SELECT * FROM \"mvpadmin.mvpdb::mvp.MVPUser\" WHERE \"UserEmail\" = '" + userEmailId.toLowerCase() + "'";
+		query = "SELECT * FROM \"mvpadmin.mvpdb::mvp.MVPUser\" WHERE \"UserEmail\" = '" + userEmailId + "'";
 		var MVPUser = connection.executeQuery(query);
 		if (!MVPUser.length > 0) {
 			$.response.status = $.net.http.BAD_REQUEST;
@@ -110,6 +110,7 @@ var connection = "";
 var query = "";
 var user = "";
 var payload = "";
+var userEmailId = "";
 var currentTimeStamp = "";
 var responseJSON = {
 	Userid: [],
@@ -121,8 +122,9 @@ var responseJSON = {
 
 try {
 	connection = $.hdb.getConnection();
-	var userEmailId = $.session.getUsername();
+	userEmailId = $.session.getUsername();
 	// userEmailId = 'ashok.kumar.m01@sap.com';
+	userEmailId = (userEmailId !== undefined && userEmailId !== '') ? userEmailId.toLowerCase() : '';
 	var actionId = $.request.parameters.get("ACTIONID");
 	var mvpCategoryId = $.request.parameters.get("MVPCategoryId");
 
@@ -135,7 +137,6 @@ try {
 				var mvpCategory = getMVPCategory(mvpCategoryId, connection);
 
 				if (mvpCategory.length > 0) {
-					userEmailId = userEmailId.toLowerCase();
 					query = "SELECT * FROM \"mvpadmin.mvpdb::mvp.MVPNominee\" WHERE \"MVPCategoryId\" = " + mvpCategoryId;
 					var MVPNominees = connection.executeQuery(query);
 					for (var nominee of MVPNominees) {
@@ -172,7 +173,6 @@ try {
 					if (isCategoryOpen(mvpCategory) & isNominationEditOpen(mvpCategory)) {
 
 						payload = JSON.parse($.request.body.asString());
-						userEmailId = userEmailId.toLowerCase();
 						query = "INSERT INTO \"mvpadmin.mvpdb::mvp.MVPNominee\" VALUES(" + payload.MVPCategoryId + ",'" + payload.MVPNomineeName + "','" +
 							payload.MVPNomineeAvatarFileName + "','" + payload.MVPNomineeAvatarFileNameExtn + "','" + payload.MVPNomineeAvatarFileData + "','" +
 							payload.MVPNomineeAbstract +
@@ -235,7 +235,6 @@ try {
 						query = "DELETE  FROM \"mvpadmin.mvpdb::mvp.MVPNominee\" WHERE \"MVPCategoryId\" = " + mvpCategoryId + " and \"MVPNomineeId\" = " +
 							payload.MVPNomineeId;
 						var MVPNominee = connection.executeUpdate(query);
-						userEmailId = userEmailId.toLowerCase();
 						// Delete Votes VALUES(" + mvpCategoryId + "," + payload.MVPNomineeId + ", '" + userEmailId +
 						query = "DELETE  FROM \"mvpadmin.mvpdb::mvp.MVPVote\" WHERE \"MVPCategoryId\" = " + mvpCategoryId + " and \"MVPNomineeId\" = " +
 							payload.MVPNomineeId;
@@ -277,7 +276,6 @@ try {
 					if (isCategoryOpen(mvpCategory) & isNominationEditOpen(mvpCategory)) {
 
 						payload = JSON.parse($.request.body.asString());
-						userEmailId = userEmailId.toLowerCase();
 						query = "UPDATE \"mvpadmin.mvpdb::mvp.MVPNominee\" SET \"MVPNomineeName\" = '" + payload.MVPNomineeName +
 							"', \"MVPNomineeAvatarFileName\" = '" + payload.MVPNomineeAvatarFileName + "', \"MVPNomineeAvatarFileNameExtn\" = '" +
 							payload.MVPNomineeAvatarFileNameExtn + "', \"MVPNomineeAvatarFileData\" = '" + payload.MVPNomineeAvatarFileData +
@@ -347,7 +345,6 @@ try {
 							// Is Nominee in Category
 							if (isNomineeInCategory(mvpCategoryId, payload.MVPNomineeId, connection)) {
 								// Did user already vote for nominee?
-								userEmailId = userEmailId.toLowerCase();
 								if (!hasUserAlreadyVotedForNominee(mvpCategoryId, userEmailId, payload.MVPNomineeId, connection)) {
 									// Did user already vote? If 'No' or voting mode is 'MULTI', then proceed
 									if ((mvpCategory[0].MVPCategoryVoteMode === 'SINGLE' & !hasUserAlreadyVoted(mvpCategoryId, userEmailId, connection)) || (
@@ -428,7 +425,7 @@ try {
 } finally {
 	connection.close();
 	responseJSON.Userid = {
-		userEmailId.toLowerCase();
+		userEmailId
 	};
 	$.response.setBody(JSON.stringify(responseJSON));
 }
