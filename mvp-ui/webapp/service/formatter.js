@@ -4,17 +4,15 @@ sap.ui.define([
     "use strict";
 
     return {
-        formatDate:function(fValue){
+        formatDate: function(fValue) {
+            var oDateFormat = sap.ui.core.format.DateFormat.getDateTimeInstance({
+                style: "medium/short"
+            });
+            if (fValue) {
+                return oDateFormat.format(new Date(fValue));
+            }
 
-                    jQuery.sap.require("sap.ui.core.format.DateFormat");
-
-                    var oDateFormat = sap.ui.core.format.DateFormat.getDateTimeInstance({pattern: "yyyy-MM-dd"}); 
-                    if(fValue)
-                    {
-                    return oDateFormat.format(new Date(fValue));    
-                    }
-                    
-                    }
+        }
 
 
     };

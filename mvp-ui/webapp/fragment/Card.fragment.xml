@@ -3,24 +3,24 @@
 				<m:VBox>
 								<fn:Card class="sapUiSmallMarginBegin sapUiSmallMarginTopBottom">
 									<fn:layoutData>
-										<m:FlexItemData minWidth="98%" maxWidth="98%" alignSelf="Center"/>
+										<m:FlexItemData minWidth="98%" maxWidth="98%" />
 									</fn:layoutData>
 									<fn:content>
 										<m:HBox>
 											<m:VBox class="sapUiSmallMargin centerVBox">
 												<m:layoutData>
-													<m:FlexItemData minWidth="25%" maxWidth="25%" alignSelf="center"/>
+													<m:FlexItemData minWidth="25%" maxWidth="25%" alignSelf="Center"/>
 												</m:layoutData>
 												<m:Image src="{Nominee>/Nominee/MVPNomineeAvatarFileData}"
 													width="100%" height="100%"></m:Image>
 													<m:HBox class="centerVBox">
-													<m:Button text="Vote" type="Accept" press="onVoteNominee" 
+													<m:ToggleButton width="150px" text="{= ${Nominee>/voted}!== true? 'Vote':'Voted'  }" type="Accept" press="onVoteNominee"  pressed="{= ${Nominee>/voted}=== true  }"
 													app:NomineeName="{Nominee>/Nominee/MVPNomineeName}" app:NomineeId="{Nominee>/Nominee/MVPNomineeId}" enabled="{= ${Nominee>/voted}!== true  }"	/>
 													</m:HBox>
 											</m:VBox>
-											<m:VBox class="sapUiSmallMargin centerVBox">
+											<m:VBox class="sapUiSmallMargin centerVBox1">
 													<m:layoutData>
-													<m:FlexItemData minWidth="71%" maxWidth="71%" alignSelf="center"/>
+													<m:FlexItemData minWidth="71%" maxWidth="71%" alignSelf="Start"/>
 												</m:layoutData>
 											<form:Form editable="true" ariaLabelledBy="Title1">
 												<form:title>

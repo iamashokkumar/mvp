@@ -13,9 +13,9 @@
 					</Toolbar>
 				</headerToolbar>
 				<items>
-					<ObjectListItem intro="" title="{CategoryModel>MVPCategoryName}" number="0%" numberUnit="" numberState="None" type="Active" selected="false" showMarkers="false">
+					<ObjectListItem intro="" title="{CategoryModel>MVPCategoryName}" numberUnit="" numberState="None" type="Active" selected="false" showMarkers="false">
 						<firstStatus>
-							<ObjectStatus text="{CategoryModel>MVPCategoryStatusId}" state="Success" visible="true"/>
+							<ObjectStatus text="" state="Success" visible="true"/>
 						</firstStatus>
 					</ObjectListItem>
 				</items>

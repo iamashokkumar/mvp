@@ -4,10 +4,9 @@ xmlns:chart="sap.suite.ui.commons"
 	controllerName="com.sap.build.leonardo.votingApp.controller.Page" 	xmlns:l="sap.ui.layout"  xmlns:w="sap.ui.integration.widgets" xmlns:f="sap.ui.layout.form" xmlns:fn="sap.f">
 	<m:Page showHeader="true" title="{CategoryModel>/category/MVPCategoryName}" showFooter="true" showNavButton="false" navButtonPress="_onPageNavButtonPress" backgroundDesign="Standard">
 		<m:headerContent>
-			<m:Button icon="sap-icon://refresh" press="" tooltip="Refresh" />
+			<m:Button icon="sap-icon://refresh" press="onRefresh" tooltip="Refresh" />
 			<m:Button icon="sap-icon://full-screen" press="onSetFullScreen" tooltip="Enter Full Screen Mode" id="setFullScreen"/>
 			<m:Button icon="sap-icon://exit-full-screen" press="onExitFullScreen" tooltip="Exit Full Screen Mode" id="exitFullScreen" visible="false"/>
-			<m:Button icon="sap-icon://decline" press="handleClose"  tooltip="Close column" visible="{= ${/actionButtonsInfo/midColumn/closeColumn} !== null }"/>
 		</m:headerContent>
 		<m:content>
 		<m:ObjectHeader
@@ -15,10 +14,7 @@ xmlns:chart="sap.suite.ui.commons"
 		title="{CategoryModel>/category/MVPCategoryName}"
 		 >
 		<m:statuses>
-			<m:ObjectStatus
-				title="Status"
-				text="{CategoryModel>/category/MVPCategoryStatusId}"
-				state="Success" />
+
 		</m:statuses>
 		<m:attributes>
 			
@@ -48,7 +44,7 @@ xmlns:chart="sap.suite.ui.commons"
 		</m:attributes>
 	</m:ObjectHeader>
 			<m:MessageStrip
-				text="Voting Mode: {CategoryModel>/category/MVPCategoryVoteMode}"
+				text="{CategoryModel>/category/MVPCategoryVoteModeText}"
 				type="Success"
 				showIcon="false"
 				showCloseButton="false"
@@ -57,9 +53,9 @@ xmlns:chart="sap.suite.ui.commons"
 	<IconTabBar expandable="false" expanded="true" applyContentPadding="false" backgroundDesign="Solid" upperCase="false" visible="true" selectedKey="Ok">
 				<items>
 					<IconTabFilter icon="sap-icon://family-care" iconColor="Neutral" text="Nominees" count="{NomineeModel>/nomineescount}" design="Vertical" showAll="false"
-						textDirection="Inherit" enabled="true" visible="true" iconDensityAware="false">
+						textDirection="Inherit" enabled="true" visible="true" iconDensityAware="false" width="100%">
 						<content>
-						<l:VerticalLayout class="sapUiContentPadding" id ="NomineeLayout">
+						<l:VerticalLayout class="sapUiContentPadding" id ="NomineeLayout" width="100%">
 							
 						</l:VerticalLayout>
 

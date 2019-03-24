@@ -150,12 +150,7 @@ sap.ui.define([
             }
 
         },
-        _loadData: function() {},
-
-        onInit: function() {
-
-            sap.ui.getCore().getEventBus().subscribe("MasterPage", "loadData", this._loadData, this);
-
+        _loadData: function(request) {
             var getCategoryURL = this.getOwnerComponent().getManifestEntry("/sap.app/dataSources/Category");
 
             //init Model
@@ -164,15 +159,24 @@ sap.ui.define([
             var oControl = this;
             MVPApi.get(getCategoryURL, null).then(function(data) {
                 var categories = JSON.parse(data);
-                if (categories.Response.CODE=="SUCCESS") {
-                    oControl._setModel("/category",categories.MVPCategories , "CategoryModel");
-                    if(categories.MVPCategories.length>0)
-                    sap.ui.getCore().getEventBus().publish("Page", "loadData", {
-                        Category: categories.MVPCategories[0]
-                    });
+                if (categories.Response.CODE == "SUCCESS") {
+                    oControl._setModel("/category", categories.MVPCategories, "CategoryModel");
+                    if (categories.MVPCategories.length > 0 && request==null)
+                        sap.ui.getCore().getEventBus().publish("Page", "loadData", {
+                            Category: categories.MVPCategories[0]
+                        });
                 }
             });
+        },
+
+        onInit: function() {
+
+            sap.ui.getCore().getEventBus().subscribe("MasterPage", "loadData", this._loadData, this);
+            this._loadData();
             this.oRouter = sap.ui.core.UIComponent.getRouterFor(this);
+
+            sap.ui.getCore().getEventBus().subscribe("Master", "loadData", this._loadData, this);
+
             //this.oRouter.getTarget("MasterPage1").attachDisplay(jQuery.proxy(this.handleRouteMatched, this));
         }
     });

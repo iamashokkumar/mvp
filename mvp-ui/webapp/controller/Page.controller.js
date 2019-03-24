@@ -139,6 +139,18 @@ sap.ui.define(
                 oDialog.open();
             },
 
+            onRefresh:function(){
+                
+                var mvpCategoryId = this.getModel("CategoryModel").getProperty("/category").MVPCategoryId;
+
+
+
+                this.bus = sap.ui.getCore().getEventBus();
+                 this.bus.publish("Master", "loadData", {refresh:true})
+                this.refreshData(mvpCategoryId);
+
+            },
+
             onSetFullScreen: function() {
                 //  this.setFCLFullScreenMode(true);
                 sap.ui.getCore().getEventBus().publish("flexible", "setColumnFullScreen", {
@@ -174,7 +186,7 @@ sap.ui.define(
                 var oControl = this;
 
                 //diable all vote if the status is  not open
-                
+
                 var votingMode = this.getModel("CategoryModel").getData().category.MVPCategoryVotingStatus;
 
 
@@ -193,14 +205,14 @@ sap.ui.define(
                     if (nominees.length > 0) {
                         for (var i = 0; i < nominees.length; i++) {
                             var cardFragment = sap.ui.xmlfragment("com.sap.build.leonardo.votingApp.fragment.Card", oControl);
-                            if (nominees[i].MVPNomineeAvatarFileData == "" || nominees[i].MVPNomineeAvatarFileData == null || nominees[i].MVPNomineeAvatarFileData == "null"||nominees[i].MVPNomineeAvatarFileData=="[object Object]") {
-                                nominees[i].MVPNomineeAvatarFileData = "http://dehayf5mhw1h7.cloudfront.net/wp-content/uploads/sites/470/2015/10/23122001/CommonMan.jpg"
+                            if (nominees[i].MVPNomineeAvatarFileData == "" || nominees[i].MVPNomineeAvatarFileData == null || nominees[i].MVPNomineeAvatarFileData == "null" || nominees[i].MVPNomineeAvatarFileData == "[object Object]") {
+                                nominees[i].MVPNomineeAvatarFileData = "https://assets0-jam4.sapjam.com/images/personShadow330x330.png?412166170dd5ef6b7f4c6dfdf2c5ac57230"
                             }
                             cardFragment.setModel(new JSONModel({
                                 "Nominee": nominees[i],
                                 //edit or not
                                 "mode": nominees[i].MVPNominatedBy.toUpperCase() == userName.userEmailId.toUpperCase(),
-                                "voted": votingMode=="OPEN_FOR_VOTING"?nominees[i].HAS_VOTED:true
+                                "voted": votingMode == "OPEN_FOR_VOTING" ? nominees[i].HAS_VOTED : true
                             }), "Nominee");
 
                             oView.addDependent(cardFragment);
@@ -271,7 +283,7 @@ sap.ui.define(
                     "MVPNomineeName": null,
                     "MVPNomineeAvatarFileName": "",
                     "MVPNomineeAvatarFileNameExtn": "",
-                    "MVPNomineeAvatarFileData": null,
+                    "MVPNomineeAvatarFileData": "https://assets0-jam4.sapjam.com/images/personShadow330x330.png?412166170dd5ef6b7f4c6dfdf2c5ac57230",
                     "MVPNomineeAbstract": "New",
                     "MVPNomineeKeyAchievements": null,
                     "MVPNomineeCustomerQuotes": null,
@@ -367,7 +379,7 @@ sap.ui.define(
                     this.addDialog.destroy();
                 }
                 var editNominate = this.getModel("EditNomineeModel").getProperty("/");
-                editNominate.mode = "edit";
+                editNominate.mode = "Edit";
                 var targetNomineeId = oEvent.getSource().data("NomineeId");
                 var nominees = this.getModel("NomineeModel").getProperty("/nominees");
                 if (nominees.length > 0) {
@@ -511,8 +523,7 @@ sap.ui.define(
                 this.deleteDialog.close();
             },
 
-            onCloseNominee:function()
-            {
+            onCloseNominee: function() {
                 this.addDialog.close()
 
             },
@@ -527,7 +538,7 @@ sap.ui.define(
                     "MVPNomineeName": null,
                     "MVPNomineeAvatarFileName": "",
                     "MVPNomineeAvatarFileNameExtn": "",
-                    "MVPNomineeAvatarFileData": null,
+                    "MVPNomineeAvatarFileData": "https://assets0-jam4.sapjam.com/images/personShadow330x330.png?412166170dd5ef6b7f4c6dfdf2c5ac57230",
                     "MVPNomineeAbstract": "New",
                     "MVPNomineeKeyAchievements": null,
                     "MVPNomineeCustomerQuotes": null,
@@ -554,6 +565,10 @@ sap.ui.define(
                             if (fileName == 'jpg' || fileName == 'png') {
                                 reader.onload = function(oEvent) {
                                     oControl.byId("image_preview").setSrc(oEvent.target.result);
+                                    var image = this.byId("image_preview").getSrc();
+                                    oControl.getModel("EditNomineeModel").setProperty("/MVPNomineeAvatarFileData", image);
+                                    console.log(this.getModel("EditNomineeModel").getData());
+                                    MessageToast.show("Image Uploaded");
                                     //document.getElementById("midView--image_preview").src = oEvent.target.result;
                                 }
                             }
@@ -561,14 +576,6 @@ sap.ui.define(
                         reader.readAsDataURL(oEvent.target.files.item(0));
                     }
                 });
-
-            },
-            handleUploadPress: function() {
-
-                var image = this.byId("image_preview").getSrc();
-                this.getModel("EditNomineeModel").setProperty("/MVPNomineeAvatarFileData", image);
-                console.log(this.getModel("EditNomineeModel").getData());
-                MessageToast.show("Image Uploaded");
 
             },
             onInit: function() {
