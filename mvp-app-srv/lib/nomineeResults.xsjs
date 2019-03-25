@@ -23,7 +23,7 @@ if ($.request.method === $.net.http.GET) {
 			if (userResult.length > 0) {
 
 				if (mvpCategoryId !== undefined && mvpCategoryId !== '') {
-					query = "SELECT nominee.\"MVPNomineeId\", nominee.\"MVPNomineeName\", count(nominee.\"MVPNomineeId\") as \"MVPVotes\" FROM \"mvpadmin.mvpdb::mvp.MVPNominee\" AS nominee RIGHT OUTER JOIN \"mvpadmin.mvpdb::mvp.MVPVote\" AS vote ON nominee.\"MVPCategoryId\" = vote.\"MVPCategoryId\" and nominee.\"MVPNomineeId\" = vote.\"MVPNomineeId\" where nominee.\"MVPCategoryId\" = " + mvpCategoryId + " GROUP BY nominee.\"MVPNomineeId\", nominee.\"MVPNomineeName\" ORDER BY COUNT(nominee.\"MVPNomineeId\") DESC";
+					query = "SELECT nominee.\"MVPNomineeId\", nominee.\"MVPNomineeName\", count(vote.\"MVPNomineeId\") as \"MVPVotes\" FROM \"mvpadmin.mvpdb::mvp.MVPNominee\" AS nominee LEFT OUTER JOIN \"mvpadmin.mvpdb::mvp.MVPVote\" AS vote ON nominee.\"MVPCategoryId\" = vote.\"MVPCategoryId\" and nominee.\"MVPNomineeId\" = vote.\"MVPNomineeId\" where nominee.\"MVPCategoryId\" = " + mvpCategoryId + " GROUP BY nominee.\"MVPNomineeId\", nominee.\"MVPNomineeName\" ORDER BY COUNT(vote.\"MVPNomineeId\") DESC";
 
 					var MVPNomineeVotes = connection.executeQuery(query);
 					for (var nominee of MVPNomineeVotes) {
