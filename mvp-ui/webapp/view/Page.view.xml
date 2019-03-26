@@ -72,11 +72,10 @@
 					</IconTabFilter>
 					<IconTabSeparator icon="" iconDensityAware="false"/>
 					<IconTabFilter icon="sap-icon://business-objects-experience" iconColor="Neutral" text="Results" count="" design="Vertical" showAll="false"
-						textDirection="Inherit" enabled="true" visible="true" iconDensityAware="false">
+						textDirection="Inherit" enabled="true" visible="{NomineeModel>/showResults}" iconDensityAware="false">
 						<content>
 
 						<VBox class='settingsBox'>
-                        <Label text = 'show Label' design="Bold" class='settingsLabel'></Label>
                         <Switch class='settingsSwitch' state="{NomineeModel>/state}"  change='onDataLabelChanged'>
                             <layoutData>
                                 <FlexItemData growFactor="1" />

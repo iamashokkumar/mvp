@@ -203,6 +203,13 @@ sap.ui.define(
                     oControl._setModel("/state",false, "NomineeModel");
                     oControl._setModel("/userId", userName, "NomineeModel");
 
+                    if(votingMode == "CLOSED_FOR_VOTING")
+                    {oControl._setModel("/showResults",true , "NomineeModel");
+                    }
+                    else
+                    {
+                        oControl._setModel("/showResults",false , "NomineeModel")
+                    }
 
 
                     //get nominee
