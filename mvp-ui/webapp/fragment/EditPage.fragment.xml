@@ -1,66 +1,64 @@
-<core:FragmentDefinition xmlns="sap.m" xmlns:core="sap.ui.core" xmlns:f="sap.ui.layout.form"  xmlns:l="sap.ui.layout" 	xmlns:u="sap.ui.unified">
+<core:FragmentDefinition xmlns="sap.m" xmlns:core="sap.ui.core" xmlns:f="sap.ui.layout.form" xmlns:l="sap.ui.layout"
+	xmlns:u="sap.ui.unified">
 	<Dialog id="addDialog" title="{EditNomineeModel>/mode} Nominee" contentWidth="60em" contentHeight="25em">
 		<content>
 			<HBox>
-			<VBox class="sapUiSmallMargin centerVBox">
+				<VBox class="sapUiSmallMargin centerVBox">
 					<layoutData>
 						<FlexItemData minWidth="20%" maxWidth="25%" alignSelf="Center"/>
-												</layoutData>
-
-				<Image id="image_preview" src="{EditNomineeModel>/MVPNomineeAvatarFileData}" densityAware="false"
-				width="300px"></Image>
-			<HBox class="centerVBox	">
-			<u:FileUploader
-			id="fileUploader"
-			tooltip="Upload Image"/>
+					</layoutData>
+					<Image id="image_preview" src="{EditNomineeModel>/MVPNomineeAvatarFileData}" densityAware="false" width="300px"></Image>
+					<HBox class="centerVBox ">
+						<u:FileUploader id="fileUploader" tooltip="Upload Image"/>
+					</HBox>
+				</VBox>
+				<VBox>
+					<layoutData>
+						<FlexItemData minWidth="72%" maxWidth="75%"/>
+					</layoutData>
+					<f:Form editable="true" ariaLabelledBy="Title1">
+						<f:layout>
+							<f:ResponsiveGridLayout labelSpanXL="4" labelSpanL="3" labelSpanM="4" labelSpanS="12" adjustLabelSpan="false" emptySpanXL="0" emptySpanL="4"
+								emptySpanM="0" emptySpanS="0" columnsXL="2" columnsL="1" columnsM="1" singleContainerFullSize="false"/>
+						</f:layout>
+						<f:formContainers>
+							<f:FormContainer ariaLabelledBy="Title2">
+								<f:formElements>
+									<f:FormElement label="Name">
+										<f:fields>
+											<Input width="100%" value="{EditNomineeModel>/MVPNomineeName}" maxLength="100"/>
+										</f:fields>
+									</f:FormElement>
+									<f:FormElement label="Abstract">
+										<f:fields>
+											<TextArea width="100%" value="{EditNomineeModel>/MVPNomineeAbstract}" maxLength="500" rows="3" growing="true" growingMaxLines="5"
+												showExceededText="true"/>
+										</f:fields>
+									</f:FormElement>
+									<f:FormElement label="Key Achievements">
+										<f:fields>
+											<TextArea width="100%" value="{EditNomineeModel>/MVPNomineeKeyAchievements}" maxLength="500" rows="3" growing="true" growingMaxLines="5"
+												showExceededText="true"/>
+										</f:fields>
+									</f:FormElement>
+									<f:FormElement label="Customer Quotes">
+										<f:fields>
+											<TextArea width="100%" value="{EditNomineeModel>/MVPNomineeCustomerQuotes}" maxLength="500" rows="3" growing="true" growingMaxLines="5"
+												showExceededText="true"/>
+										</f:fields>
+									</f:FormElement>
+								</f:formElements>
+							</f:FormContainer>
+						</f:formContainers>
+					</f:Form>
+				</VBox>
 			</HBox>
-			</VBox>
-			<VBox>
-				<layoutData>
-				<FlexItemData minWidth="72%" maxWidth="75%" />
-				</layoutData>
-			<f:Form editable="true" ariaLabelledBy="Title1">
-				<f:layout>
-					<f:ResponsiveGridLayout labelSpanXL="4" labelSpanL="3" labelSpanM="4" labelSpanS="12" adjustLabelSpan="false" emptySpanXL="0" emptySpanL="4"
-						emptySpanM="0" emptySpanS="0" columnsXL="2" columnsL="1" columnsM="1" singleContainerFullSize="false"/>
-				</f:layout>
-				<f:formContainers>
-					<f:FormContainer ariaLabelledBy="Title2">
-						
-						<f:formElements>
-							<f:FormElement label="Name">
-								<f:fields>
-									<Input  width="100%" value="{EditNomineeModel>/MVPNomineeName}" maxLength="100"/>
-								</f:fields>
-							</f:FormElement>
-							<f:FormElement label="Abstract">
-								<f:fields>
-									<TextArea  width="100%" value="{EditNomineeModel>/MVPNomineeAbstract}" maxLength="500" rows="3" growing="true" growingMaxLines="5" showExceededText="true"/>
-		
-								</f:fields>
-							</f:FormElement>
-							<f:FormElement label="Key Achievements">
-								<f:fields>
-									<TextArea width="100%" value="{EditNomineeModel>/MVPNomineeKeyAchievements}" maxLength="500" rows="3" growing="true" growingMaxLines="5" showExceededText="true"/>
-								</f:fields>
-							</f:FormElement>
-							<f:FormElement label="Customer Quotes">
-								<f:fields>
-									<TextArea width="100%" value="{EditNomineeModel>/MVPNomineeCustomerQuotes}" maxLength="500" rows="3" growing="true" growingMaxLines="5" showExceededText="true"/>
-								</f:fields>
-							</f:FormElement>
-						</f:formElements>
-					</f:FormContainer>
-				</f:formContainers>
-			</f:Form>
-		</VBox>
-	</HBox>
 		</content>
 		<beginButton>
-			<Button text="{i18n>Cancel}" press="onCloseNominee"/>
+			<Button text="{i18n>Cancel}" type="Reject" press="onCloseNominee"/>
 		</beginButton>
 		<endButton>
-			<Button text="{i18n>Submit}" press="onSubmitNominee"/>
+			<Button text="{i18n>Submit}" type="Accept" press="onSubmitNominee"/>
 		</endButton>
 	</Dialog>
 </core:FragmentDefinition>

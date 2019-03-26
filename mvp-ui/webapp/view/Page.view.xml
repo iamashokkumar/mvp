@@ -1,88 +1,62 @@
-<mvc:View xmlns:mvc="sap.ui.core.mvc" xmlns="sap.m" xmlns:m="sap.m" 
-xmlns:form="sap.ui.layout.form" xmlns:tnt="sap.tnt" xmlns:core="sap.ui.core"
-xmlns:chart="sap.suite.ui.commons" 
-	controllerName="com.sap.build.leonardo.votingApp.controller.Page" 	xmlns:l="sap.ui.layout"  xmlns:w="sap.ui.integration.widgets" xmlns:f="sap.ui.layout.form" xmlns:fn="sap.f">
-	<m:Page showHeader="true" title="{CategoryModel>/category/MVPCategoryName}" showFooter="true" showNavButton="false" navButtonPress="_onPageNavButtonPress" backgroundDesign="Standard">
+<mvc:View xmlns:mvc="sap.ui.core.mvc" xmlns="sap.m" xmlns:m="sap.m" xmlns:form="sap.ui.layout.form" xmlns:tnt="sap.tnt"
+	xmlns:core="sap.ui.core" xmlns:chart="sap.suite.ui.commons" controllerName="com.sap.build.leonardo.votingApp.controller.Page"
+	xmlns:l="sap.ui.layout" xmlns:w="sap.ui.integration.widgets" xmlns:f="sap.ui.layout.form" xmlns:fn="sap.f">
+	<m:Page showHeader="true" title="{CategoryModel>/category/MVPCategoryName}" showFooter="true" showNavButton="false"
+		navButtonPress="_onPageNavButtonPress" backgroundDesign="Standard">
 		<m:headerContent>
-			<m:Button icon="sap-icon://refresh" press="onRefresh" tooltip="Refresh" />
+			<m:Button icon="sap-icon://refresh" press="onRefresh" tooltip="Refresh"/>
 			<m:Button icon="sap-icon://full-screen" press="onSetFullScreen" tooltip="Enter Full Screen Mode" id="setFullScreen"/>
 			<m:Button icon="sap-icon://exit-full-screen" press="onExitFullScreen" tooltip="Exit Full Screen Mode" id="exitFullScreen" visible="false"/>
 		</m:headerContent>
 		<m:content>
-		<m:ObjectHeader
-		responsive="true"
-		title="{CategoryModel>/category/MVPCategoryName}"
-		 >
-		<m:statuses>
-
-		</m:statuses>
-		<m:attributes>
-			
-		<!--	<m:ObjectAttribute title="Team" text="{CategoryModel>/category/MVPCategoryTeamId}" />
+			<m:ObjectHeader responsive="true" title="{CategoryModel>/category/MVPCategoryName}">
+				<m:statuses></m:statuses>
+				<m:attributes>
+					<!--	<m:ObjectAttribute title="Team" text="{CategoryModel>/category/MVPCategoryTeamId}" />
 		-->
-			<m:ObjectAttribute title="Nomination opens" text="
-				{path:'CategoryModel>/category/MVPCategoryNominateStartDate',
-				 formatter: '.formatter.formatDate'
-				}" />			
-				<m:ObjectAttribute title="Nomination ends" text="
-				{path:'CategoryModel>/category/MVPCategoryNominateEndDate',
-				 formatter: '.formatter.formatDate'
-				}" />
-
-					<m:ObjectAttribute title="Voting opens" text="
-				{path:'CategoryModel>/category/MVPCategoryVoteStartDate',
-				 formatter: '.formatter.formatDate'
-				}" />	
-				<m:ObjectAttribute title="Voting ends" text="
-				{path:'CategoryModel>/category/MVPCategoryVoteEndDate',
-				 formatter: '.formatter.formatDate'
-				}" />
-
-				<m:ObjectAttribute title="Voting Status" text="{CategoryModel>/category/MVPCategoryVotingStatusText}" />	
-				<m:ObjectAttribute title="Nomination Status" text="{CategoryModel>/category/MVPCategoryNominationStatusText}" />	
-				<m:ObjectAttribute title="Region" text="{CategoryModel>/category/MVPCategoryRegionId}" />	
-		</m:attributes>
-	</m:ObjectHeader>
-			<m:MessageStrip
-				text="{CategoryModel>/category/MVPCategoryVoteModeText}"
-				type="Success"
-				showIcon="false"
-				showCloseButton="false"
-				>
-			</m:MessageStrip>
-	<IconTabBar expandable="false" expanded="true" applyContentPadding="false" backgroundDesign="Solid" upperCase="false" visible="true" selectedKey="Ok">
+					<m:ObjectAttribute title="Nomination opens"
+						text=" {path:'CategoryModel>/category/MVPCategoryNominateStartDate', formatter: '.formatter.formatDate' }"/>
+					<m:ObjectAttribute title="Nomination ends"
+						text=" {path:'CategoryModel>/category/MVPCategoryNominateEndDate', formatter: '.formatter.formatDate' }"/>
+					<!--<m:ObjectAttribute title="Nomination Status" text="{CategoryModel>/category/MVPCategoryNominationStatusText}"/>-->
+					<tnt:InfoLabel text="{CategoryModel>/category/MVPCategoryNominationStatusText}"
+								colorScheme="{path: 'CategoryModel>/category/MVPCategoryNominationStatus', formatter: '.formatter.nominationStatus' }"/>						
+					<m:ObjectAttribute title="Voting opens"
+						text=" {path:'CategoryModel>/category/MVPCategoryVoteStartDate', formatter: '.formatter.formatDate' }"/>
+					<m:ObjectAttribute title="Voting ends" text=" {path:'CategoryModel>/category/MVPCategoryVoteEndDate', formatter: '.formatter.formatDate' }"/>
+					<!--<m:ObjectAttribute title="Voting Status" text="{CategoryModel>/category/MVPCategoryVotingStatusText}"/>-->
+					<tnt:InfoLabel text="{CategoryModel>/category/MVPCategoryVotingStatusText}"
+								colorScheme="{path: 'CategoryModel>/category/MVPCategoryVotingStatus', formatter: '.formatter.votingStatus' }"/>					
+					<!--<m:ObjectAttribute title="Region" text="{CategoryModel>/category/MVPCategoryRegionId}"/>-->
+				</m:attributes>
+			</m:ObjectHeader>
+			<m:MessageStrip text="{CategoryModel>/category/MVPCategoryVoteModeText}" type="Success" showIcon="true" showCloseButton="false"></m:MessageStrip>
+			<IconTabBar expandable="false" expanded="true" applyContentPadding="false" backgroundDesign="Translucent" upperCase="false" visible="true"
+				selectedKey="Ok">
 				<items>
-					<IconTabFilter icon="sap-icon://family-care" iconColor="Neutral" text="Nominees" count="{NomineeModel>/nomineescount}" design="Vertical" showAll="false"
-						textDirection="Inherit" enabled="true" visible="true" iconDensityAware="false" width="100%">
+					<IconTabFilter icon="sap-icon://family-care" iconColor="Neutral" text="Nominees" count="{NomineeModel>/nomineescount}" design="Vertical"
+						showAll="false" textDirection="Inherit" enabled="true" visible="true" iconDensityAware="false" width="100%">
 						<content>
-						<l:VerticalLayout class="sapUiContentPadding" id ="NomineeLayout" width="100%">
-							
-						</l:VerticalLayout>
-
-					  </content>
+							<l:VerticalLayout class="sapUiContentPadding" id="NomineeLayout" width="100%"></l:VerticalLayout>
+						</content>
 					</IconTabFilter>
-				<IconTabSeparator icon="" iconDensityAware="false"/>
-				<IconTabFilter icon="sap-icon://business-objects-experience" iconColor="Neutral" text="Results" count="" design="Vertical" showAll="false"
+					<IconTabSeparator icon="" iconDensityAware="false"/>
+					<IconTabFilter icon="sap-icon://business-objects-experience" iconColor="Neutral" text="Results" count="" design="Vertical" showAll="false"
 						textDirection="Inherit" enabled="true" visible="true" iconDensityAware="false">
 						<content>
-					<chart:ChartContainer
-									id="chartContainer"
-									showFullScreen="true"
-									showPersonalization="false"
-									autoAdjustHeight="false"
-									showSelectionDetails="true"
-									title="Votes">
-								</chart:ChartContainer>					
-							</content>
+							<chart:ChartContainer id="chartContainer" showFullScreen="true" showPersonalization="false" autoAdjustHeight="false"
+								showSelectionDetails="true" title="Votes By Nominees"></chart:ChartContainer>
+						</content>
 					</IconTabFilter>
 				</items>
 			</IconTabBar>
 		</m:content>
-	<m:footer>
+		<m:footer>
 			<m:Toolbar>
 				<m:ToolbarSpacer/>
-	<m:Button text="Nominee" type="Emphasized" icon="sap-icon://add" iconFirst="true" width="auto" enabled="{= ${CategoryModel>/category/MVPCategoryNominationStatus} === 'OPEN_FOR_NOMINATION'  }" visible="true"
-						iconDensityAware="false" press="onAddNominee"/>
+				<m:Button text="Nominee" type="Emphasized" icon="sap-icon://add" iconFirst="true" width="auto"
+					enabled="{= ${CategoryModel>/category/MVPCategoryNominationStatus} === 'OPEN_FOR_NOMINATION' }" visible="true" iconDensityAware="false"
+					press="onAddNominee"/>
 			</m:Toolbar>
 		</m:footer>
 	</m:Page>

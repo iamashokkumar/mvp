@@ -1,77 +1,77 @@
-<core:FragmentDefinition xmlns:form="sap.ui.layout.form" xmlns:core="sap.ui.core" xmlns:app="http://schemas.sap.com/sapui5/extension/sap.ui.core.CustomData/1"
- xmlns:m="sap.m" xmlns="sap.m"  xmlns:fn="sap.f" controllerName="com.sap.build.leonardo.votingApp.controller.Page">
-				<m:VBox>
-								<fn:Card class="sapUiSmallMarginBegin sapUiSmallMarginTopBottom">
-									<fn:layoutData>
-										<m:FlexItemData minWidth="98%" maxWidth="98%" />
-									</fn:layoutData>
-									<fn:content>
-										<m:HBox>
-											<m:VBox class="sapUiSmallMargin centerVBox">
-												<m:layoutData>
-													<m:FlexItemData minWidth="25%" maxWidth="25%" alignSelf="Center"/>
-												</m:layoutData>
-												<m:Image src="{Nominee>/Nominee/MVPNomineeAvatarFileData}"
-													width="100%" height="100%"></m:Image>
-													<m:HBox class="centerVBox">
-													<m:ToggleButton width="150px" text="{= ${Nominee>/voted}!== true? 'Vote':'Voted'  }" type="Accept" press="onVoteNominee"  pressed="{= ${Nominee>/voted}=== true  }"
-													app:NomineeName="{Nominee>/Nominee/MVPNomineeName}" app:NomineeId="{Nominee>/Nominee/MVPNomineeId}" enabled="{= ${Nominee>/voted}!== true  }"	/>
-													</m:HBox>
-											</m:VBox>
-											<m:VBox class="sapUiSmallMargin centerVBox1">
-													<m:layoutData>
-													<m:FlexItemData minWidth="71%" maxWidth="71%" alignSelf="Start"/>
-												</m:layoutData>
-											<form:Form editable="true" ariaLabelledBy="Title1">
-												<form:title>
-													<!--<core:Title text="John Doe"/>-->
-												</form:title>
-												<form:layout>
-													<form:ResponsiveGridLayout labelSpanXL="4" labelSpanL="3" labelSpanM="3" labelSpanS="12" adjustLabelSpan="false" emptySpanXL="0"
-														emptySpanL="4" emptySpanM="2" emptySpanS="2" columnsXL="2" columnsL="1" columnsM="1" singleContainerFullSize="true"/>
-												</form:layout>
-												<form:formContainers>
-													<form:FormContainer ariaLabelledBy="Title2">
-														<form:toolbar width="100%">
-															<m:Toolbar width="100%">
-																<m:Panel>
-																	<m:Toolbar>
-																		<m:ToolbarSpacer/>
-																		<m:Title  text="{Nominee>/Nominee/MVPNomineeName}" level="H5" titleStyle="H2" width="100%"/>
-																		<m:ToolbarSpacer/>
-																		<m:ToolbarSpacer/>
-																		<m:Button visible="{Nominee>/mode}" icon="sap-icon://edit" press="onEditNominee" app:NomineeId="{Nominee>/Nominee/MVPNomineeId}" app:NomineeName="{Nominee>/Nominee/MVPNomineeName}"/>
-																		<m:Button  visible="{Nominee>/mode}" icon="sap-icon://delete" press="onDeleteNominee" app:NomineeId="{Nominee>/Nominee/MVPNomineeId}" app:NomineeName="{Nominee>/Nominee/MVPNomineeName}"/>
-																	</m:Toolbar>
-																</m:Panel>
-															</m:Toolbar>
-														</form:toolbar>
-														<form:formElements>
-															<form:FormElement label="Abstract">
-																<form:fields>
-																	<m:Text
-																		text="{Nominee>/Nominee/MVPNomineeAbstract}"/>
-																</form:fields>
-															</form:FormElement>
-															<form:FormElement label="Key Achievements">
-																<form:fields>
-																	<m:Text
-																		text="{Nominee>/Nominee/MVPNomineeKeyAchievements}"/>
-																</form:fields>
-															</form:FormElement>
-															<form:FormElement label="Customer Quotes">
-																<form:fields>
-															<m:Text
-																		text="{Nominee>/Nominee/MVPNomineeCustomerQuotes}"/>
-																</form:fields>
-															</form:FormElement>
-														</form:formElements>
-													</form:FormContainer>
-												</form:formContainers>
-											</form:Form>
-										</m:VBox>
-										</m:HBox>
-									</fn:content>
-								</fn:Card>
-							</m:VBox>
+<core:FragmentDefinition xmlns:form="sap.ui.layout.form" xmlns:core="sap.ui.core"
+	xmlns:app="http://schemas.sap.com/sapui5/extension/sap.ui.core.CustomData/1" xmlns:m="sap.m" xmlns="sap.m" xmlns:fn="sap.f"
+	controllerName="com.sap.build.leonardo.votingApp.controller.Page">
+	<m:VBox>
+		<fn:Card class="sapUiSmallMarginBegin sapUiSmallMarginTopBottom">
+			<fn:layoutData>
+				<m:FlexItemData minWidth="98%" maxWidth="98%"/>
+			</fn:layoutData>
+			<fn:content>
+				<m:HBox>
+					<m:VBox class="sapUiSmallMargin centerVBox">
+						<m:layoutData>
+							<m:FlexItemData minWidth="25%" maxWidth="25%" alignSelf="Center"/>
+						</m:layoutData>
+						<m:Image src="{Nominee>/Nominee/MVPNomineeAvatarFileData}" width="100%" height="100%"></m:Image>
+						<m:HBox class="centerVBox">
+							<m:ToggleButton width="150px" text="{= ${Nominee>/voted}!== true? 'Vote':'Voted' }" type="Accept" press="onVoteNominee"
+								pressed="{= ${Nominee>/voted}=== true }" app:NomineeName="{Nominee>/Nominee/MVPNomineeName}" app:NomineeId="{Nominee>/Nominee/MVPNomineeId}"
+								enabled="{= ${Nominee>/voted}!== true }"/>
+						</m:HBox>
+					</m:VBox>
+					<m:VBox class="sapUiSmallMargin centerVBox1">
+						<m:layoutData>
+							<m:FlexItemData minWidth="71%" maxWidth="71%" alignSelf="Start"/>
+						</m:layoutData>
+						<form:Form editable="true" ariaLabelledBy="Title1">
+							<form:title>
+								<!--<core:Title text="John Doe"/>-->
+							</form:title>
+							<form:layout>
+								<form:ResponsiveGridLayout labelSpanXL="4" labelSpanL="3" labelSpanM="3" labelSpanS="12" adjustLabelSpan="false" emptySpanXL="0"
+									emptySpanL="4" emptySpanM="2" emptySpanS="2" columnsXL="2" columnsL="1" columnsM="1" singleContainerFullSize="true"/>
+							</form:layout>
+							<form:formContainers>
+								<form:FormContainer ariaLabelledBy="Title2">
+									<form:toolbar width="100%">
+										<m:Toolbar width="100%">
+											<m:Panel>
+												<m:Toolbar>
+													<m:ToolbarSpacer/>
+													<m:Title text="{Nominee>/Nominee/MVPNomineeName}" level="H5" titleStyle="H2" width="100%"/>
+													<m:ToolbarSpacer/>
+													<m:ToolbarSpacer/>
+													<m:Button visible="{Nominee>/mode}" icon="sap-icon://edit" press="onEditNominee" app:NomineeId="{Nominee>/Nominee/MVPNomineeId}"
+														app:NomineeName="{Nominee>/Nominee/MVPNomineeName}"/>
+													<m:Button visible="{Nominee>/mode}" icon="sap-icon://delete" press="onDeleteNominee" app:NomineeId="{Nominee>/Nominee/MVPNomineeId}"
+														app:NomineeName="{Nominee>/Nominee/MVPNomineeName}"/>
+												</m:Toolbar>
+											</m:Panel>
+										</m:Toolbar>
+									</form:toolbar>
+									<form:formElements>
+										<form:FormElement label="Abstract">
+											<form:fields>
+												<m:Text text="{Nominee>/Nominee/MVPNomineeAbstract}"/>
+											</form:fields>
+										</form:FormElement>
+										<form:FormElement label="Key Achievements">
+											<form:fields>
+												<m:Text text="{Nominee>/Nominee/MVPNomineeKeyAchievements}"/>
+											</form:fields>
+										</form:FormElement>
+										<form:FormElement label="Customer Quotes">
+											<form:fields>
+												<m:Text text="{Nominee>/Nominee/MVPNomineeCustomerQuotes}"/>
+											</form:fields>
+										</form:FormElement>
+									</form:formElements>
+								</form:FormContainer>
+							</form:formContainers>
+						</form:Form>
+					</m:VBox>
+				</m:HBox>
+			</fn:content>
+		</fn:Card>
+	</m:VBox>
 </core:FragmentDefinition>

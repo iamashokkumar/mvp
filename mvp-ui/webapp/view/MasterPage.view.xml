@@ -1,7 +1,7 @@
 <mvc:View xmlns:mvc="sap.ui.core.mvc" xmlns="sap.m" controllerName="com.sap.build.leonardo.votingApp.controller.MasterPage">
 	<Page title="Nomination Categories" showHeader="true" showFooter="true" showNavButton="false">
 		<content>
-			<List mode="SingleSelectMaster" width="100%" headerText="Header" footerText="" backgroundDesign="Solid"
+			<List mode="SingleSelectMaster" width="100%" headerText="Header" footerText="" backgroundDesign="Translucent"
 			items="{ path: 'CategoryModel>/category' }"
 			 showSeparators="All" growing="true" growingThreshold="20" growingScrollToLoad="true" visible="true" itemPress="onClick">
 				<infoToolbar/>
@@ -14,6 +14,10 @@
 				</headerToolbar>
 				<items>
 					<ObjectListItem intro="" title="{CategoryModel>MVPCategoryName}" numberUnit="" numberState="None" type="Active" selected="false" showMarkers="false">
+						<attributes>
+							<ObjectAttribute text="{CategoryModel>MVPCategoryRegionId}" active="false"/>
+							<ObjectAttribute text="{CategoryModel>MVPCategoryTeamId}" active="false"/>
+						</attributes>						
 						<firstStatus>
 							<ObjectStatus text="" state="Success" visible="true"/>
 						</firstStatus>

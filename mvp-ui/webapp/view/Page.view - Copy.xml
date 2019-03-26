@@ -1,164 +1,138 @@
-<mvc:View xmlns:mvc="sap.ui.core.mvc" xmlns="sap.uxap" xmlns:m="sap.m" 
-xmlns:form="sap.ui.layout.form" xmlns:tnt="sap.tnt" xmlns:core="sap.ui.core"
-	controllerName="com.sap.build.leonardo.votingApp.controller.Page" 	xmlns:l="sap.ui.layout"  xmlns:w="sap.ui.integration.widgets" xmlns:f="sap.ui.layout.form" xmlns:fn="sap.f">
-	<m:Page showHeader="true" title="{CategoryModel>/category/MVPCategoryName}" showFooter="true" showNavButton="false" navButtonPress="_onPageNavButtonPress">
+<mvc:View xmlns:mvc="sap.ui.core.mvc" xmlns="sap.uxap" xmlns:m="sap.m" xmlns:form="sap.ui.layout.form" xmlns:tnt="sap.tnt"
+	xmlns:core="sap.ui.core" controllerName="com.sap.build.leonardo.votingApp.controller.Page" xmlns:l="sap.ui.layout"
+	xmlns:w="sap.ui.integration.widgets" xmlns:f="sap.ui.layout.form" xmlns:fn="sap.f">
+	<m:Page showHeader="true" title="{CategoryModel>/category/MVPCategoryName}" showFooter="true" showNavButton="false"
+		navButtonPress="_onPageNavButtonPress">
 		<m:headerContent>
-			<m:Button icon="sap-icon://full-screen" press="handleFullScreen" tooltip="Enter Full Screen Mode" />
-			<m:Button icon="sap-icon://exit-full-screen" press="handleExitFullScreen" tooltip="Exit Full Screen Mode" visible="{= ${/actionButtonsInfo/midColumn/exitFullScreen} !== null }"/>
-			<m:Button icon="sap-icon://decline" press="handleClose"  tooltip="Close column" visible="{= ${/actionButtonsInfo/midColumn/closeColumn} !== null }"/>
-
+			<m:Button icon="sap-icon://full-screen" press="handleFullScreen" tooltip="Enter Full Screen Mode"/>
+			<m:Button icon="sap-icon://exit-full-screen" press="handleExitFullScreen" tooltip="Exit Full Screen Mode"
+				visible="{= ${/actionButtonsInfo/midColumn/exitFullScreen} !== null }"/>
+			<m:Button icon="sap-icon://decline" press="handleClose" tooltip="Close column"
+				visible="{= ${/actionButtonsInfo/midColumn/closeColumn} !== null }"/>
 		</m:headerContent>
 		<m:content>
-			
-
-
-			
-			<ObjectPageLayout id="ObjectPageLayout"
-					 showTitleInHeaderContent="true"
-					alwaysShowContentHeader="false"
-					preserveHeaderStateOnScroll="false"
-					headerContentPinnable="true"
-					isChildPage="true"
-					upperCaseAnchorBar="false">
+			<ObjectPageLayout id="ObjectPageLayout" showTitleInHeaderContent="true" alwaysShowContentHeader="false" preserveHeaderStateOnScroll="false"
+				headerContentPinnable="true" isChildPage="true" upperCaseAnchorBar="false">
 				<headerTitle>
 					<ObjectPageDynamicHeaderTitle>
 						<expandedHeading>
 							<m:Title text="{products>Name}" wrapping="true" class="sapUiSmallMarginEnd"/>
 						</expandedHeading>
-
 						<snappedHeading>
 							<m:FlexBox wrap="Wrap" fitContainer="true" alignItems="Center">
 								<m:FlexBox wrap="NoWrap" fitContainer="true" alignItems="Center" class="sapUiTinyMarginEnd">
-										<m:Title text="{products>Name}" wrapping="true" class="sapUiTinyMarginEnd"/>
+									<m:Title text="{products>Name}" wrapping="true" class="sapUiTinyMarginEnd"/>
 								</m:FlexBox>
 							</m:FlexBox>
 						</snappedHeading>
-
 					</ObjectPageDynamicHeaderTitle>
 				</headerTitle>
-	<headerContent>
-		<m:ObjectHeader
-		title="{CategoryModel>/category/MVPCategoryName}"
-		numberUnit="RMB" >
-		<m:statuses>
-			<m:ObjectStatus
-				title="Status"
-				text="{CategoryModel>/category/MVPCategoryStatusId}"
-				state="Success" />
-		</m:statuses>
-		<m:attributes>
-			<m:ObjectAttribute title="Region" text="{CategoryModel>/category/MVPCategoryRegionId}" />
-			<m:ObjectAttribute title="Team" text="{CategoryModel>/category/MVPCategoryTeamId}" />
-			<m:ObjectAttribute title="Start Date" text="
-				{path:'CategoryModel>/category/MVPCategoryNominateStartDate',
-				 formatter: '.formatter.formatDate'
-				}" />			
-				<m:ObjectAttribute title="End Date" text="
-				{path:'CategoryModel>/category/MVPCategoryNominateEndDate',
-				 formatter: '.formatter.formatDate'
-				}" />
-		</m:attributes>
-	</m:ObjectHeader>
-			<m:MessageStrip
-				text="Voting Mode: {CategoryModel>/category/MVPCategoryVoteMode}"
-				type="Success"
-				showIcon="false"
-				showCloseButton="false"
-				class="sapUiMediumMarginBottom">
-			</m:MessageStrip>
-						</headerContent>
-
-		<sections>
-			<ObjectPageSection>
-				<subSections>
-					<ObjectPageSubSection>
-						<blocks>
-						 <l:VerticalLayout class="sapUiContentPadding">
-								<m:VBox>
-								<fn:Card class="sapUiSmallMarginBegin sapUiSmallMarginTopBottom">
-									<fn:layoutData>
-										<m:FlexItemData maxWidth="95%" alignSelf="Center"/>
-									</fn:layoutData>
-									<fn:content>
-										<m:HBox>
-											<m:VBox class="sapUiSmallMarginTop centerVBox">
-												<m:layoutData>
-													<m:FlexItemData maxWidth="25%" alignSelf="Start"/>
-												</m:layoutData>
-												<m:Image src="http://dehayf5mhw1h7.cloudfront.net/wp-content/uploads/sites/470/2015/10/23122001/CommonMan.jpg" densityAware="false"
-													width="100%" height="100%"></m:Image>
-													<m:HBox class="centerVBox	">
-													<m:Button text="Vote" type="Accept" />
+				<headerContent>
+					<m:ObjectHeader title="{CategoryModel>/category/MVPCategoryName}" numberUnit="RMB">
+						<m:statuses>
+							<m:ObjectStatus title="Status" text="{CategoryModel>/category/MVPCategoryStatusId}" state="Success"/>
+						</m:statuses>
+						<m:attributes>
+							<m:ObjectAttribute title="Region" text="{CategoryModel>/category/MVPCategoryRegionId}"/>
+							<m:ObjectAttribute title="Team" text="{CategoryModel>/category/MVPCategoryTeamId}"/>
+							<m:ObjectAttribute title="Start Date"
+								text=" {path:'CategoryModel>/category/MVPCategoryNominateStartDate', formatter: '.formatter.formatDate' }"/>
+							<m:ObjectAttribute title="End Date" text=" {path:'CategoryModel>/category/MVPCategoryNominateEndDate', formatter: '.formatter.formatDate' }"/>
+						</m:attributes>
+					</m:ObjectHeader>
+					<m:MessageStrip text="Voting Mode: {CategoryModel>/category/MVPCategoryVoteMode}" type="Success" showIcon="true" showCloseButton="false"
+						class="sapUiMediumMarginBeginEnd"></m:MessageStrip>
+				</headerContent>
+				<sections>
+					<ObjectPageSection>
+						<subSections>
+							<ObjectPageSubSection>
+								<blocks>
+									<l:VerticalLayout class="sapUiContentPadding">
+										<m:VBox>
+											<fn:Card class="sapUiSmallMarginBegin sapUiSmallMarginTopBottom">
+												<fn:layoutData>
+													<m:FlexItemData maxWidth="95%" alignSelf="Center"/>
+												</fn:layoutData>
+												<fn:content>
+													<m:HBox>
+														<m:VBox class="sapUiSmallMarginTop centerVBox">
+															<m:layoutData>
+																<m:FlexItemData maxWidth="25%" alignSelf="Start"/>
+															</m:layoutData>
+															<m:Image src="http://dehayf5mhw1h7.cloudfront.net/wp-content/uploads/sites/470/2015/10/23122001/CommonMan.jpg" densityAware="false"
+																width="100%" height="100%"></m:Image>
+															<m:HBox class="centerVBox ">
+																<m:Button text="Vote" type="Accept"/>
+															</m:HBox>
+														</m:VBox>
+														<form:Form editable="true" ariaLabelledBy="Title1">
+															<form:title>
+																<!--<core:Title text="John Doe"/>-->
+															</form:title>
+															<form:layout>
+																<form:ResponsiveGridLayout labelSpanXL="4" labelSpanL="3" labelSpanM="3" labelSpanS="12" adjustLabelSpan="false" emptySpanXL="0"
+																	emptySpanL="4" emptySpanM="0" emptySpanS="0" columnsXL="2" columnsL="1" columnsM="1" singleContainerFullSize="false"/>
+															</form:layout>
+															<form:formContainers>
+																<form:FormContainer ariaLabelledBy="Title2">
+																	<form:toolbar>
+																		<m:Toolbar>
+																			<m:Panel>
+																				<m:Toolbar>
+																					<m:ToolbarSpacer/>
+																					<m:Title text="John Doe" level="H5" titleStyle="H2"/>
+																					<m:ToolbarSpacer/>
+																					<m:Button icon="sap-icon://delete" press="onDelete"/>
+																				</m:Toolbar>
+																			</m:Panel>
+																		</m:Toolbar>
+																	</form:toolbar>
+																	<form:formElements>
+																		<form:FormElement label="Abstract">
+																			<form:fields>
+																				<m:Text
+																					text="Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It"/>
+																			</form:fields>
+																		</form:FormElement>
+																		<form:FormElement label="Key Achievements">
+																			<form:fields>
+																				<m:Text
+																					text="Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survi"/>
+																			</form:fields>
+																		</form:FormElement>
+																		<form:FormElement label="Customer Quotes">
+																			<form:fields>
+																				<m:Text
+																					text="Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it "/>
+																			</form:fields>
+																		</form:FormElement>
+																	</form:formElements>
+																</form:FormContainer>
+															</form:formContainers>
+														</form:Form>
 													</m:HBox>
-											</m:VBox>
-											<form:Form editable="true" ariaLabelledBy="Title1">
-												<form:title>
-													<!--<core:Title text="John Doe"/>-->
-												</form:title>
-												<form:layout>
-													<form:ResponsiveGridLayout labelSpanXL="4" labelSpanL="3" labelSpanM="3" labelSpanS="12" adjustLabelSpan="false" emptySpanXL="0"
-														emptySpanL="4" emptySpanM="0" emptySpanS="0" columnsXL="2" columnsL="1" columnsM="1" singleContainerFullSize="false"/>
-												</form:layout>
-												<form:formContainers>
-													<form:FormContainer ariaLabelledBy="Title2">
-														<form:toolbar>
-															<m:Toolbar>
-																<m:Panel>
-																	<m:Toolbar>
-																		<m:ToolbarSpacer/>
-																		<m:Title  text="John Doe" level="H5" titleStyle="H2"/>
-																		<m:ToolbarSpacer/>
-																		<m:Button icon="sap-icon://delete" press="onDelete"/>
-																	</m:Toolbar>
-																</m:Panel>
-															</m:Toolbar>
-														</form:toolbar>
-														<form:formElements>
-															<form:FormElement label="Abstract">
-																<form:fields>
-																	<m:Text
-																		text="Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It"/>
-																</form:fields>
-															</form:FormElement>
-															<form:FormElement label="Key Achievements">
-																<form:fields>
-																	<m:Text
-																		text="Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survi"/>
-																</form:fields>
-															</form:FormElement>
-															<form:FormElement label="Customer Quotes">
-																<form:fields>
-																	<m:Text
-																		text="Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it "/>
-																</form:fields>
-															</form:FormElement>
-														</form:formElements>
-													</form:FormContainer>
-												</form:formContainers>
-											</form:Form>
-										</m:HBox>
-									</fn:content>
-								</fn:Card>
-							</m:VBox>
-
-						</l:VerticalLayout>
-						</blocks>
-					</ObjectPageSubSection>
-				</subSections>
-			</ObjectPageSection>
-		</sections>
-	</ObjectPageLayout>
+												</fn:content>
+											</fn:Card>
+										</m:VBox>
+									</l:VerticalLayout>
+								</blocks>
+							</ObjectPageSubSection>
+						</subSections>
+					</ObjectPageSection>
+				</sections>
+			</ObjectPageLayout>
 		</m:content>
-	<m:footer>
+		<m:footer>
 			<m:Toolbar>
 				<m:ToolbarSpacer/>
-	<m:Button text="Nominee" type="Emphasized" icon="sap-icon://add" iconFirst="true" width="auto" enabled="true" visible="true"
-						iconDensityAware="false" press="onAddNominee"/>
-					<!--
+				<m:Button text="Nominee" type="Emphasized" icon="sap-icon://add" iconFirst="true" width="auto" enabled="true" visible="true"
+					iconDensityAware="false" press="onAddNominee"/>
+				<!--
 					<Button text="Save" type="Accept" icon="sap-icon://save" iconFirst="true" width="auto" enabled="true" visible="true"
 						iconDensityAware="false"/>-->
-					<m:Button text="Cancel" type="Reject" icon="sap-icon://cancel" iconFirst="true" width="auto" enabled="true" visible="true"
-						iconDensityAware="false"/>
+				<m:Button text="Cancel" type="Reject" icon="sap-icon://cancel" iconFirst="true" width="auto" enabled="true" visible="true"
+					iconDensityAware="false"/>
 			</m:Toolbar>
 		</m:footer>
 	</m:Page>

@@ -10,9 +10,9 @@
 		</content>
 		<beginButton/>
 		<buttons>
-			<Button text="Yes" type="Default" iconFirst="true" width="auto" enabled="true" visible="true" iconDensityAware="false"
+			<Button text="Yes" type="Accept" iconFirst="true" width="auto" enabled="true" visible="true" iconDensityAware="false"
 				press="onVoteConfirm"/>
-			<Button text="No" type="Default" iconFirst="true" width="auto" enabled="true" visible="true" iconDensityAware="false"
+			<Button text="No" type="Reject" iconFirst="true" width="auto" enabled="true" visible="true" iconDensityAware="false"
 				press="onVoteCancel"/>
 		</buttons>
 		<customHeader/>
