@@ -1,7 +1,7 @@
 <mvc:View xmlns:mvc="sap.ui.core.mvc" xmlns="sap.m" xmlns:m="sap.m" xmlns:form="sap.ui.layout.form" xmlns:tnt="sap.tnt"
 	xmlns:core="sap.ui.core" xmlns:chart="sap.suite.ui.commons" controllerName="com.sap.build.leonardo.votingApp.controller.Page"
 	xmlns:l="sap.ui.layout" xmlns:w="sap.ui.integration.widgets" xmlns:f="sap.ui.layout.form" xmlns:fn="sap.f">
-<fn:DynamicPage id="dynamicPageId" class="sapUiNoContentPadding">
+<fn:DynamicPage id="dynamicPageId" class="sapUiNoContentPadding" showFooter="true">
 			<!-- DynamicPage Title -->
 			<fn:title>
 				<fn:DynamicPageTitle>
@@ -19,7 +19,7 @@
 			
 					</fn:snappedContent>
 					<fn:actions>
-						<m:Button icon="sap-icon://refresh" press="onRefresh" tooltip="Refresh"/>
+			<m:Button icon="sap-icon://refresh" press="onRefresh" tooltip="Refresh"/>
 			<m:Button icon="sap-icon://full-screen" press="onSetFullScreen" tooltip="Enter Full Screen Mode" id="setFullScreen"/>
 			<m:Button icon="sap-icon://exit-full-screen" press="onExitFullScreen" tooltip="Exit Full Screen Mode" id="exitFullScreen" visible="false"/>
 					</fn:actions>
@@ -73,6 +73,18 @@
 					<IconTabFilter icon="sap-icon://business-objects-experience" iconColor="Neutral" text="Results" count="" design="Vertical" showAll="false"
 						textDirection="Inherit" enabled="true" visible="true" iconDensityAware="false">
 						<content>
+
+<!--						<VBox class='settingsBox'>
+                        <Label text = 'show Label' design="Bold" class='settingsLabel'></Label>
+                        <Switch class='settingsSwitch' state="" change='onDataLabelChanged'>
+                            <layoutData>
+                                <FlexItemData growFactor="1" />
+                            </layoutData>
+                        </Switch>
+                    </VBox>
+
+-->
+
 							<chart:ChartContainer id="chartContainer" showFullScreen="true" showPersonalization="false" autoAdjustHeight="false"
 								showSelectionDetails="true" title="Votes By Nominees"></chart:ChartContainer>
 						</content>
@@ -81,7 +93,7 @@
 			</IconTabBar>
 			</fn:content>
 			<!-- DynamicPage fnooter -->
-			<fn:footer>
+			<fn:footer class="sapUiNoContentPadding">
 			<m:Toolbar>
 				<m:ToolbarSpacer/>
 				<m:Button text="Nominee" type="Emphasized" icon="sap-icon://add" iconFirst="true" width="auto"

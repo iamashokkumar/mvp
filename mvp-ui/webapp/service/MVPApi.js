@@ -49,8 +49,7 @@ sap.ui.define([
     }
 
     function makeRequest(method, resourceUrl, data) {
-        var requestPromise = csrfToken ? jQuery.when() : initializeCSRF();
-        requestPromise =  jQuery.when() ;
+        var requestPromise = initializeCSRF();
 
         return ErrorHandler.enableErrorMessages(requestPromise.then(function() {
             return jQuery.ajax({
