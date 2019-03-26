@@ -157,16 +157,31 @@ sap.ui.define([
             var CategoryModel = new JSONModel({});
             this.setModel(CategoryModel, "CategoryModel");
             var oControl = this;
-            MVPApi.get(getCategoryURL, null).then(function(data) {
-                var categories = JSON.parse(data);
-                if (categories.Response.CODE == "SUCCESS") {
-                    oControl._setModel("/category", categories.MVPCategories, "CategoryModel");
-                    if (categories.MVPCategories.length > 0 && request==null)
-                        sap.ui.getCore().getEventBus().publish("Page", "loadData", {
-                            Category: categories.MVPCategories[0]
-                        });
-                }
-            });
+            MVPApi.get(getCategoryURL, null)
+                .fail(function(data) {
+                    var categories = JSON.parse(data.responseText);
+                    var bCompact = !!oControl.getView().$().closest(".sapUiSizeCompact").length;
+
+                    console.log(categories)
+                    MessageBox.error(
+                        categories.Response.Text, {
+                            styleClass: bCompact ? "sapUiSizeCompact" : ""
+                        }
+                    );
+                })
+                .then(function(data) {
+                    var categories = JSON.parse(data);
+                    if (categories.Response.CODE == "SUCCESS") {
+                        oControl._setModel("/category", categories.MVPCategories, "CategoryModel");
+                        if (categories.MVPCategories.length > 0 && request == null)
+                            sap.ui.getCore().getEventBus().publish("Page", "loadData", {
+                                Category: categories.MVPCategories[0]
+                            });
+                    } else {
+                        console.log(categories);
+                        //  MessageBox.error(categories)
+                    }
+                });
         },
 
         onInit: function() {
