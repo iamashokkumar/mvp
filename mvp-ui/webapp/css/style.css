@@ -25,3 +25,10 @@
   padding: 0px;
 
 }
+
+.nomargin{
+  margin: 0px!important
+}
+.marginLeft{
+  margin-left: 60px;
+}

@@ -22,7 +22,7 @@ sap.ui.define(
                 vizFrames: {
                     config: {
                         height: "700px",
-                        width: "100%",
+                        width: "90%",
                         uiConfig: {
                             applicationSet: "fiori"
                         }
@@ -200,6 +200,7 @@ sap.ui.define(
                     oControl._setModel("/nominees", nominees, "NomineeModel");
                     oControl._setModel("/nomineescount", nominees.length, "NomineeModel");
                     oControl._setModel("/nomineeLabel", nominees.length, "NomineeModel");
+                    oControl._setModel("/state",false, "NomineeModel");
                     oControl._setModel("/userId", userName, "NomineeModel");
 
 
@@ -269,6 +270,7 @@ sap.ui.define(
                 });
                 this._addFeedItems(oVizFrame, vizFrameConfig.feedItems);
                 oVizFrame.setVizType(vizFrameConfig.vizType);
+                this.oVizFrame=oVizFrame;
                 return oVizFrame;
             },
             _addFeedItems: function(vizFrame, feedItems) {
@@ -389,8 +391,7 @@ sap.ui.define(
                     $.map(nominees, function(value) {
                         if (value.MVPNomineeId == targetNomineeId) {
                             editNominate = value;
-                            editNominate.mode = "edit";
-
+                            editNominate.mode = "Edit";
                         }
                     })
                 }
@@ -439,12 +440,10 @@ sap.ui.define(
                     this.voteDialog = dialog;
                     oView.addDependent(dialog);
                 }
-
                 dialog.setModel(new JSONModel({
                     NomineeId: targetNomineeId,
                     NomineeName: targetNomineeName
                 }), "Nominee");
-
 
                 this.setModel(new JSONModel({
                     NomineeId: targetNomineeId,
@@ -556,6 +555,17 @@ sap.ui.define(
 
             onDataLabelChanged: function() {
 
+            var state = this.getModel("NomineeModel").getProperty("/state");
+
+            if(this.oVizFrame){
+                 this.oVizFrame.setVizProperties({
+                    plotArea: {
+                        dataLabel: {
+                            visible: state
+                        }
+                    }
+                });
+            }
 
                 //this.
             },
