@@ -11,6 +11,7 @@
 				<fn:expandedContent>
 					<tnt:InfoLabel text="{CategoryModel>/category/MVPCategoryNominationStatusText}"
 						colorScheme="{path: 'CategoryModel>/category/MVPCategoryNominationStatus', formatter: '.formatter.nominationStatus' }" class="sapUiMediumMarginEnd" />
+
 					<tnt:InfoLabel text="{CategoryModel>/category/MVPCategoryVotingStatusText}"
 						colorScheme="{path: 'CategoryModel>/category/MVPCategoryVotingStatus', formatter: '.formatter.votingStatus' }"/>
 				</fn:expandedContent>
