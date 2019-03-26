@@ -1,6 +1,13 @@
+function getCurrentTimestamp(connection) {
+	var query = "SELECT current_timestamp FROM DUMMY";
+	var currentTimeStamp = connection.executeQuery(query);
+	return currentTimeStamp[0].CURRENT_TIMESTAMP;
+}
+
 if ($.request.method === $.net.http.GET) {
 	var connection = "";
-	var userEmailId = "";	
+	var userEmailId = "";
+	var currentTimeStamp = "";
 	var responseJSON = {
 		Userid: [],
 		Response: [],
@@ -23,17 +30,32 @@ if ($.request.method === $.net.http.GET) {
 			if (userResult.length > 0) {
 
 				if (mvpCategoryId !== undefined && mvpCategoryId !== '') {
-					query = "SELECT nominee.\"MVPNomineeId\", nominee.\"MVPNomineeName\", count(vote.\"MVPNomineeId\") as \"MVPVotes\" FROM \"mvpadmin.mvpdb::mvp.MVPNominee\" AS nominee LEFT OUTER JOIN \"mvpadmin.mvpdb::mvp.MVPVote\" AS vote ON nominee.\"MVPCategoryId\" = vote.\"MVPCategoryId\" and nominee.\"MVPNomineeId\" = vote.\"MVPNomineeId\" where nominee.\"MVPCategoryId\" = " + mvpCategoryId + " GROUP BY nominee.\"MVPNomineeId\", nominee.\"MVPNomineeName\" ORDER BY COUNT(vote.\"MVPNomineeId\") DESC";
 
-					var MVPNomineeVotes = connection.executeQuery(query);
-					for (var nominee of MVPNomineeVotes) {
-						responseJSON.MVPResults.push(nominee);
+					query = "SELECT * FROM \"mvpadmin.mvpdb::mvp.MVPCategory\" WHERE \"MVPCategoryId\" = " + mvpCategoryId;
+					var MVPCategory = connection.executeQuery(query);
+					currentTimeStamp = getCurrentTimestamp(connection);
+					//Is voting complete?
+					if (currentTimeStamp > MVPCategory[0].MVPCategoryVoteEndDate) {
+						query =
+							"SELECT nominee.\"MVPNomineeId\", nominee.\"MVPNomineeName\", count(vote.\"MVPNomineeId\") as \"MVPVotes\" FROM \"mvpadmin.mvpdb::mvp.MVPNominee\" AS nominee LEFT OUTER JOIN \"mvpadmin.mvpdb::mvp.MVPVote\" AS vote ON nominee.\"MVPCategoryId\" = vote.\"MVPCategoryId\" and nominee.\"MVPNomineeId\" = vote.\"MVPNomineeId\" where nominee.\"MVPCategoryId\" = " +
+							mvpCategoryId + " GROUP BY nominee.\"MVPNomineeId\", nominee.\"MVPNomineeName\" ORDER BY COUNT(vote.\"MVPNomineeId\") DESC";
+
+						var MVPNomineeVotes = connection.executeQuery(query);
+						for (var nominee of MVPNomineeVotes) {
+							responseJSON.MVPResults.push(nominee);
+						}
+						$.response.status = $.net.http.OK;
+						responseJSON.Response = {
+							"CODE": "SUCCESS",
+							"Text": "Votes Fetched."
+						};
+					} else {
+						$.response.status = $.net.http.BAD_REQUEST;
+						responseJSON.Response = {
+							"CODE": "RESULTS_NOT_READY",
+							"Text": "Results will be available as soon as voting ends."
+						};
 					}
-					$.response.status = $.net.http.OK;
-					responseJSON.Response = {
-						"CODE": "SUCCESS",
-						"Text": "Votes Fetched."
-					};
 				} else {
 					$.response.status = $.net.http.BAD_REQUEST;
 					responseJSON.Response = {

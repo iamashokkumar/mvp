@@ -76,7 +76,8 @@ function isVotingOnCategoryOpen(mvpCategory) {
 
 function isNomineeInCategory(mvpCategoryId, mvpNomineeId, connection) {
 	var isNomineeValid = false;
-	query = "SELECT * FROM \"mvpadmin.mvpdb::mvp.MVPNominee\" WHERE \"MVPCategoryId\" = " + mvpCategoryId + " AND \"MVPNomineeId\" = " + mvpNomineeId;
+	query = "SELECT * FROM \"mvpadmin.mvpdb::mvp.MVPNominee\" WHERE \"MVPCategoryId\" = " + mvpCategoryId + " AND \"MVPNomineeId\" = " +
+		mvpNomineeId;
 	var MVPNomineeInCategory = connection.executeQuery(query);
 	if (MVPNomineeInCategory.length > 0) {
 		isNomineeValid = true;
@@ -173,35 +174,45 @@ try {
 					if (isCategoryOpen(mvpCategory) & isNominationEditOpen(mvpCategory)) {
 
 						payload = JSON.parse($.request.body.asString());
-						query = "INSERT INTO \"mvpadmin.mvpdb::mvp.MVPNominee\" VALUES(" + payload.MVPCategoryId + ",'" + payload.MVPNomineeName + "','" +
-							payload.MVPNomineeAvatarFileName + "','" + payload.MVPNomineeAvatarFileNameExtn + "','" + payload.MVPNomineeAvatarFileData + "','" +
-							payload.MVPNomineeAbstract +
-							"','" + payload.MVPNomineeKeyAchievements + "','" + payload.MVPNomineeCustomerQuotes + "','" + userEmailId +
-							"', current_timestamp,'" +
-							userEmailId + "', current_timestamp)";
 
-						/*						var MVPNomineeName = "Test Nominee";
-												var MVPNomineeAvatarFileName = "";
-												var MVPNomineeAvatarFileNameExtn = "";
-												var MVPNomineeAvatarFileData = "";
-												var MVPNomineeAbstract = "This is a test abstract";
-												var MVPNomineeKeyAchievements = "This is demo key achievement";
-												var MVPNomineeCustomerQuotes = "This is demo customer quote";
+						if (payload.MVPNomineeName !== undefined && payload.MVPNomineeName !== '' && payload.MVPNomineeName.length > 0) {
 
-												query = "INSERT INTO \"mvpadmin.mvpdb::mvp.MVPNominee\" VALUES(" + mvpCategoryId + ",'" + MVPNomineeName + "','" +
-													MVPNomineeAvatarFileName + "','" + MVPNomineeAvatarFileNameExtn + "','" + MVPNomineeAvatarFileData + "','" +
-													MVPNomineeAbstract +
-													"','" + MVPNomineeKeyAchievements + "','" + MVPNomineeCustomerQuotes + "','" + userEmailId +
-													"', current_timestamp,'" +
-													userEmailId + "', current_timestamp)";*/
+							query = "INSERT INTO \"mvpadmin.mvpdb::mvp.MVPNominee\" VALUES(" + payload.MVPCategoryId + ",'" + payload.MVPNomineeName + "','" +
+								payload.MVPNomineeAvatarFileName + "','" + payload.MVPNomineeAvatarFileNameExtn + "','" + payload.MVPNomineeAvatarFileData + "','" +
+								payload.MVPNomineeAbstract +
+								"','" + payload.MVPNomineeKeyAchievements + "','" + payload.MVPNomineeCustomerQuotes + "','" + userEmailId +
+								"', current_timestamp,'" +
+								userEmailId + "', current_timestamp)";
 
-						var MVPNominee = connection.executeUpdate(query);
-						connection.commit();
-						$.response.status = $.net.http.OK;
-						responseJSON.Response = {
-							"CODE": "SUCCESS",
-							"Text": "Nomination Saved Successfully."
-						};
+							/*						var MVPNomineeName = "Test Nominee";
+													var MVPNomineeAvatarFileName = "";
+													var MVPNomineeAvatarFileNameExtn = "";
+													var MVPNomineeAvatarFileData = "";
+													var MVPNomineeAbstract = "This is a test abstract";
+													var MVPNomineeKeyAchievements = "This is demo key achievement";
+													var MVPNomineeCustomerQuotes = "This is demo customer quote";
+
+													query = "INSERT INTO \"mvpadmin.mvpdb::mvp.MVPNominee\" VALUES(" + mvpCategoryId + ",'" + MVPNomineeName + "','" +
+														MVPNomineeAvatarFileName + "','" + MVPNomineeAvatarFileNameExtn + "','" + MVPNomineeAvatarFileData + "','" +
+														MVPNomineeAbstract +
+														"','" + MVPNomineeKeyAchievements + "','" + MVPNomineeCustomerQuotes + "','" + userEmailId +
+														"', current_timestamp,'" +
+														userEmailId + "', current_timestamp)";*/
+
+							var MVPNominee = connection.executeUpdate(query);
+							connection.commit();
+							$.response.status = $.net.http.OK;
+							responseJSON.Response = {
+								"CODE": "SUCCESS",
+								"Text": "Nomination Saved Successfully."
+							};
+						} else {
+							$.response.status = $.net.http.BAD_REQUEST;
+							responseJSON.Response = {
+								"CODE": "BAD_REQUEST",
+								"Text": "Nominee name is mandatory."
+							};
+						}
 					} else {
 						$.response.status = $.net.http.BAD_REQUEST;
 						responseJSON.Response = {
@@ -276,40 +287,49 @@ try {
 					if (isCategoryOpen(mvpCategory) & isNominationEditOpen(mvpCategory)) {
 
 						payload = JSON.parse($.request.body.asString());
-						query = "UPDATE \"mvpadmin.mvpdb::mvp.MVPNominee\" SET \"MVPNomineeName\" = '" + payload.MVPNomineeName +
-							"', \"MVPNomineeAvatarFileName\" = '" + payload.MVPNomineeAvatarFileName + "', \"MVPNomineeAvatarFileNameExtn\" = '" +
-							payload.MVPNomineeAvatarFileNameExtn + "', \"MVPNomineeAvatarFileData\" = '" + payload.MVPNomineeAvatarFileData +
-							"', \"MVPNomineeAbstract\" = '" +
-							payload.MVPNomineeAbstract + "', \"MVPNomineeKeyAchievements\" = '" + payload.MVPNomineeKeyAchievements +
-							"', \"MVPNomineeCustomerQuotes\" = '" +
-							payload.MVPNomineeCustomerQuotes + "', \"MVPNomineeChangedBy\" = '" + userEmailId +
-							"', \"MVPNomineeChangedOn\" =  current_timestamp WHERE \"MVPCategoryId\" = " + mvpCategoryId + " and \"MVPNomineeId\" = " +
-							payload.MVPNomineeId;
+						if (payload.MVPNomineeName !== undefined && payload.MVPNomineeName !== '' && payload.MVPNomineeName.length > 0) {
 
-						/*						var MVPNomineeId = "7";
-												var MVPNomineeName = "Update Nominee";
-												var MVPNomineeAvatarFileName = "";
-												var MVPNomineeAvatarFileNameExtn = "";
-												var MVPNomineeAvatarFileData = "";
-												var MVPNomineeAbstract = "This is a test abstract";
-												var MVPNomineeKeyAchievements = "This is demo key achievement";
-												var MVPNomineeCustomerQuotes = "This is demo customer quote";
+							query = "UPDATE \"mvpadmin.mvpdb::mvp.MVPNominee\" SET \"MVPNomineeName\" = '" + payload.MVPNomineeName +
+								"', \"MVPNomineeAvatarFileName\" = '" + payload.MVPNomineeAvatarFileName + "', \"MVPNomineeAvatarFileNameExtn\" = '" +
+								payload.MVPNomineeAvatarFileNameExtn + "', \"MVPNomineeAvatarFileData\" = '" + payload.MVPNomineeAvatarFileData +
+								"', \"MVPNomineeAbstract\" = '" +
+								payload.MVPNomineeAbstract + "', \"MVPNomineeKeyAchievements\" = '" + payload.MVPNomineeKeyAchievements +
+								"', \"MVPNomineeCustomerQuotes\" = '" +
+								payload.MVPNomineeCustomerQuotes + "', \"MVPNomineeChangedBy\" = '" + userEmailId +
+								"', \"MVPNomineeChangedOn\" =  current_timestamp WHERE \"MVPCategoryId\" = " + mvpCategoryId + " and \"MVPNomineeId\" = " +
+								payload.MVPNomineeId;
 
-												query = "UPDATE \"mvpadmin.mvpdb::mvp.MVPNominee\" SET \"MVPNomineeName\" = '" + MVPNomineeName +
-													"', \"MVPNomineeAvatarFileName\" = '" + MVPNomineeAvatarFileName + "', \"MVPNomineeAvatarFileNameExtn\" = '" +
-													MVPNomineeAvatarFileNameExtn + "', \"MVPNomineeAvatarFileData\" = '" + MVPNomineeAvatarFileData + "', \"MVPNomineeAbstract\" = '" +
-													MVPNomineeAbstract + "', \"MVPNomineeKeyAchievements\" = '" + MVPNomineeKeyAchievements + "', \"MVPNomineeCustomerQuotes\" = '" +
-													MVPNomineeCustomerQuotes + "', \"MVPNomineeChangedBy\" = '" + userEmailId +
-													"', \"MVPNomineeChangedOn\" =  current_timestamp WHERE \"MVPCategoryId\" = " + mvpCategoryId + " and \"MVPNomineeId\" = " +
-													MVPNomineeId;*/
+							/*						var MVPNomineeId = "7";
+													var MVPNomineeName = "Update Nominee";
+													var MVPNomineeAvatarFileName = "";
+													var MVPNomineeAvatarFileNameExtn = "";
+													var MVPNomineeAvatarFileData = "";
+													var MVPNomineeAbstract = "This is a test abstract";
+													var MVPNomineeKeyAchievements = "This is demo key achievement";
+													var MVPNomineeCustomerQuotes = "This is demo customer quote";
 
-						var MVPNominee = connection.executeUpdate(query);
-						connection.commit();
-						$.response.status = $.net.http.OK;
-						responseJSON.Response = {
-							"CODE": "SUCCESS",
-							"Text": "Nomination Updated Successfully."
-						};
+													query = "UPDATE \"mvpadmin.mvpdb::mvp.MVPNominee\" SET \"MVPNomineeName\" = '" + MVPNomineeName +
+														"', \"MVPNomineeAvatarFileName\" = '" + MVPNomineeAvatarFileName + "', \"MVPNomineeAvatarFileNameExtn\" = '" +
+														MVPNomineeAvatarFileNameExtn + "', \"MVPNomineeAvatarFileData\" = '" + MVPNomineeAvatarFileData + "', \"MVPNomineeAbstract\" = '" +
+														MVPNomineeAbstract + "', \"MVPNomineeKeyAchievements\" = '" + MVPNomineeKeyAchievements + "', \"MVPNomineeCustomerQuotes\" = '" +
+														MVPNomineeCustomerQuotes + "', \"MVPNomineeChangedBy\" = '" + userEmailId +
+														"', \"MVPNomineeChangedOn\" =  current_timestamp WHERE \"MVPCategoryId\" = " + mvpCategoryId + " and \"MVPNomineeId\" = " +
+														MVPNomineeId;*/
+
+							var MVPNominee = connection.executeUpdate(query);
+							connection.commit();
+							$.response.status = $.net.http.OK;
+							responseJSON.Response = {
+								"CODE": "SUCCESS",
+								"Text": "Nomination Updated Successfully."
+							};
+						} else {
+							$.response.status = $.net.http.BAD_REQUEST;
+							responseJSON.Response = {
+								"CODE": "BAD_REQUEST",
+								"Text": "Nominee name is mandatory."
+							};
+						}
 					} else {
 						$.response.status = $.net.http.BAD_REQUEST;
 						responseJSON.Response = {
@@ -346,10 +366,10 @@ try {
 							if (isNomineeInCategory(mvpCategoryId, payload.MVPNomineeId, connection)) {
 								// Did user already vote for nominee?
 								if (!hasUserAlreadyVotedForNominee(mvpCategoryId, userEmailId, payload.MVPNomineeId, connection)) {
-									// Did user already vote? If 'No' or voting mode is 'MULTI', then proceed
+									// Did user already vote? If 'No' or voting mode is 'MULTIPLE', then proceed
 									if ((mvpCategory[0].MVPCategoryVoteMode === 'SINGLE' & !hasUserAlreadyVoted(mvpCategoryId, userEmailId, connection)) || (
 											mvpCategory[0].MVPCategoryVoteMode ===
-											'MULTI')) {
+											'MULTIPLE')) {
 
 										query = "INSERT INTO \"mvpadmin.mvpdb::mvp.MVPVote\" VALUES(" + mvpCategoryId + "," + payload.MVPNomineeId + ", '" + userEmailId +
 											"', current_timestamp)";

@@ -21,14 +21,20 @@ if ($.request.method === $.net.http.GET) {
 		connection = $.hdb.getConnection();
 		userEmailId = $.session.getUsername();
 		// userEmailId = 'ashok.kumar.m01@sap.com';
+		var mvpCategoryId = $.request.parameters.get("MVPCategoryId");
+		
 		if (userEmailId !== undefined && userEmailId !== '') {
 			userEmailId = (userEmailId !== undefined && userEmailId !== '') ? userEmailId.toLowerCase() : '';
 			// Validate User
 			query = "SELECT * FROM \"mvpadmin.mvpdb::mvp.MVPUser\" WHERE \"UserEmail\" = '" + userEmailId + "'";
 			var userResult = connection.executeQuery(query);
 			if (userResult.length > 0) {
-				query =
-					"SELECT * FROM \"mvpadmin.mvpdb::mvp.MVPCategory\" WHERE \"MVPCategoryStatusId\" NOT IN ('DRAFT','CANCELED') ORDER BY \"MVPCategoryVoteEndDate\" DESC";
+
+				if (mvpCategoryId !== undefined && mvpCategoryId !== '') {
+					query = "SELECT * FROM \"mvpadmin.mvpdb::mvp.MVPCategory\" WHERE \"MVPCategoryStatusId\" NOT IN ('DRAFT','CANCELED') AND \"MVPCategoryId\" = " + mvpCategoryId;
+				} else {
+					query = "SELECT * FROM \"mvpadmin.mvpdb::mvp.MVPCategory\" WHERE \"MVPCategoryStatusId\" NOT IN ('DRAFT','CANCELED') ORDER BY \"MVPCategoryVoteEndDate\" DESC";
+				}
 				var MVPCategories = connection.executeQuery(query);
 				currentTimeStamp = getCurrentTimestamp(connection);
 				for (var category of MVPCategories) {
@@ -57,7 +63,7 @@ if ($.request.method === $.net.http.GET) {
 
 					if (category.MVPCategoryVoteMode === 'SINGLE') {
 						category.MVPCategoryVoteModeText = 'Note: You can vote for only one nominee.';
-					} else if (category.MVPCategoryVoteMode === 'MULTI') {
+					} else if (category.MVPCategoryVoteMode === 'MULTIPLE') {
 						category.MVPCategoryVoteModeText = 'Note: You can vote for multiple nominees.'
 					}
 
