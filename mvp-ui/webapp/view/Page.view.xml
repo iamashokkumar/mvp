@@ -56,7 +56,7 @@
 								</Panel>
 							</items>
 						</FlexBox>
-					<m:MessageStrip text="{CategoryModel>/category/MVPCategoryVoteModeText}" type="Information" showIcon="true" showCloseButton="false" class="sapUiSmallMargins"></m:MessageStrip>
+					<m:MessageStrip text="{CategoryModel>/category/MVPCategoryVoteModeText}" type="Information" showIcon="true" showCloseButton="false" class="sapUiMediumMargins customColor"></m:MessageStrip>
 					</fn:content>
 				</fn:DynamicPageHeader>
 			</fn:header>

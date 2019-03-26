@@ -16,7 +16,10 @@
 						<m:HBox class="centerVBox">
 							<m:ToggleButton width="150px" text="{= ${Nominee>/voted}!== true? 'Vote':'Voted' }" type="Accept" press="onVoteNominee"
 								pressed="{= ${Nominee>/voted}=== true }" app:NomineeName="{Nominee>/Nominee/MVPNomineeName}" app:NomineeId="{Nominee>/Nominee/MVPNomineeId}"
-								enabled="{= ${Nominee>/voted}!== true }"/>
+								enabled="{= ${Nominee>/voted}!== true }"
+								visible="{Nominee>/visible}"
+
+								/>
 						</m:HBox>
 					</m:VBox>
 					<m:VBox class="sapUiSmallMargin centerVBox1">
@@ -41,9 +44,12 @@
 													<m:Title text="{Nominee>/Nominee/MVPNomineeName}" level="H5" titleStyle="H2" width="100%"/>
 													<m:ToolbarSpacer/>
 													<m:ToolbarSpacer/>
-													<m:Button visible="{Nominee>/mode}" icon="sap-icon://edit" press="onEditNominee" app:NomineeId="{Nominee>/Nominee/MVPNomineeId}"
+													<m:Button visible="{Nominee>/mode}" enabled="{= ${CategoryModel>/category/MVPCategoryNominationStatus} === 'OPEN_FOR_NOMINATION' }" 
+														icon="sap-icon://edit" press="onEditNominee" app:NomineeId="{Nominee>/Nominee/MVPNomineeId}"  
 														app:NomineeName="{Nominee>/Nominee/MVPNomineeName}"/>
-													<m:Button visible="{Nominee>/mode}" icon="sap-icon://delete" press="onDeleteNominee" app:NomineeId="{Nominee>/Nominee/MVPNomineeId}"
+													<m:Button visible="{Nominee>/mode}" 
+enabled="{= ${CategoryModel>/category/MVPCategoryNominationStatus} === 'OPEN_FOR_NOMINATION' }" 
+														icon="sap-icon://delete" press="onDeleteNominee" app:NomineeId="{Nominee>/Nominee/MVPNomineeId}"
 														app:NomineeName="{Nominee>/Nominee/MVPNomineeName}"/>
 												</m:Toolbar>
 											</m:Panel>

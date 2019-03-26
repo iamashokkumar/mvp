@@ -8,8 +8,8 @@ sap.ui.define([
     var csrfToken = "";
 
     function apiUrl() {
-       //  var sTokenURL = "https://coe-cloud-tech-coecloudtech-innospace-mvp-ui.cfapps.sap.hana.ondemand.com";
-       var sTokenURL= ""
+      //  var sTokenURL = "https://coe-cloud-tech-coecloudtech-innospace-mvp-ui.cfapps.sap.hana.ondemand.com";
+     var sTokenURL= ""
         return sTokenURL;
     }
 
@@ -49,7 +49,11 @@ sap.ui.define([
     }
 
     function makeRequest(method, resourceUrl, data) {
-        var requestPromise = initializeCSRF();
+        var requestPromise = jQuery.when();
+
+        if (method != "GET") {
+            requestPromise = initializeCSRF();
+        }
 
         return ErrorHandler.enableErrorMessages(requestPromise.then(function() {
             return jQuery.ajax({
