@@ -644,7 +644,7 @@ sap.ui.define(
 										if (files != undefined) {
 											var fileName = files[0].name.substr(files[0].name.indexOf('.') + 1, files[0].name.length);
 											if (fileName.toUpperCase() == 'JPG' || fileName.toUpperCase() == 'PNG' || fileName.toUpperCase() == 'JPEG') {
-												if (files[0].size / 1024 / 1024 == 0.6) {
+												if (files[0].size / 1024 / 1024 < 0.6) {
 													reader.onload = function (oEvent) {
 														oControl.byId("image_preview").setSrc(oEvent.target.result);
 														var image = oControl.byId("image_preview").getSrc();
@@ -661,7 +661,8 @@ sap.ui.define(
 											}
 											reader.readAsDataURL(oEvent.target.files.item(0));
 										}
-									});
+									}
+                                });
 							},
 							onInit: function () {
 								//init Model

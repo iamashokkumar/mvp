@@ -42,7 +42,7 @@
 													<m:ToolbarSpacer/>
 													<m:ToolbarSpacer/>
 													<m:Button visible="{Nominee>/mode}"
-														enabled="{= ${CategoryModel>/category/MVPCategoryNominationStatus} === 'OPEN_FOR_NOMINATION' && Nominee>/voted === " false" }"
+														enabled="{= ${CategoryModel>/category/MVPCategoryNominationStatus} === 'OPEN_FOR_NOMINATION'}"
 														icon="sap-icon://edit" press="onEditNominee" app:NomineeId="{Nominee>/Nominee/MVPNomineeId}"
 														app:NomineeName="{Nominee>/Nominee/MVPNomineeName}"/>
 													<m:Button visible="{Nominee>/mode}" enabled="{= ${CategoryModel>/category/MVPCategoryNominationStatus} === 'OPEN_FOR_NOMINATION' }"

@@ -4,11 +4,13 @@ sap.ui.define([
     "./utilities",
     "sap/ui/core/routing/History",
     "com/sap/build/leonardo/votingApp/service/MVPApi",
-    "sap/ui/model/json/JSONModel"
-], function(BaseController, MessageBox, Utilities, History, MVPApi, JSONModel) {
+    "sap/ui/model/json/JSONModel",
+            "com/sap/build/leonardo/votingApp/service/formatter"
+], function(BaseController, MessageBox, Utilities, History, MVPApi, JSONModel,formatter) {
     "use strict";
 
     return BaseController.extend("com.sap.build.leonardo.votingApp.controller.MasterPage", {
+        formatter:formatter,
         onClick: function(oEvent) {
             this._oBusyDialog = null;
             if (!this._oBusyDialog) {
