@@ -34,7 +34,7 @@ sap.ui.define(
                         },
                         dataset: {
                             dimensions: [{
-                                name: "Name",
+                                name: "Nominees",
                                 value: "{MVPNomineeName}"
                             }],
                             measures: [{
@@ -55,9 +55,9 @@ sap.ui.define(
                             values: []
                         }],
                         analysisObjectProps: {
-                            uid: "Name",
+                            uid: "Nominees",
                             type: "Dimension",
-                            name: "Name"
+                            name: "Nominees"
                         },
                         vizType: "bar"
                     }
@@ -142,7 +142,7 @@ sap.ui.define(
             onRefresh: function() {
 
 
-                if (this.getModel("CategoryModel").getProperty("/category")==null) {
+                if (this.getModel("CategoryModel").getProperty("/category") == null) {
                     var bCompact = !!this.getView().$().closest(".sapUiSizeCompact").length;
 
                     MessageBox.error(
@@ -294,12 +294,21 @@ sap.ui.define(
                 var oDataSet = new sap.viz.ui5.data.FlattenedDataset(vizFrameConfig.dataset);
                 oVizFrame.setDataset(oDataSet);
                 oVizFrame.setModel(oModel);
+
                 oVizFrame.setVizProperties({
+                    plotArea: {
+                        dataLabel: {
+                            visible: true
+                        }
+                    },
                     title: {
                         visible: false,
                         text: "MVP Votes"
                     }
                 });
+
+
+
                 this._addFeedItems(oVizFrame, vizFrameConfig.feedItems);
                 oVizFrame.setVizType(vizFrameConfig.vizType);
                 this.oVizFrame = oVizFrame;
@@ -367,17 +376,11 @@ sap.ui.define(
             },
 
             onNameChange: function(oEvent) {
-
-
                 if (oEvent.getParameter("newValue") == null || oEvent.getParameter("newValue") == "") {
                     this.getModel("EditNomineeModel").setProperty("/valueState", "Error");
                 } else if (oEvent.getParameter("newValue").length > 0) {
-
                     this.getModel("EditNomineeModel").setProperty("/valueState", "None");
-
                 }
-
-
             },
             _updateNominee: function(editNominee) {
                 var NomineeURL = this.getOwnerComponent().getManifestEntry("/sap.app/dataSources/Nominee")
@@ -409,14 +412,14 @@ sap.ui.define(
                 var getCategoryURL = this.getOwnerComponent().getManifestEntry("/sap.app/dataSources/Category");
                 //init Model
 
-                getCategoryURL = getCategoryURL + "?MVPCategoryId=" + categoryId;
+                getCategoryURL = getCategoryURL + "&MVPCategoryId=" + categoryId;
                 var CategoryModel = new JSONModel({});
                 this.setModel(CategoryModel, "CategoryModel");
                 var oControl = this;
                 MVPApi.get(getCategoryURL, null).then(function(data) {
                     var categories = JSON.parse(data);
                     if (categories.Response.CODE == "SUCCESS") {
-
+                        console.log(categories);
                         oControl._setModel("/category", categories.MVPCategories[0], "CategoryModel");
 
                     }
@@ -523,6 +526,8 @@ sap.ui.define(
                     this.voteDialog = dialog;
                     oView.addDependent(dialog);
                 }
+
+                                this.voteDialog.oKevinEvent = oEvent.getSource();
                 dialog.setModel(new JSONModel({
                     NomineeId: targetNomineeId,
                     NomineeName: targetNomineeName
@@ -548,7 +553,11 @@ sap.ui.define(
                 oControl.showBusyDialog();
                 MVPApi.post(serviceURL, postData).fail(function(data) {
                     console.log(data);
+                    
+                    oControl.voteDialog.oKevinEvent.setPressed(false);
+
                     oControl.voteDialog.close();
+
                     var errorText = JSON.parse(data.responseText);
                     oControl.hideBusyDialog();
                     var bCompact = !!oControl.getView().$().closest(".sapUiSizeCompact").length;
@@ -568,6 +577,8 @@ sap.ui.define(
 
             },
             onVoteCancel: function() {
+                //console.log();
+this.voteDialog.oKevinEvent.setPressed(false);
 
                 this.voteDialog.close();
             },
@@ -630,24 +641,6 @@ sap.ui.define(
                 });
                 this.setModel(EditNomineeModel, "EditNomineeModel")
             },
-
-
-            onDataLabelChanged: function() {
-
-                var state = this.getModel("NomineeModel").getProperty("/state");
-
-                if (this.oVizFrame) {
-                    this.oVizFrame.setVizProperties({
-                        plotArea: {
-                            dataLabel: {
-                                visible: state
-                            }
-                        }
-                    });
-                }
-
-                //this.
-            },
             //init upload
             initUpload: function() {
                 //init upload 
@@ -660,7 +653,7 @@ sap.ui.define(
                         var files = oEvent.target.files;
                         if (files != undefined) {
                             var fileName = files[0].name.substr(files[0].name.indexOf('.') + 1, files[0].name.length);
-                            if (fileName == 'jpg' || fileName == 'png') {
+                            if (fileName.toUpperCase() == 'JPG' || fileName.toUpperCase() == 'PNG') {
                                 reader.onload = function(oEvent) {
                                     oControl.byId("image_preview").setSrc(oEvent.target.result);
                                     var image = oControl.byId("image_preview").getSrc();

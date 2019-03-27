@@ -11,7 +11,6 @@
 				<fn:expandedContent>
 					<tnt:InfoLabel text="{CategoryModel>/category/MVPCategoryNominationStatusText}"
 						colorScheme="{path: 'CategoryModel>/category/MVPCategoryNominationStatus', formatter: '.formatter.nominationStatus' }" class="sapUiMediumMarginEnd" />
-
 					<tnt:InfoLabel text="{CategoryModel>/category/MVPCategoryVotingStatusText}"
 						colorScheme="{path: 'CategoryModel>/category/MVPCategoryVotingStatus', formatter: '.formatter.votingStatus' }"/>
 				</fn:expandedContent>
@@ -68,13 +67,6 @@
 					<IconTabFilter icon="sap-icon://business-objects-experience" iconColor="Neutral" text="Results" count="" design="Vertical" showAll="false"
 						textDirection="Inherit" enabled="true" visible="{NomineeModel>/showResults}" iconDensityAware="false">
 						<content>
-							<VBox class='settingsBox'>
-								<Switch class='settingsSwitch' state="{NomineeModel>/state}" change='onDataLabelChanged'>
-									<layoutData>
-										<FlexItemData growFactor="1"/>
-									</layoutData>
-								</Switch>
-							</VBox>
 							<chart:ChartContainer id="chartContainer" showFullScreen="true" showPersonalization="false" autoAdjustHeight="false"
 								showSelectionDetails="true" title="Votes By Nominees"></chart:ChartContainer>
 						</content>
