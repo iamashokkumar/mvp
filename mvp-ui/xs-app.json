@@ -9,11 +9,11 @@
 			"target": "$1",
 			"localDir": "webapp"
 		}, {
-			"source": "(.*)(.xsjs)",
+			"source": "/mvp-api/(.*)(.xsjs)",
 			"destination": "mvp-api",
 			"authenticationType": "xsuaa"
 		}, {
-			"source": "/demo.xsodata/.*$",
+			"source": "/mvp-api/demo.xsodata/.*$",
 			"destination": "mvp-api",
 			"authenticationType": "xsuaa"
 		}

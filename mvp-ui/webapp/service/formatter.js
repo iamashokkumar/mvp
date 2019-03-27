@@ -34,7 +34,7 @@ sap.ui.define([
 				return 2;
 			}
 		},
-		
+
 		nominationStatusMaster: function (sNominationStatus) {
 			switch (sNominationStatus) {
 			case "NOT_OPEN_FOR_NOMINATION":
@@ -55,6 +55,15 @@ sap.ui.define([
 			case "CLOSED_FOR_VOTING":
 				return "Warning"
 			}
+		},
+
+		enableNomineeModification: function (sMVPCategoryNominationStatus, sHasVoted) {
+			var isModificationAllowed = false;
+			if (sMVPCategoryNominationStatus === 'OPEN_FOR_NOMINATION' && sHasVoted == false) {
+				isModificationAllowed = true;
+			}
+			return isModificationAllowed;
 		}
-	};
+	}
+
 });
