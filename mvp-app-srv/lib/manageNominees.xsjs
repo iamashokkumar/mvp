@@ -138,7 +138,7 @@ try {
 				var mvpCategory = getMVPCategory(mvpCategoryId, connection);
 
 				if (mvpCategory.length > 0) {
-					query = "SELECT * FROM \"mvpadmin.mvpdb::mvp.MVPNominee\" WHERE \"MVPCategoryId\" = " + mvpCategoryId;
+					query = "SELECT * FROM \"mvpadmin.mvpdb::mvp.MVPNominee\" WHERE \"MVPCategoryId\" = " + mvpCategoryId + " ORDER BY \"MVPNominatedOn\" ASC";
 					var MVPNominees = connection.executeQuery(query);
 					for (var nominee of MVPNominees) {
 						// Did user already vote for nominee?

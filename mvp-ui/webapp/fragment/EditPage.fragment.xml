@@ -9,7 +9,7 @@
 					</layoutData>
 					<Image id="image_preview" src="{EditNomineeModel>/MVPNomineeAvatarFileData}" densityAware="false" width="300px"></Image>
 					<HBox class="centerVBox ">
-						<u:FileUploader id="fileUploader" tooltip="Upload Image"/>
+						<u:FileUploader id="fileUploader" tooltip="Upload Image (only *.jpeg,*.png, *.jpeg allowed)"/>
 					</HBox>
 				</VBox>
 				<VBox>
@@ -32,19 +32,19 @@
 									<f:FormElement label="Abstract">
 										<f:fields>
 											<TextArea width="100%" value="{EditNomineeModel>/MVPNomineeAbstract}" maxLength="500" rows="3" growing="true" growingMaxLines="5"
-												showExceededText="true"/>
+												showExceededText="false"/>
 										</f:fields>
 									</f:FormElement>
 									<f:FormElement label="Key Achievements">
 										<f:fields>
 											<TextArea width="100%" value="{EditNomineeModel>/MVPNomineeKeyAchievements}" maxLength="500" rows="3" growing="true" growingMaxLines="5"
-												showExceededText="true"/>
+												showExceededText="false"/>
 										</f:fields>
 									</f:FormElement>
 									<f:FormElement label="Customer Quotes">
 										<f:fields>
 											<TextArea width="100%" value="{EditNomineeModel>/MVPNomineeCustomerQuotes}" maxLength="500" rows="3" growing="true" growingMaxLines="5"
-												showExceededText="true"/>
+												showExceededText="false"/>
 										</f:fields>
 									</f:FormElement>
 								</f:formElements>

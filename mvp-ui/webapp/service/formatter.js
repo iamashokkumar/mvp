@@ -27,11 +27,33 @@ sap.ui.define([
 		votingStatus: function (sVotingStatus) {
 			switch (sVotingStatus) {
 			case "NOT_OPEN_FOR_VOTING":
-				return 2;
+				return 3;
 			case "OPEN_FOR_VOTING":
 				return 8;
 			case "CLOSED_FOR_VOTING":
-				return 3;
+				return 2;
+			}
+		},
+		
+		nominationStatusMaster: function (sNominationStatus) {
+			switch (sNominationStatus) {
+			case "NOT_OPEN_FOR_NOMINATION":
+				return "Error";
+			case "OPEN_FOR_NOMINATION":
+				return "Success"
+			case "CLOSED_FOR_NOMINATION":
+				return "Warning"
+			}
+		},
+
+		votingStatusMaster: function (sVotingStatus) {
+			switch (sVotingStatus) {
+			case "NOT_OPEN_FOR_VOTING":
+				return "Error";
+			case "OPEN_FOR_VOTING":
+				return "Success"
+			case "CLOSED_FOR_VOTING":
+				return "Warning"
 			}
 		}
 	};
