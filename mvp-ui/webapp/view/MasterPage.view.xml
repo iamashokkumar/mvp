@@ -13,13 +13,13 @@
 					</Toolbar>
 				</headerToolbar>
 				<items>
-					<ObjectListItem intro="" title="{CategoryModel>MVPCategoryName}" numberUnit="" numberState="None" type="Active" selected="false" showMarkers="false">
+					<ObjectListItem intro="" title="{CategoryModel>MVPCategoryName}" numberUnit="Vote Mode: {CategoryModel>MVPCategoryVoteMode}" numberState="{Success}" type="Active" selected="false">
 						<attributes>
 							<ObjectAttribute text="{CategoryModel>MVPCategoryRegionId}" active="false"/>
-							<ObjectAttribute text="{CategoryModel>MVPCategoryTeamId}" active="false"/>
+							<!--<ObjectAttribute text="{CategoryModel>MVPCategoryTeamId}" active="false"/>-->
 						</attributes>						
 						<firstStatus>
-							<ObjectStatus text="" state="Success" visible="true"/>
+							<ObjectStatus text="{CategoryModel>MVPCategoryTeamId}"/>
 						</firstStatus>
 					</ObjectListItem>
 				</items>
