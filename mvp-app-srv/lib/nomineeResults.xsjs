@@ -7,7 +7,9 @@ function getCurrentTimestamp(connection) {
 if ($.request.method === $.net.http.GET) {
 	var connection = "";
 	var userEmailId = "";
+	var userRole = "";
 	var currentTimeStamp = "";
+	var isShowResults = false;
 	var responseJSON = {
 		Userid: [],
 		Response: [],
@@ -28,34 +30,58 @@ if ($.request.method === $.net.http.GET) {
 			query = "SELECT * FROM \"mvpadmin.mvpdb::mvp.MVPUser\" WHERE \"UserEmail\" = '" + userEmailId + "'";
 			var userResult = connection.executeQuery(query);
 			if (userResult.length > 0) {
-
+				userRole = userResult[0].UserRole;
 				if (mvpCategoryId !== undefined && mvpCategoryId !== '') {
 
 					query = "SELECT * FROM \"mvpadmin.mvpdb::mvp.MVPCategory\" WHERE \"MVPCategoryId\" = " + mvpCategoryId;
-					var MVPCategory = connection.executeQuery(query);
-					currentTimeStamp = getCurrentTimestamp(connection);
-					//Is voting complete?
-					if (currentTimeStamp > MVPCategory[0].MVPCategoryVoteEndDate) {
-						query =
-							"SELECT nominee.\"MVPNomineeId\", nominee.\"MVPNomineeName\", count(vote.\"MVPNomineeId\") as \"MVPVotes\" FROM \"mvpadmin.mvpdb::mvp.MVPNominee\" AS nominee LEFT OUTER JOIN \"mvpadmin.mvpdb::mvp.MVPVote\" AS vote ON nominee.\"MVPCategoryId\" = vote.\"MVPCategoryId\" and nominee.\"MVPNomineeId\" = vote.\"MVPNomineeId\" where nominee.\"MVPCategoryId\" = " +
-							mvpCategoryId + " GROUP BY nominee.\"MVPNomineeId\", nominee.\"MVPNomineeName\" ORDER BY COUNT(vote.\"MVPNomineeId\") DESC";
+					var mvpCategory = connection.executeQuery(query);
+					if (mvpCategory.length > 0) {
 
-						var MVPNomineeVotes = connection.executeQuery(query);
-						for (var nominee of MVPNomineeVotes) {
-							responseJSON.MVPResults.push(nominee);
+						if (userRole !== 'TEAMLEAD') {
+							if (userRole === 'CHIEF') {
+								currentTimeStamp = getCurrentTimestamp(connection);
+								//Is voting complete?
+								if (currentTimeStamp > mvpCategory[0].MVPCategoryVoteEndDate) {
+									isShowResults = true;
+								}
+							}
+							if (isShowResults || userRole === 'SUPER') {
+								query =
+									"SELECT nominee.\"MVPNomineeId\", nominee.\"MVPNomineeName\", count(vote.\"MVPNomineeId\") as \"MVPVotes\" FROM \"mvpadmin.mvpdb::mvp.MVPNominee\" AS nominee LEFT OUTER JOIN \"mvpadmin.mvpdb::mvp.MVPVote\" AS vote ON nominee.\"MVPCategoryId\" = vote.\"MVPCategoryId\" and nominee.\"MVPNomineeId\" = vote.\"MVPNomineeId\" where nominee.\"MVPCategoryId\" = " +
+									mvpCategoryId + " GROUP BY nominee.\"MVPNomineeId\", nominee.\"MVPNomineeName\" ORDER BY COUNT(vote.\"MVPNomineeId\") DESC";
+
+								var MVPNomineeVotes = connection.executeQuery(query);
+								for (var nominee of MVPNomineeVotes) {
+									responseJSON.MVPResults.push(nominee);
+								}
+								$.response.status = $.net.http.OK;
+								responseJSON.Response = {
+									"CODE": "SUCCESS",
+									"Text": "Votes Fetched."
+								};
+							} else {
+								$.response.status = $.net.http.BAD_REQUEST;
+								responseJSON.Response = {
+									"CODE": "RESULTS_NOT_READY",
+									"Text": "Results will be available as soon as voting ends."
+								};
+							}
+						} else {
+							$.response.status = $.net.http.BAD_REQUEST;
+							responseJSON.Response = {
+								"CODE": "BAD_REQUEST",
+								"Text": "Only chiefs can view results."
+							};
 						}
-						$.response.status = $.net.http.OK;
-						responseJSON.Response = {
-							"CODE": "SUCCESS",
-							"Text": "Votes Fetched."
-						};
+
 					} else {
 						$.response.status = $.net.http.BAD_REQUEST;
 						responseJSON.Response = {
-							"CODE": "RESULTS_NOT_READY",
-							"Text": "Results will be available as soon as voting ends."
+							"CODE": "BAD_REQUEST",
+							"Text": "MVP Category ID is Empty or Invalid."
 						};
 					}
+
 				} else {
 					$.response.status = $.net.http.BAD_REQUEST;
 					responseJSON.Response = {
@@ -88,7 +114,8 @@ if ($.request.method === $.net.http.GET) {
 	} finally {
 		connection.close();
 		responseJSON.Userid = {
-			userEmailId
+			userEmailId,
+			userRole
 		};
 		$.response.setBody(JSON.stringify(responseJSON));
 	}

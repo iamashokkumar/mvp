@@ -57,5 +57,6 @@ context mvp {
 			UserEmail		: String(50);
 			UserRegionId	: type of mvp_type.regionId;
 			UserTeamId		: type of mvp_type.teamId;
+			UserRole		: String(10);
     };
 };

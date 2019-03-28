@@ -8,6 +8,7 @@ if ($.request.method === $.net.http.GET) {
 	var connection = "";
 	var query = "";
 	var userEmailId = "";
+	var userRole = "";	
 	var currentTimeStamp = "";
 	var responseJSON = {
 		Userid: [],
@@ -29,7 +30,7 @@ if ($.request.method === $.net.http.GET) {
 			query = "SELECT * FROM \"mvpadmin.mvpdb::mvp.MVPUser\" WHERE \"UserEmail\" = '" + userEmailId + "'";
 			var userResult = connection.executeQuery(query);
 			if (userResult.length > 0) {
-
+				userRole = userResult[0].UserRole;
 				if (mvpCategoryId !== undefined && mvpCategoryId !== '') {
 					query = "SELECT * FROM \"mvpadmin.mvpdb::mvp.MVPCategory\" WHERE \"MVPCategoryStatusId\" NOT IN ('DRAFT','CANCELED') AND \"MVPCategoryId\" = " + mvpCategoryId;
 				} else {
@@ -99,7 +100,8 @@ if ($.request.method === $.net.http.GET) {
 	} finally {
 		connection.close();
 		responseJSON.Userid = {
-			userEmailId
+			userEmailId,
+			userRole
 		};
 		$.response.setBody(JSON.stringify(responseJSON));
 	}
