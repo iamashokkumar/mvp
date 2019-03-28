@@ -1,5 +1,5 @@
 <mvc:View xmlns:mvc="sap.ui.core.mvc" xmlns="sap.m" controllerName="com.sap.build.leonardo.votingApp.controller.MasterPage">
-	<Page title="Category" showHeader="true" showFooter="true" showNavButton="false">
+	<Page title="Category"  titleLevel="H1" showHeader="true" showFooter="true" showNavButton="false">
 		<content>
 			<List mode="SingleSelectMaster" width="100%" headerText="Header" footerText="" backgroundDesign="Translucent"
 			items="{ path: 'CategoryModel>/category' }"
