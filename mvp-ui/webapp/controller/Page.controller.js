@@ -155,8 +155,7 @@ sap.ui.define(
 					this.bus.publish("Master", "loadData", {
 						refresh: true
 					});
-					this.refreshData(mvpCategoryId);
-					this.refreshCategory(mvpCategoryId);
+                    this.refreshCategory(mvpCategoryId);
 				}
 
 			},
@@ -237,7 +236,7 @@ sap.ui.define(
 
 								var visibleMode = true;
 								if (votingMode === "CLOSED_FOR_VOTING") {
-									visibleMode = !nominees[i].HAS_VOTED;
+									visibleMode = nominees[i].HAS_VOTED;
 								}
 								cardFragment.setModel(new JSONModel({
 									"Nominee": nominees[i],
@@ -411,6 +410,7 @@ sap.ui.define(
 					if (categories.Response.CODE == "SUCCESS") {
 						//console.log(categories);
 						oControl._setModel("/category", categories.MVPCategories[0], "CategoryModel");
+                        oControl.refreshData(categoryId);
 
 					}
 				});
