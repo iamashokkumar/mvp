@@ -32,6 +32,7 @@
 								<content>
 									<l:HorizontalLayout class="sapUiSmallMargin">
 										<l:VerticalLayout>
+												<?
 											<m:ObjectAttribute title="Nomination opens"
 												text=" {path:'CategoryModel>/category/MVPCategoryNominateStartDate', formatter: '.formatter.formatDate' }"/>
 											<m:ObjectAttribute title="Nomination ends"
