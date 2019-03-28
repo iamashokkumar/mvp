@@ -259,9 +259,14 @@ sap.ui.define(
                                 {
                                     editMode=true
                                 }
-                                var visibleMode = true;
+                                var visibleMode = false;
+                                
                                 if (votingMode === "CLOSED_FOR_VOTING") {
                                     visibleMode = nominees[i].HAS_VOTED;
+                                }
+                                else if(votingMode === "OPEN_FOR_VOTING")
+                                {
+                                    visibleMode = true;
                                 }
                                 cardFragment.setModel(new JSONModel({
                                     "Nominee": nominees[i],
