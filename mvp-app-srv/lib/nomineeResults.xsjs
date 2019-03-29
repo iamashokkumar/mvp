@@ -112,7 +112,9 @@ if ($.request.method === $.net.http.GET) {
 			"Text": JSON.stringify(error.message)
 		};
 	} finally {
-		connection.close();
+		if(connection) {
+			connection.close();
+		}
 		responseJSON.Userid = {
 			userEmailId,
 			userRole

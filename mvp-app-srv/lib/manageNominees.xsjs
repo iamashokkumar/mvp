@@ -481,9 +481,10 @@ try {
 		"CODE": "INTERNAL_ERROR",
 		"Text": JSON.stringify(error.message)
 	};
-	// $.response.setBody(JSON.stringify(responseJSON));
 } finally {
-	connection.close();
+	if(connection) {
+		connection.close();
+	}
 	responseJSON.Userid = {
 		userEmailId,
 		userRole
