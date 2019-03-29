@@ -1,6 +1,7 @@
 {
 	"welcomeFile": "/mvp-ui/index.html",
 	"authenticationMethod": "route",
+	"sessionTimeout": 30,
 	"logout": {
 		"logoutEndpoint": "/do/logout"
 	},
