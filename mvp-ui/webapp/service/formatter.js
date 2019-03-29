@@ -16,11 +16,11 @@ sap.ui.define([
 		nominationStatus: function (sNominationStatus) {
 			switch (sNominationStatus) {
 			case "NOT_OPEN_FOR_NOMINATION":
-				return 2;
+				return 3;
 			case "OPEN_FOR_NOMINATION":
 				return 8;
 			case "CLOSED_FOR_NOMINATION":
-				return 3;
+				return 2;
 			}
 		},
 
@@ -57,9 +57,9 @@ sap.ui.define([
 			}
 		},
 
-		enableNomineeModification: function (sMVPCategoryNominationStatus, sHasVoted) {
+		enableNomineeModification: function (sMVPCategoryNominationStatus, sHasVoted, userRole) {
 			var isModificationAllowed = false;
-			if (sMVPCategoryNominationStatus === 'OPEN_FOR_NOMINATION' && sHasVoted == false) {
+			if (sMVPCategoryNominationStatus === 'OPEN_FOR_NOMINATION' && (userRole === 'SUPER' || sHasVoted == false)){
 				isModificationAllowed = true;
 			}
 			return isModificationAllowed;

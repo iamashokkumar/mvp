@@ -5,6 +5,9 @@ sap.ui.define([
 	"use strict";
 
 	return {
+		SUPER: "SUPER",
+        TEAMLEAD: "TEAMLEAD",
+        CHIEF: "CHIEF",
 		createDeviceModel: function () {
 			var oModel = new JSONModel(Device);
 			oModel.setDefaultBindingMode("OneWay");
@@ -23,3 +26,4 @@ sap.ui.define([
 	};
 
 });
+

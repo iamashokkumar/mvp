@@ -28,7 +28,8 @@ sap.ui.define([
             this.bus = sap.ui.getCore().getEventBus();
             if (oCategory) {
                 this.bus.publish("Page", "loadData", {
-                    Category: oCategory
+                    Category: oCategory,
+                    UserInfo:this.getModel("UserModel").getProperty("/userInfo")
                 });
             }
         },
@@ -174,10 +175,13 @@ sap.ui.define([
                 .then(function(data) {
                     var categories = JSON.parse(data);
                     if (categories.Response.CODE == "SUCCESS") {
+
+                        oControl._setModel("/userInfo",categories.Userid,"UserModel")
                         oControl._setModel("/category", categories.MVPCategories, "CategoryModel");
                         if (categories.MVPCategories.length > 0 && request == null)
                             sap.ui.getCore().getEventBus().publish("Page", "loadData", {
-                                Category: categories.MVPCategories[0]
+                                Category: categories.MVPCategories[0],
+                                UserInfo: categories.Userid
                             });
                     } else {
                         console.log(categories);
