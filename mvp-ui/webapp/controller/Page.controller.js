@@ -14,9 +14,7 @@ sap.ui.define(
     function(BaseController, MessageToast, NomineeDialog, Utilities, History, JSONModel, formatter, MVPApi, MessageBox,constants) {
         "use strict";
         return BaseController.extend("com.sap.build.leonardo.votingApp.controller.Page", {
-
             formatter: formatter,
-
             // charts
             _constants: {
                 chartContainerId: "chartContainer",
@@ -142,6 +140,11 @@ sap.ui.define(
 
             onRefresh: function() {
 
+
+                //location.reload() 
+                MVPApi.get("/mvp-ui/",null).then(function(data){
+                    console.log(data);
+                })
                 if (this.getModel("CategoryModel").getProperty("/category") == null) {
                     var bCompact = !!this.getView().$().closest(".sapUiSizeCompact").length;
 
