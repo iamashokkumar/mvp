@@ -60,7 +60,11 @@
 					<IconTabFilter icon="sap-icon://family-care" iconColor="Neutral" text="Nominees" count="{NomineeModel>/nomineescount}" design="Vertical"
 						showAll="false" textDirection="Inherit" enabled="true" visible="true" iconDensityAware="false" width="100%">
 						<content>
-							<l:VerticalLayout class="sapUiContentPadding" id="NomineeLayout" width="100%"></l:VerticalLayout>
+							<l:VerticalLayout class="sapUiContentPadding" id="NomineeLayout" width="100%">
+								<Carousel class="sapUiContentPadding" id="NomineeCarouselLayout" loop="true" >
+									
+								</Carousel>
+							</l:VerticalLayout>
 						</content>
 					</IconTabFilter>
 					<IconTabSeparator icon="" iconDensityAware="false"/>

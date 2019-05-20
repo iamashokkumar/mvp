@@ -64,12 +64,11 @@
 		},
 		"description": "SAPUI5 Test Resources"
 	}, {
-		"path": "/V2/Northwind/Northwind.svc",
+		"path": "/service",
 		"target": {
 			"type": "destination",
-			"name": "Northwind-Demo-OData"
-		},
-		"description": "Northwind - Demo OData"
+			"name": "mvp-srv"
+		}
 	}],
 	"welcomeFile": "/webapp/index.html",
 	"sendWelcomeFileRedirect": true

@@ -2,6 +2,7 @@
 	xmlns:app="http://schemas.sap.com/sapui5/extension/sap.ui.core.CustomData/1" xmlns:m="sap.m" xmlns="sap.m" xmlns:fn="sap.f"
 	controllerName="com.sap.build.leonardo.votingApp.controller.Page">
 	<m:VBox>
+		<!--<Image src="https://blogs.sap.com/wp-content/uploads/2015/10/tools_810111.png" alt="Example picture of screw"/>-->
 		<fn:Card class="sapUiSmallMarginBegin sapUiSmallMarginTopBottom">
 			<fn:layoutData>
 				<m:FlexItemData minWidth="98%" maxWidth="98%"/>
@@ -31,47 +32,47 @@
 								<form:ResponsiveGridLayout labelSpanXL="4" labelSpanL="3" labelSpanM="3" labelSpanS="12" adjustLabelSpan="false" emptySpanXL="0"
 									emptySpanL="4" emptySpanM="2" emptySpanS="2" columnsXL="2" columnsL="1" columnsM="1" singleContainerFullSize="true"/>
 							</form:layout>
-							<form:formContainers>
-								<form:FormContainer ariaLabelledBy="Title2">
-									<form:toolbar width="100%">
-										<m:Toolbar width="100%">
-											<m:Panel>
-												<m:Toolbar>
-													<m:ToolbarSpacer/>
-													<m:Title text="{Nominee>/Nominee/MVPNomineeName}" level="H5" titleStyle="H2" width="100%"/>
-													<m:ToolbarSpacer/>
-													<m:ToolbarSpacer/>
-													<m:Button visible="{Nominee>/mode}"
-														enabled="{parts:[{path: 'Nominee>/categoryNominationStatus'}, {path:'Nominee>/Nominee/HAS_VOTED'},{path:'Nominee>/userRole'}], formatter: '.formatter.enableNomineeModification' }"
-														icon="sap-icon://edit" press="onEditNominee" app:NomineeId="{Nominee>/Nominee/MVPNomineeId}"
-														app:NomineeName="{Nominee>/Nominee/MVPNomineeName}"/>
-													<m:Button visible="{Nominee>/mode}"
-														enabled="{parts:[{path: 'Nominee>/categoryNominationStatus'}, {path:'Nominee>/Nominee/HAS_VOTED'},{path:'Nominee>/userRole'}], formatter: '.formatter.enableNomineeModification' }"
-														icon="sap-icon://delete" press="onDeleteNominee" app:NomineeId="{Nominee>/Nominee/MVPNomineeId}"
-														app:NomineeName="{Nominee>/Nominee/MVPNomineeName}"/>
-												</m:Toolbar>
-											</m:Panel>
-										</m:Toolbar>
-									</form:toolbar>
-									<form:formElements>
-										<form:FormElement label="Abstract">
-											<form:fields>
-												<m:Text text="{Nominee>/Nominee/MVPNomineeAbstract}"/>
-											</form:fields>
-										</form:FormElement>
-										<form:FormElement label="Key Achievements">
-											<form:fields>
-												<m:Text text="{Nominee>/Nominee/MVPNomineeKeyAchievements}"/>
-											</form:fields>
-										</form:FormElement>
-										<form:FormElement label="Customer Quotes">
-											<form:fields>
-												<m:Text text="{Nominee>/Nominee/MVPNomineeCustomerQuotes}"/>
-											</form:fields>
-										</form:FormElement>
-									</form:formElements>
-								</form:FormContainer>
-							</form:formContainers>
+							<!--	<form:formContainers>-->
+							<form:FormContainer ariaLabelledBy="Title2">
+								<form:toolbar width="100%">
+									<m:Toolbar width="100%">
+										<m:Panel>
+											<m:Toolbar>
+												<m:ToolbarSpacer/>
+												<m:Title text="{Nominee>/Nominee/MVPNomineeName}" level="H5" titleStyle="H2" width="100%"/>
+												<m:ToolbarSpacer/>
+												<m:ToolbarSpacer/>
+												<m:Button visible="{Nominee>/mode}"
+													enabled="{parts:[{path: 'Nominee>/categoryNominationStatus'}, {path:'Nominee>/Nominee/HAS_VOTED'},{path:'Nominee>/userRole'}], formatter: '.formatter.enableNomineeModification' }"
+													icon="sap-icon://edit" press="onEditNominee" app:NomineeId="{Nominee>/Nominee/MVPNomineeId}"
+													app:NomineeName="{Nominee>/Nominee/MVPNomineeName}"/>
+												<m:Button visible="{Nominee>/mode}"
+													enabled="{parts:[{path: 'Nominee>/categoryNominationStatus'}, {path:'Nominee>/Nominee/HAS_VOTED'},{path:'Nominee>/userRole'}], formatter: '.formatter.enableNomineeModification' }"
+													icon="sap-icon://delete" press="onDeleteNominee" app:NomineeId="{Nominee>/Nominee/MVPNomineeId}"
+													app:NomineeName="{Nominee>/Nominee/MVPNomineeName}"/>
+											</m:Toolbar>
+										</m:Panel>
+									</m:Toolbar>
+								</form:toolbar>
+								<form:formElements>
+									<form:FormElement label="Abstract">
+										<form:fields>
+											<m:Text text="{Nominee>/Nominee/MVPNomineeAbstract}"/>
+										</form:fields>
+									</form:FormElement>
+									<form:FormElement label="Key Achievements">
+										<form:fields>
+											<m:Text text="{Nominee>/Nominee/MVPNomineeKeyAchievements}"/>
+										</form:fields>
+									</form:FormElement>
+									<form:FormElement label="Customer Quotes">
+										<form:fields>
+											<m:Text text="{Nominee>/Nominee/MVPNomineeCustomerQuotes}"/>
+										</form:fields>
+									</form:FormElement>
+								</form:formElements>
+							</form:FormContainer>
+							<!--</form:formContainers>-->
 						</form:Form>
 					</m:VBox>
 				</m:HBox>

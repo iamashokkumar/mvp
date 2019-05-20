@@ -1,37 +1,50 @@
 /* Enter your custom styles here */
+
 .imgCenter {
-  display: block !important;
-  margin-left: auto !important;
-  margin-right: auto !important;
-  width: 10% !important;
+    display: block !important;
+    margin-left: auto !important;
+    margin-right: auto !important;
+    width: 10% !important;
 }
 
 .vboxColor {
-	margin:10px;
-	padding:10px;
-    box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
+    margin: 10px;
+    padding: 10px;
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
     transition: 0.3s;
 }
-.width90:{
-	width:90%;
+
+.width90: {
+    width: 90%;
 }
 
-.centerVBox{
-	justify-content: center;
-	align-self: center;
+.centerVBox {
+    justify-content: center;
+    align-self: center;
 }
 
-.nopadding{
-  padding: 0px;
-
+.nopadding {
+    padding: 0px;
 }
 
-.nomargin{
-  margin: 0px!important
+.nomargin {
+    margin: 0px!important
 }
-.marginLeft{
-  margin-left: 60px;
+
+.marginLeft {
+    margin-left: 60px;
 }
-.customColor{
-  background-color: #5f737f!important
+
+.customColor {
+    background-color: #5f737f!important
+}
+
+
+.sapMCrslControls .sapMCrslPrev,
+.sapMCrslHud .sapMCrslPrev,
+.sapMCrslControls .sapMCrslNext,
+.sapMCrslHud .sapMCrslNext {
+    background: #3f5161;
+    border: 1px solid #ababab;
+    color: #e5e5e5;
 }

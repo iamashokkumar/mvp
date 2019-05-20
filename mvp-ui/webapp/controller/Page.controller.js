@@ -199,8 +199,8 @@ sap.ui.define(
 
             refreshData: function(mvpCategoryId) {
                 var oView = this.getView();
-                var nomineeLayout = this.byId("NomineeLayout");
-                nomineeLayout.removeAllContent();
+                var nomineeLayout = this.byId("NomineeCarouselLayout");
+                nomineeLayout.removeAllPages();
                 var getCategoryURL = this.getOwnerComponent().getManifestEntry("/sap.app/dataSources/Nominee");
                 var serviceURL = getCategoryURL + "?ACTIONID=GET_NOMINEE&MVPCategoryId=" + mvpCategoryId;
                 var oControl = this;
@@ -282,7 +282,7 @@ sap.ui.define(
                                 }), "Nominee");
 
                                 oView.addDependent(cardFragment);
-                                nomineeLayout.addContent(cardFragment);
+                                nomineeLayout.addPage(cardFragment);
                             }
                         }
                         oControl.hideBusyDialog();

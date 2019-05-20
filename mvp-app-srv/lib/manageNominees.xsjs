@@ -125,8 +125,8 @@ var responseJSON = {
 try {
 	connection = $.hdb.getConnection();
 	userEmailId = $.session.getUsername();
-	// userEmailId = 'ashok.kumar.m01@sap.com';
-	userEmailId = (userEmailId !== undefined && userEmailId !== '') ? userEmailId.toLowerCase() : '';
+	 userEmailId = 'mithun.smith.dias@sap.com';
+	 userEmailId = (userEmailId !== undefined && userEmailId !== '') ? userEmailId.toLowerCase() : '';
 	var actionId = $.request.parameters.get("ACTIONID");
 	var mvpCategoryId = $.request.parameters.get("MVPCategoryId");
 
