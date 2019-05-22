@@ -8,8 +8,8 @@ sap.ui.define([
     var csrfToken = "";
 
     function apiUrl() {
-     //var sTokenURL = "https://coe-cloud-tech-coecloudtech-innospace-mvp-ui.cfapps.sap.hana.ondemand.com";
-     var sTokenURL= ""
+     var sTokenURL = "https://coe-cloud-tech-coecloudtech-innospace-mvp-ui.cfapps.sap.hana.ondemand.com";
+     //var sTokenURL= ""
         return sTokenURL;
     }
 
