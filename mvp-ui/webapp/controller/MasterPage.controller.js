@@ -195,7 +195,59 @@ sap.ui.define([
                 sap.ui.getCore().byId("__component0---fcl--fcl-midForward").setVisible(false);
             }
         },
+        //open filter
+        _getDialog: function() {
+            if (!this._oFilterDialog) {
+                this._oFilterDialog = sap.ui.xmlfragment("com.sap.build.leonardo.votingApp.fragment.filterDialog", this);
+                this.getView().addDependent(this._oFilterDialog);
+            }
+            return this._oFilterDialog;
+        },
 
+        openFilter: function() {
+            this._getDialog().open();
+        },
+
+        handleFilterConfirm: function(oEvent) {
+
+            if (oEvent.getParameters().filterString) {
+                this._applySearch(jQuery.map(oEvent.getParameters().filterItems, function(one) {
+                    return one.getKey()
+                }))
+            }
+        },
+
+        searchString: function(oEvent) {
+            console.log(oEvent);
+            this._applySearch([oEvent.mParameters.newValue]);
+
+        },
+        _applySearch: function(oSearchString) {
+
+            var aFilters = [];
+            if (oSearchString.length > 1) {
+                jQuery.map(oSearchString, function(one) {
+                    var singleFilter = new sap.ui.model.Filter({
+                        path: "MVPCategoryName",
+                        operator: "Contains",
+                        value1: one
+                    });
+                    aFilters.push(singleFilter);
+                })
+            } else if (oSearchString.length == 1) {
+                var nameFilter = new sap.ui.model.Filter({
+                    path: "MVPCategoryName",
+                    operator: "Contains",
+                    value1: oSearchString[0]
+                });
+                aFilters.push(nameFilter);
+            }
+
+            this.byId("categoryMasterList").getBinding("items").filter(aFilters);
+
+
+        },
+        //end of filter
         onInit: function() {
 
             sap.ui.getCore().getEventBus().subscribe("MasterPage", "loadData", this._loadData, this);

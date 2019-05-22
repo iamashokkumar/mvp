@@ -1,15 +1,17 @@
 <mvc:View xmlns:mvc="sap.ui.core.mvc" xmlns="sap.m" controllerName="com.sap.build.leonardo.votingApp.controller.MasterPage">
 	<Page title="Category"  titleLevel="H1" showHeader="true" showFooter="true" showNavButton="false">
 		<content>
-			<List mode="SingleSelectMaster" width="100%" headerText="Header" footerText="" backgroundDesign="Translucent"
+			<List id="categoryMasterList" mode="SingleSelectMaster" width="100%" headerText="Header" footerText="" backgroundDesign="Translucent"
 			items="{ path: 'CategoryModel>/category' }"
 			 showSeparators="All" growing="true" growingThreshold="20" growingScrollToLoad="true" visible="true" itemPress="onClick">
 				<infoToolbar/>
 				<headerToolbar>
-					<Toolbar enabled="true" visible="false"  design="Solid">
+					<Toolbar enabled="true" visible="true"  design="Solid">
 						<content>
-							<SearchField placeholder="Search" showSearchButton="true" visible="true" width="100%"/>
+							<SearchField placeholder="Search" showSearchButton="true" visible="true" width="100%"  liveChange="searchString"/>
+							<Button icon="sap-icon://filter" press="openFilter"/>
 						</content>
+
 					</Toolbar>
 				</headerToolbar>
 				<items>

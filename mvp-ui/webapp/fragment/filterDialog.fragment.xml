@@ -1,0 +1,16 @@
+<core:FragmentDefinition
+	xmlns="sap.m"
+	xmlns:core="sap.ui.core">
+	<ViewSettingsDialog
+		confirm="handleFilterConfirm">
+		<filterItems>
+			<ViewSettingsFilterItem text="Category" key="1">
+				<items>
+					<ViewSettingsItem text="Individual" key="Individual" />
+					<ViewSettingsItem text="Team" key="Team" />
+					<ViewSettingsItem text="Innovation" key="Innovation" />
+				</items>
+			</ViewSettingsFilterItem>
+		</filterItems>
+	</ViewSettingsDialog>
+</core:FragmentDefinition>
