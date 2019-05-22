@@ -712,7 +712,7 @@ sap.ui.define(
 
             },
             onHelp: function() {
-                window.open("mailto:kevin.yang02@sap.com;ashok.kumar.m01@sap.com;mithun.smith.dias@sap.com?subject=CoE MVP App | Help/Feedback","_self");
+                window.open("mailto:kevin.yang02@sap.com;ashok.kumar.m01@sap.com?subject=CoE MVP App | Help/Feedback","_self");
 
             }
         });
