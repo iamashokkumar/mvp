@@ -5,12 +5,12 @@ sap.ui.define([
     "sap/ui/core/routing/History",
     "com/sap/build/leonardo/votingApp/service/MVPApi",
     "sap/ui/model/json/JSONModel",
-            "com/sap/build/leonardo/votingApp/service/formatter"
-], function(BaseController, MessageBox, Utilities, History, MVPApi, JSONModel,formatter) {
+    "com/sap/build/leonardo/votingApp/service/formatter"
+], function(BaseController, MessageBox, Utilities, History, MVPApi, JSONModel, formatter) {
     "use strict";
 
     return BaseController.extend("com.sap.build.leonardo.votingApp.controller.MasterPage", {
-        formatter:formatter,
+        formatter: formatter,
         onClick: function(oEvent) {
             this._oBusyDialog = null;
             if (!this._oBusyDialog) {
@@ -29,7 +29,7 @@ sap.ui.define([
             if (oCategory) {
                 this.bus.publish("Page", "loadData", {
                     Category: oCategory,
-                    UserInfo:this.getModel("UserModel").getProperty("/userInfo")
+                    UserInfo: this.getModel("UserModel").getProperty("/userInfo")
                 });
             }
         },
@@ -176,7 +176,7 @@ sap.ui.define([
                     var categories = JSON.parse(data);
                     if (categories.Response.CODE == "SUCCESS") {
 
-                        oControl._setModel("/userInfo",categories.Userid,"UserModel")
+                        oControl._setModel("/userInfo", categories.Userid, "UserModel")
                         oControl._setModel("/category", categories.MVPCategories, "CategoryModel");
                         if (categories.MVPCategories.length > 0 && request == null)
                             sap.ui.getCore().getEventBus().publish("Page", "loadData", {
@@ -190,6 +190,12 @@ sap.ui.define([
                 });
         },
 
+        onBeforeRendering() {
+            if (sap.ui.getCore().byId("__component0---fcl--fcl-midForward")) {
+                sap.ui.getCore().byId("__component0---fcl--fcl-midForward").setVisible(false);
+            }
+        },
+
         onInit: function() {
 
             sap.ui.getCore().getEventBus().subscribe("MasterPage", "loadData", this._loadData, this);
@@ -197,10 +203,7 @@ sap.ui.define([
             this.oRouter = sap.ui.core.UIComponent.getRouterFor(this);
 
             sap.ui.getCore().getEventBus().subscribe("Master", "loadData", this._loadData, this);
-            if(this.byId("__component0---fcl--fcl-midForward"))
-            {
-                this.byId("__component0---fcl--fcl-midForward").setVisible(false);
-            }
+
             // sap.ui.getCore().byId("__component0---fcl--fcl-midForward").setVisible(false);
             //this.oRouter.getTarget("MasterPage1").attachDisplay(jQuery.proxy(this.handleRouteMatched, this));
         }
