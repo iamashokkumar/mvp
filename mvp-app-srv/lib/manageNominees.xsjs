@@ -186,8 +186,7 @@ try {
 								payload = JSON.parse($.request.body.asString());
 
 								if (payload.MVPNomineeName !== undefined && payload.MVPNomineeName !== '' && payload.MVPNomineeName.length > 0) {
-
-									query = "INSERT INTO \"mvpadmin.mvpdb::mvp.MVPNominee\" VALUES(" + payload.MVPCategoryId + ",'" + payload.MVPNomineeName.replace(
+											query = "INSERT INTO \"mvpadmin.mvpdb::mvp.MVPNominee\" VALUES(" + payload.MVPCategoryId + ",'" + payload.MVPNomineeName.replace(
 											/'/g, "''") + "','" +
 										payload.MVPNomineeAvatarFileName + "','" + payload.MVPNomineeAvatarFileNameExtn + "','" + payload.MVPNomineeAvatarFileData +
 										"','" +
@@ -195,7 +194,7 @@ try {
 										"','" + payload.MVPNomineeKeyAchievements.replace(/'/g, "''") + "','" + payload.MVPNomineeCustomerQuotes.replace(/'/g, "''") +
 										"','" + userEmailId +
 										"', current_timestamp,'" +
-										userEmailId + "', current_timestamp)";
+										userEmailId + "', current_timestamp,'"+payload.MVPNomineeTeam.replace(/'/g, "''")+"')";
 
 									/*						var MVPNomineeName = "Test Nominee";
 															var MVPNomineeAvatarFileName = "";
@@ -319,9 +318,23 @@ try {
 										payload.MVPNomineeAbstract.replace(/'/g, "''") + "', \"MVPNomineeKeyAchievements\" = '" + payload.MVPNomineeKeyAchievements.replace(
 											/'/g, "''") +
 										"', \"MVPNomineeCustomerQuotes\" = '" +
-										payload.MVPNomineeCustomerQuotes.replace(/'/g, "''") + "', \"MVPNomineeChangedBy\" = '" + userEmailId +
+										payload.MVPNomineeCustomerQuotes.replace(/'/g, "''") + "', \"MVPNomineeTeam\" = '" +
+										payload.MVPNomineeTeam.replace(/'/g, "''") +"', \"MVPNomineeChangedBy\" = '" + userEmailId +
 										"', \"MVPNomineeChangedOn\" =  current_timestamp WHERE \"MVPCategoryId\" = " + mvpCategoryId + " and \"MVPNomineeId\" = " +
 										payload.MVPNomineeId;
+										
+										
+										/*	query = "UPDATE \"mvpadmin.mvpdb::mvp.MVPNominee\" SET \"MVPNomineeName\" = '" + payload.MVPNomineeName.replace(/'/g, "''") +
+										"', \"MVPNomineeAvatarFileName\" = '" + payload.MVPNomineeAvatarFileName + "', \"MVPNomineeAvatarFileNameExtn\" = '" +
+										payload.MVPNomineeAvatarFileNameExtn + "', \"MVPNomineeAvatarFileData\" = '" + payload.MVPNomineeAvatarFileData +
+										"', \"MVPNomineeAbstract\" = '" +
+										payload.MVPNomineeAbstract.replace(/'/g, "''") + "', \"MVPNomineeKeyAchievements\" = '" + payload.MVPNomineeKeyAchievements.replace(
+											/'/g, "''") +
+										"', \"MVPNomineeCustomerQuotes\" = '" +
+										payload.MVPNomineeCustomerQuotes.replace(/'/g, "''") + "',\"MVPNomineeChangedBy\" = '" + userEmailId +
+										"', \"MVPNomineeChangedOn\" =  current_timestamp +\"MVPNomineeTeam\" = '" +
+										payload.MVPNomineeTeam.replace(/'/g, "''") +"'WHERE \"MVPCategoryId\" = " + mvpCategoryId + " and \"MVPNomineeId\" = " +
+										payload.MVPNomineeId;*/
 
 									/*						var MVPNomineeId = "7";
 															var MVPNomineeName = "Update Nominee";

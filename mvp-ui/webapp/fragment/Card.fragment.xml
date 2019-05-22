@@ -70,6 +70,11 @@
 											<m:Text text="{Nominee>/Nominee/MVPNomineeCustomerQuotes}"/>
 										</form:fields>
 									</form:FormElement>
+									<form:FormElement label="Teams">
+										<form:fields>
+											<m:Text text="{Nominee>/Nominee/MVPNomineeTeam}"/>
+										</form:fields>
+									</form:FormElement>
 								</form:formElements>
 							</form:FormContainer>
 							<!--</form:formContainers>-->

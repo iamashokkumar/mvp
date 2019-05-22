@@ -203,8 +203,15 @@ sap.ui.define([
             this.oRouter = sap.ui.core.UIComponent.getRouterFor(this);
 
             sap.ui.getCore().getEventBus().subscribe("Master", "loadData", this._loadData, this);
+<<<<<<< HEAD
+				if(this.byId("__component0---fcl--fcl-midForward"))
+            {
+                this.byId("__component0---fcl--fcl-midForward").setVisible(false);
+            }
+=======
 
             // sap.ui.getCore().byId("__component0---fcl--fcl-midForward").setVisible(false);
+>>>>>>> refs/remotes/origin/master
             //this.oRouter.getTarget("MasterPage1").attachDisplay(jQuery.proxy(this.handleRouteMatched, this));
         }
     });

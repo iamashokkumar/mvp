@@ -38,6 +38,7 @@ context mvp {
 	        MVPNomineeAbstract  		 : String(500);
 			MVPNomineeKeyAchievements	 : String(500);
 			MVPNomineeCustomerQuotes	 : String(500);
+			MVPNomineeTeam	 : String(500);
 			MVPNominatedBy			     : type of mvp_type.userid;
 			MVPNominatedOn				 : type of mvp_type.timestamp default current_timestamp;
 			MVPNomineeChangedBy 		 : type of mvp_type.userid;
