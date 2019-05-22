@@ -15,13 +15,15 @@ if ($.request.method === $.net.http.GET) {
 		Response: [],
 		MVPCategories: [],
 		MVPNominees: [],
-		MVPResults: []
+		MVPResults: [],
+		MVPVoteDetail: [],
+		MVPUsers: 0
 	};
 
 	try {
 		connection = $.hdb.getConnection();
 		userEmailId = $.session.getUsername();
-		 userEmailId = 'mithun.smith.dias@sap.com';
+		userEmailId = 'mithun.smith.dias@sap.com';
 		var mvpCategoryId = $.request.parameters.get("MVPCategoryId");
 
 		if (userEmailId !== undefined && userEmailId !== '') {
@@ -53,6 +55,14 @@ if ($.request.method === $.net.http.GET) {
 								var MVPNomineeVotes = connection.executeQuery(query);
 								for (var nominee of MVPNomineeVotes) {
 									responseJSON.MVPResults.push(nominee);
+								}
+								query =
+									"SELECT nominee.\"MVPNomineeId\", nominee.\"MVPNomineeName\", vote.\"MVPNomineeVotedBy\" as \"MVPVotedBy\" FROM \"mvpadmin.mvpdb::mvp.MVPNominee\" AS nominee LEFT OUTER JOIN \"mvpadmin.mvpdb::mvp.MVPVote\" AS vote ON nominee.\"MVPCategoryId\" = vote.\"MVPCategoryId\" and nominee.\"MVPNomineeId\" = vote.\"MVPNomineeId\" where nominee.\"MVPCategoryId\" = " +
+									mvpCategoryId ;
+
+								MVPNomineeVotes = connection.executeQuery(query);
+								for (var nominee of MVPNomineeVotes) {
+									responseJSON.MVPVoteDetail.push(nominee);
 								}
 								$.response.status = $.net.http.OK;
 								responseJSON.Response = {
@@ -112,7 +122,7 @@ if ($.request.method === $.net.http.GET) {
 			"Text": JSON.stringify(error.message)
 		};
 	} finally {
-		if(connection) {
+		if (connection) {
 			connection.close();
 		}
 		responseJSON.Userid = {
