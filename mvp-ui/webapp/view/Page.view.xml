@@ -79,12 +79,11 @@
 								 icon="sap-icon/edit" 
 								iconDensityAware="false" iconInset="false" description="{MVPNomineeName}"/>
 							</List>-->
-								<List id="detailId" items="{NomineeResultModel>/MVPResults}"
+								<List id="detailId" items="{NomineeResultModel>/MVPVoteDetail}"
 							headerText="MVPResults" growing="true" growingThreshold="4" 
 							growingScrollToLoad="false">
-								<StandardListItem title="{MVPResults}"
-								 icon="sap-icon/edit" 
-								iconDensityAware="false" iconInset="false" description="{MVPNomineeName}"/>
+								<StandardListItem title="{NomineeResultModel>MVPVotedBy} voted {NomineeResultModel>MVPNomineeName}"
+								iconDensityAware="false" iconInset="false"/>
 							</List>
 						
 						</content>

@@ -317,19 +317,7 @@ sap.ui.define(
 
             },
             vizSelected:function(oEvent)
-            {
-            	//get the list ID
-            var oList=	this.byId("detailId");
-            var data=this.getModel("NomineeResultModel").getData();
-            oList.setModel(data);
-            	//get selected data
-           // oList.bindItems(data,MVPResults,"NomineeResultModel");
-            
-            
-            	// set data model into list
-            	
-     
-            	
+            {	
             	
             },
             

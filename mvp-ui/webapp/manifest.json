@@ -9,9 +9,9 @@
 			"version": "1.2.2"
 		},
 		"dataSources": {
-			"Category":"/manageCategories.xsjs?$format=json",
-			"Nominee":"/manageNominees.xsjs",
-			"NomineeResults":"/nomineeResults.xsjs"
+			"Category":"/service/manageCategories.xsjs?$format=json",
+			"Nominee":"/service/manageNominees.xsjs",
+			"NomineeResults":"/service/nomineeResults.xsjs"
 		},
 		"title": "{{appTitle}}",
 		"description": "{{appDescription}}",
