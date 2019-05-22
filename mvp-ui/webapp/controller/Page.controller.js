@@ -208,6 +208,7 @@ sap.ui.define(
                 //diable all vote if the status is  not open
 
                 var votingMode = this.getModel("CategoryModel").getData().category.MVPCategoryVotingStatus;
+                var votingSMMode = this.getModel("CategoryModel").getData().category.MVPCategoryVoteMode;
                 var nominationMode = this.getModel("CategoryModel").getData().category.MVPCategoryNominationStatus;
                 //get nominees
                 MVPApi.get(serviceURL, null)
@@ -270,6 +271,18 @@ sap.ui.define(
                                 else if(votingMode === "OPEN_FOR_VOTING")
                                 {
                                     visibleMode = true;
+                                    if(votingSMMode=="SINGLE")
+                                    {
+                                        for(var j=0;j<nominees.length;j++)
+                                        {
+                                            if(nominees[j].HAS_VOTED==true&&i!=j)
+                                            {
+                                                visibleMode=false;
+                                                break;
+                                            }
+                                        }
+
+                                    }
                                 }
                                 cardFragment.setModel(new JSONModel({
                                     "Nominee": nominees[i],
@@ -293,7 +306,6 @@ sap.ui.define(
                     var nomineeResults = JSON.parse(data);
                     oControl._setModel("/", nomineeResults, "NomineeResultModel");
                     oControl.initViz();
-
                 });
 
             },
