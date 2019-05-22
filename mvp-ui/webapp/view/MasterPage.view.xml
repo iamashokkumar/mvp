@@ -6,7 +6,7 @@
 			 showSeparators="All" growing="true" growingThreshold="20" growingScrollToLoad="true" visible="true" itemPress="onClick">
 				<infoToolbar/>
 				<headerToolbar>
-					<Toolbar enabled="true" visible="false" width="" design="Solid">
+					<Toolbar enabled="true" visible="false"  design="Solid">
 						<content>
 							<SearchField placeholder="Search" showSearchButton="true" visible="true" width="100%"/>
 						</content>

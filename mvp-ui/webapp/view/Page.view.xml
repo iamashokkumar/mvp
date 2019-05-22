@@ -22,7 +22,7 @@
 		<fn:header>
 			<fn:DynamicPageHeader pinnable="true">
 				<fn:content>
-					<FlexBox alignItems="Start" justifnyContent="SpaceBetween" class="sapUiSmallMarginBottom">
+					<FlexBox alignItems="Start" justifyContent="SpaceBetween" class="sapUiSmallMarginBottom">
 						<items>
 							<Panel backgroundDesign="Transparent" class="sapUiNoContentPadding">
 								<content>

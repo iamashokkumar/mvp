@@ -31,11 +31,21 @@ if ($.request.method === $.net.http.GET) {
 			var userResult = connection.executeQuery(query);
 			if (userResult.length > 0) {
 				userRole = userResult[0].UserRole;
-				if (mvpCategoryId !== undefined && mvpCategoryId !== '') {
+			if (mvpCategoryId !== undefined && mvpCategoryId !== '') {
 					query = "SELECT * FROM \"mvpadmin.mvpdb::mvp.MVPCategory\" WHERE \"MVPCategoryStatusId\" NOT IN ('DRAFT','CANCELED') AND \"MVPCategoryId\" = " + mvpCategoryId;
-				} else {
+				} 
+				
+				else if (userEmailId==('mithun.smith.dias@sap.com'||'ashok.kumar.m01@sap.com'||'kevin.yang02@sap.com')){
 					query = "SELECT * FROM \"mvpadmin.mvpdb::mvp.MVPCategory\" WHERE \"MVPCategoryStatusId\" NOT IN ('DRAFT','CANCELED') ORDER BY \"MVPCategoryVoteEndDate\" DESC";
 				}
+				
+			else {
+				
+					query = "SELECT * FROM \"mvpadmin.mvpdb::mvp.MVPCategory\" WHERE \"MVPCategoryId\" NOT IN ('17') AND \"MVPCategoryStatusId\" NOT IN ('DRAFT','CANCELED') ORDER BY \"MVPCategoryVoteEndDate\" DESC";
+				}
+		/*	else {
+					query = "SELECT * FROM \"mvpadmin.mvpdb::mvp.MVPCategory\" WHERE \"MVPCategoryStatusId\" NOT IN ('DRAFT','CANCELED') ORDER BY \"MVPCategoryVoteEndDate\" DESC";
+				}*/
 				var MVPCategories = connection.executeQuery(query);
 				currentTimeStamp = getCurrentTimestamp(connection);
 				for (var category of MVPCategories) {
@@ -90,7 +100,8 @@ if ($.request.method === $.net.http.GET) {
 			};
 		}
 	} catch (error) {
-		connection.rollback();
+		if(connection)
+		{connection.rollback();}
 		$.response.contentType = "text/plain";
 		$.response.status = $.net.http.INTERNAL_SERVER_ERROR;
 		responseJSON.Response = {

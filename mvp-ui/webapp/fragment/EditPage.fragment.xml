@@ -26,7 +26,8 @@
 								<f:formElements>
 									<f:FormElement label="Name">
 										<f:fields>
-											<Input width="100%" required="true" valueState="{EditNomineeModel>/valueState}" value="{EditNomineeModel>/MVPNomineeName}" maxLength="100" liveChange="onNameChange" />
+											<Input width="100%" required="true" valueState="{EditNomineeModel>/valueState}" value="{EditNomineeModel>/MVPNomineeName}" maxLength="100"
+												liveChange="onNameChange"/>
 										</f:fields>
 									</f:FormElement>
 									<f:FormElement label="Abstract">
@@ -44,6 +45,12 @@
 									<f:FormElement label="Customer Quotes">
 										<f:fields>
 											<TextArea width="100%" value="{EditNomineeModel>/MVPNomineeCustomerQuotes}" maxLength="500" rows="3" growing="true" growingMaxLines="5"
+												showExceededText="false"/>
+										</f:fields>
+									</f:FormElement>
+									<f:FormElement label="Team">
+										<f:fields>
+											<TextArea width="100%" value="{EditNomineeModel>/MVPNomineeTeam}" maxLength="500" rows="3" growing="true" growingMaxLines="5"
 												showExceededText="false"/>
 										</f:fields>
 									</f:FormElement>
