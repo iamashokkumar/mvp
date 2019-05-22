@@ -13,8 +13,7 @@
 					<m:Button icon="sap-icon://refresh" press="onRefresh" tooltip="Refresh"/>
 					<m:Button icon="sap-icon://full-screen" press="onSetFullScreen" tooltip="Enter Full Screen Mode" id="setFullScreen"/>
 					<m:Button icon="sap-icon://exit-full-screen" press="onExitFullScreen" tooltip="Exit Full Screen Mode" id="exitFullScreen" visible="false"/>
-					<m:Button icon="sap-icon://headset" press="onHelp" tooltip="Help/Feedback" />
-
+					<m:Button icon="sap-icon://headset" press="onHelp" tooltip="Help/Feedback"/>
 				</fn:actions>
 			</fn:DynamicPageTitle>
 		</fn:title>
@@ -29,7 +28,8 @@
 									<l:HorizontalLayout>
 										<l:VerticalLayout>
 											<tnt:InfoLabel text="{CategoryModel>/category/MVPCategoryNominationStatusText}"
-						colorScheme="{path: 'CategoryModel>/category/MVPCategoryNominationStatus', formatter: '.formatter.nominationStatus' }" class="sapUiMediumMarginEnd" />
+												colorScheme="{path: 'CategoryModel>/category/MVPCategoryNominationStatus', formatter: '.formatter.nominationStatus' }"
+												class="sapUiMediumMarginEnd"/>
 											<m:ObjectAttribute title="Nomination opens"
 												text=" {path:'CategoryModel>/category/MVPCategoryNominateStartDate', formatter: '.formatter.formatDate' }"/>
 											<m:ObjectAttribute title="Nomination ends"
@@ -38,7 +38,7 @@
 										<!--<m:ObjectAttribute title="Nomination Status" text="{CategoryModel>/category/MVPCategoryNominationStatusText}"/>-->
 										<l:VerticalLayout class="marginLeft">
 											<tnt:InfoLabel text="{CategoryModel>/category/MVPCategoryVotingStatusText}"
-						colorScheme="{path: 'CategoryModel>/category/MVPCategoryVotingStatus', formatter: '.formatter.votingStatus' }"/>
+												colorScheme="{path: 'CategoryModel>/category/MVPCategoryVotingStatus', formatter: '.formatter.votingStatus' }"/>
 											<m:ObjectAttribute title="Voting opens"
 												text=" {path:'CategoryModel>/category/MVPCategoryVoteStartDate', formatter: '.formatter.formatDate' }"/>
 											<m:ObjectAttribute title="Voting ends" text=" {path:'CategoryModel>/category/MVPCategoryVoteEndDate', formatter: '.formatter.formatDate' }"/>
@@ -61,9 +61,7 @@
 						showAll="false" textDirection="Inherit" enabled="true" visible="true" iconDensityAware="false" width="100%">
 						<content>
 							<l:VerticalLayout class="sapUiContentPadding" id="NomineeLayout" width="100%">
-								<Carousel class="sapUiContentPadding" id="NomineeCarouselLayout" loop="true" >
-									
-								</Carousel>
+								<Carousel class="sapUiContentPadding" id="NomineeCarouselLayout" loop="true"></Carousel>
 							</l:VerticalLayout>
 						</content>
 					</IconTabFilter>
@@ -73,6 +71,22 @@
 						<content>
 							<chart:ChartContainer id="chartContainer" showFullScreen="true" showPersonalization="false" autoAdjustHeight="false"
 								showSelectionDetails="true" title="Votes By Nominees"></chart:ChartContainer>
+							
+						<!--	<List id="detailId" items="{NomineeResultModel>/MVPResults}"
+							headerText="Products" growing="true" growingThreshold="4" 
+							growingScrollToLoad="false">
+								<StandardListItem title="{title}"
+								 icon="sap-icon/edit" 
+								iconDensityAware="false" iconInset="false" description="{MVPNomineeName}"/>
+							</List>-->
+								<List id="detailId" items="{NomineeResultModel>/MVPResults}"
+							headerText="MVPResults" growing="true" growingThreshold="4" 
+							growingScrollToLoad="false">
+								<StandardListItem title="{MVPResults}"
+								 icon="sap-icon/edit" 
+								iconDensityAware="false" iconInset="false" description="{MVPNomineeName}"/>
+							</List>
+						
 						</content>
 					</IconTabFilter>
 				</items>
@@ -82,9 +96,8 @@
 		<fn:footer class="sapUiNoContentPadding">
 			<m:Toolbar class="nomargin">
 				<m:ToolbarSpacer/>
-				<m:Button text="Nominee" type="Emphasized" icon="sap-icon://add" iconFirst="true" width="auto"
-					enabled="{CategoryModel>/nominationMode}" visible="{CategoryModel>/nominationMode}" iconDensityAware="false"
-					press="onAddNominee"/>
+				<m:Button text="Nominee" type="Emphasized" icon="sap-icon://add" iconFirst="true" width="auto" enabled="{CategoryModel>/nominationMode}"
+					visible="{CategoryModel>/nominationMode}" iconDensityAware="false" press="onAddNominee"/>
 			</m:Toolbar>
 		</fn:footer>
 	</fn:DynamicPage>
