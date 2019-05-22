@@ -122,6 +122,7 @@ sap.ui.define(
                 return oQuery;
 
             },
+            
             onVote: function() {
 
                 var sDialogName = "NomineeDialog";
@@ -315,12 +316,33 @@ sap.ui.define(
                 oChartContainer.addContent(oContent);
 
             },
+            vizSelected:function(oEvent)
+            {
+            	//get the list ID
+            var oList=	this.byId("detailId");
+            var data=this.getModel("NomineeResultModel").getData();
+            oList.setModel(data);
+            	//get selected data
+           // oList.bindItems(data,MVPResults,"NomineeResultModel");
+            
+            
+            	// set data model into list
+            	
+     
+            	
+            	
+            },
+            
             _createVizFrame: function(vizFrameConfig) {
                 var oVizFrame = new sap.viz.ui5.controls.VizFrame(this._constants.vizFrames.config);
                 var oModel = this.getModel("NomineeResultModel");
                 var oDataSet = new sap.viz.ui5.data.FlattenedDataset(vizFrameConfig.dataset);
                 oVizFrame.setDataset(oDataSet);
                 oVizFrame.setModel(oModel);
+                var oControl =this;
+                oVizFrame.attachSelectData(function(oEvent){
+                	oControl.vizSelected(oEvent);
+                });
 
                 oVizFrame.setVizProperties({
                     plotArea: {
@@ -334,7 +356,7 @@ sap.ui.define(
                     }
                 });
 
-                this._addFeedItems(oVizFrame, vizFrameConfig.feedItems);
+	                this._addFeedItems(oVizFrame, vizFrameConfig.feedItems);
                 oVizFrame.setVizType(vizFrameConfig.vizType);
                 this.oVizFrame = oVizFrame;
                 return oVizFrame;
@@ -605,6 +627,7 @@ sap.ui.define(
                 });
 
             },
+        
             onVoteCancel: function() {
                 //console.log();
                 this.voteDialog.oKevinEvent.setPressed(false);
