@@ -17,7 +17,8 @@ if ($.request.method === $.net.http.GET) {
 		MVPNominees: [],
 		MVPResults: [],
 		MVPVoteDetail: [],
-		MVPUsers: []
+		MVPUsers: [],
+		MVPVotingData:[]
 	};
 
 	try {
@@ -56,19 +57,45 @@ if ($.request.method === $.net.http.GET) {
 								for (var nominee of MVPNomineeVotes) {
 									responseJSON.MVPResults.push(nominee);
 								}
+							
 								//count of votes
+								
 								query =
-									"SELECT COUNT (DISTINCT \"mvpadmin.mvpdb::mvp.MVPUserId\") FROM \"mvpadmin.mvpdb::mvp.MVPUser\" JOIN \"mvpadmin.mvpdb::mvp.MVPVote\"  ON \"UserEmail\"=\"MVPNomineeVotedBy\" WHERE nominee.\"MVPCategoryId\" = " +mvpCategoryId;
+									"SELECT COUNT (*) as total_Users FROM \"mvpadmin.mvpdb::mvp.MVPUser\" ";
+
+									var TotalUsers= connection.executeQuery(query);
+								//	responseJSON.MVPVotingData.Users=TotalUsers[0].TOTAL_USERS;
+									//for(var total of TotalUsers){
+									responseJSON.MVPVotingData.push(TotalUsers[0].TOTAL_USERS);
+								//	
+									//}
+								query =
+									"SELECT COUNT (DISTINCT \"mvpadmin.mvpdb::mvp.MVPUser\".\"UserEmail\") as total_Voted FROM \"mvpadmin.mvpdb::mvp.MVPUser\" JOIN \"mvpadmin.mvpdb::mvp.MVPVote\"  ON \"UserEmail\"=\"MVPNomineeVotedBy\" WHERE \"MVPCategoryId\" = " +mvpCategoryId;
 
 									MVPVoteCount= connection.executeQuery(query);
+									responseJSON.MVPVotingData.push(MVPVoteCount[0].TOTAL_VOTED);
+									//	responseJSON.MVPVotingData.Votes=MVPVoteCount[0].TOTAL_VOTED;
+								//	for(var totalVoted of MVPVoteCount){
+								//	responseJSON.MVPVotingData.push(MVPVoteCount["TOTAL_VOTED"]);
+								//	responseJSON.MVPVotingData.push(MVPVoteCount);
+									//}
+								//	var votingDetails=[];
+								/*	query ="SELECT COUNT (*) as total_Users FROM \"mvpadmin.mvpdb::mvp.MVPUser\" ";
+									var TotalUsers= connection.executeQuery(query);
+								//	for(var total of TotalUsers){
+									//votingDetails.push(TotalUsers);
+								//	responseJSON.MVPVotingData.push(TotalUsers);
+								//	}
 									
-									query =
-									"SELECT COUNT (*) FROM \"mvpadmin.mvpdb::mvp.MVPUser\";
-
-									MVPTotalUsers= connection.executeQuery(query);
-								
-								
-								//
+									query ="SELECT COUNT (DISTINCT \"mvpadmin.mvpdb::mvp.MVPUser\".\"UserEmail\") as total_Users FROM \"mvpadmin.mvpdb::mvp.MVPUser\" JOIN \"mvpadmin.mvpdb::mvp.MVPVote\"  ON \"UserEmail\"=\"MVPNomineeVotedBy\" WHERE \"MVPCategoryId\" = " +mvpCategoryId;
+									usersLeft= connection.executeQuery(query);
+									//for(var totalVoted of 	TotalUsers){
+								//	responseJSON.MVPVotingData.push(TotalUsers);
+										//}
+							//votingDetails.push(usersLeft);
+								responseJSON.MVPVotingData.push(TotalUsers);
+									responseJSON.MVPVotingData.push(usersLeft);
+								//*/
 								query =
 									"SELECT nominee.\"MVPNomineeId\", nominee.\"MVPNomineeName\", vote.\"MVPNomineeVotedBy\" as \"MVPVotedBy\" FROM \"mvpadmin.mvpdb::mvp.MVPNominee\" AS nominee LEFT OUTER JOIN \"mvpadmin.mvpdb::mvp.MVPVote\" AS vote ON nominee.\"MVPCategoryId\" = vote.\"MVPCategoryId\" and nominee.\"MVPNomineeId\" = vote.\"MVPNomineeId\" where nominee.\"MVPCategoryId\" = " +
 									mvpCategoryId ;

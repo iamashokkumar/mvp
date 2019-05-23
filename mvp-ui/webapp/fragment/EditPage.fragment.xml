@@ -48,7 +48,7 @@
 												showExceededText="false"/>
 										</f:fields>
 									</f:FormElement>
-									<f:FormElement label="Team">
+									<f:FormElement label="Team Members">
 										<f:fields>
 											<TextArea width="100%" value="{EditNomineeModel>/MVPNomineeTeam}" maxLength="500" rows="3" growing="true" growingMaxLines="5"
 												showExceededText="false"/>

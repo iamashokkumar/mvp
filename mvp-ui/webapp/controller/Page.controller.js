@@ -210,6 +210,7 @@ sap.ui.define(
 
                 var votingMode = this.getModel("CategoryModel").getData().category.MVPCategoryVotingStatus;
                 var nominationMode = this.getModel("CategoryModel").getData().category.MVPCategoryNominationStatus;
+                var votingSMMode = this.getModel("CategoryModel").getData().category.MVPCategoryVoteMode;
                 //get nominees
                 MVPApi.get(serviceURL, null)
                     .fail(function(data) {
@@ -235,9 +236,9 @@ sap.ui.define(
                         // teamlead only vote
 
 					// got the data 
-					 var voteString = data.MVPVotesNumber[0] + "Of " + data.TotalNUmber;
+					/* var voteString = data.MVPVotesNumber[0] + "Of " + data.TotalNUmber;
 					                         oControl._setModel("/voteStatus", voteString, "NomineeModel");
-
+*/
 					
 
                         var showResultsValue= false 
@@ -277,6 +278,18 @@ sap.ui.define(
                                 else if(votingMode === "OPEN_FOR_VOTING")
                                 {
                                     visibleMode = true;
+                                     if(votingSMMode=="SINGLE")
+                                    {
+                                        for(var j=0;j<nominees.length;j++)
+                                        {
+                                            if(nominees[j].HAS_VOTED==true&&i!=j)
+                                            {
+                                                visibleMode=false;
+                                                break;
+                                            }
+                                        }
+
+                                    }
                                 }
                                 cardFragment.setModel(new JSONModel({
                                     "Nominee": nominees[i],
@@ -294,12 +307,15 @@ sap.ui.define(
                         }
                         oControl.hideBusyDialog();
                     });
-                //get Results;
+                //get Results;Voting Data
                 serviceURL = this.getOwnerComponent().getManifestEntry("/sap.app/dataSources/NomineeResults") + "?MVPCategoryId=" + mvpCategoryId;
                 MVPApi.get(serviceURL, null).then(function(data) {
                     var nomineeResults = JSON.parse(data);
                     oControl._setModel("/", nomineeResults, "NomineeResultModel");
                     oControl.initViz();
+		var newData = {"totalVotingNumber":nomineeResults.MVPVotingData[0],"votedNumber":nomineeResults.MVPVotingData[1]};
+                    oControl._setModel("/votingData",newData,"NomineeResultModel");
+
 
                 });
 
