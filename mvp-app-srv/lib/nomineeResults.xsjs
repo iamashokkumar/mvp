@@ -17,7 +17,7 @@ if ($.request.method === $.net.http.GET) {
 		MVPNominees: [],
 		MVPResults: [],
 		MVPVoteDetail: [],
-		MVPUsers: 0
+		MVPUsers: []
 	};
 
 	try {
@@ -56,6 +56,19 @@ if ($.request.method === $.net.http.GET) {
 								for (var nominee of MVPNomineeVotes) {
 									responseJSON.MVPResults.push(nominee);
 								}
+								//count of votes
+								query =
+									"SELECT COUNT (DISTINCT \"mvpadmin.mvpdb::mvp.MVPUserId\") FROM \"mvpadmin.mvpdb::mvp.MVPUser\" JOIN \"mvpadmin.mvpdb::mvp.MVPVote\"  ON \"UserEmail\"=\"MVPNomineeVotedBy\" WHERE nominee.\"MVPCategoryId\" = " +mvpCategoryId;
+
+									MVPVoteCount= connection.executeQuery(query);
+									
+									query =
+									"SELECT COUNT (*) FROM \"mvpadmin.mvpdb::mvp.MVPUser\";
+
+									MVPTotalUsers= connection.executeQuery(query);
+								
+								
+								//
 								query =
 									"SELECT nominee.\"MVPNomineeId\", nominee.\"MVPNomineeName\", vote.\"MVPNomineeVotedBy\" as \"MVPVotedBy\" FROM \"mvpadmin.mvpdb::mvp.MVPNominee\" AS nominee LEFT OUTER JOIN \"mvpadmin.mvpdb::mvp.MVPVote\" AS vote ON nominee.\"MVPCategoryId\" = vote.\"MVPCategoryId\" and nominee.\"MVPNomineeId\" = vote.\"MVPNomineeId\" where nominee.\"MVPCategoryId\" = " +
 									mvpCategoryId ;
@@ -65,7 +78,7 @@ if ($.request.method === $.net.http.GET) {
 									responseJSON.MVPVoteDetail.push(nominee);
 								}
 								$.response.status = $.net.http.OK;
-								responseJSON.Response = {
+								responseJSON.Response = { 
 									"CODE": "SUCCESS",
 									"Text": "Votes Fetched."
 								};

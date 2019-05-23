@@ -70,7 +70,7 @@
 						textDirection="Inherit" enabled="true" visible="{NomineeModel>/showResults}" iconDensityAware="false">
 						<content>
 							<chart:ChartContainer id="chartContainer" showFullScreen="true" showPersonalization="false" autoAdjustHeight="false"
-								showSelectionDetails="true" title="Votes By Nominees"></chart:ChartContainer>
+								showSelectionDetails="true" title="Votes By Nominees{NomineeModel>/voteStatus}"></chart:ChartContainer>
 							
 						<!--	<List id="detailId" items="{NomineeResultModel>/MVPResults}"
 							headerText="Products" growing="true" growingThreshold="4" 

@@ -234,6 +234,12 @@ sap.ui.define(
                         // chief  see results only after closed_for_voting
                         // teamlead only vote
 
+					// got the data 
+					 var voteString = data.MVPVotesNumber[0] + "Of " + data.TotalNUmber;
+					                         oControl._setModel("/voteStatus", voteString, "NomineeModel");
+
+					
+
                         var showResultsValue= false 
                         oControl._setModel("/userInfo", userInfo, "NomineeModel");
 
