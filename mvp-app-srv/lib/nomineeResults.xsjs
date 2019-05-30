@@ -21,8 +21,23 @@ if ($.request.method === $.net.http.GET) {
 		MVPVotingData:[]
 	};
 
+function getConnection()
+{
+	var connection = "";
+	try{
+	connection=$.hdb.getConnection();
+	}
+	catch(error){
+		if(connection==null)
+		{
+			connection=$.hdb.getConnection();
+			return connection;
+		}
+	}
+	return connection;
+}
 	try {
-		connection = $.hdb.getConnection();
+		connection = getConnection();
 		userEmailId = $.session.getUsername();
 		userEmailId = 'mithun.smith.dias@sap.com';
 		var mvpCategoryId = $.request.parameters.get("MVPCategoryId");

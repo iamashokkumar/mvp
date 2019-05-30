@@ -44,6 +44,20 @@ function isCategoryOpen(mvpCategory) {
 	}
 }
 
+function getConnection() {
+	var connection = "";
+	try {
+		connection = $.hdb.getConnection();
+		
+	} catch(error){
+		if (connection == null) {
+			connection = $.hdb.getConnection();
+			return connection;
+		}
+	}
+	return connection;
+}
+
 function isNominationEditOpen(mvpCategory) {
 	var isEditAllowed = false;
 
@@ -123,7 +137,7 @@ var responseJSON = {
 };
 
 try {
-	connection = $.hdb.getConnection();
+	connection = getConnection();
 	userEmailId = $.session.getUsername();
 	 userEmailId = 'mithun.smith.dias@sap.com';
 	 userEmailId = (userEmailId !== undefined && userEmailId !== '') ? userEmailId.toLowerCase() : '';

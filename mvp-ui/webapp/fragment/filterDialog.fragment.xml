@@ -11,6 +11,12 @@
 					<ViewSettingsItem text="Innovation" key="Innovation" />
 				</items>
 			</ViewSettingsFilterItem>
+			<!--<ViewSettingsFilterItem text="Voting Status" key="2">
+				<items>
+				<ViewSettingsItem text="Open for voting" key="OPEN_FOR_VOTING" />
+				<ViewSettingsItem text="Closed for voting" key="CLOSED_FOR_VOTING" />	
+				</items>
+			</ViewSettingsFilterItem>-->
 		</filterItems>
 	</ViewSettingsDialog>
 </core:FragmentDefinition>
