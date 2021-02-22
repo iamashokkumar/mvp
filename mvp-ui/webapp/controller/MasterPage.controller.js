@@ -225,6 +225,7 @@ sap.ui.define([
         _applySearch: function(oSearchString) {
 
             var aFilters = [];
+            var aFilters2 = [];
             if (oSearchString.length > 1) {
                 jQuery.map(oSearchString, function(one) {
                     var singleFilter = new sap.ui.model.Filter({
@@ -232,7 +233,15 @@ sap.ui.define([
                         operator: "Contains",
                         value1: one
                     });
-                    aFilters.push(singleFilter);
+                     aFilters.push(singleFilter);
+                    
+                    //filter for voting-status
+                   /* var singleFilter2 = new sap.ui.model.Filter({
+                        path: "MVPCategoryVotingStatus",
+                        operator: "Contains",
+                        value1: one
+                    });
+                    aFilters2.push(singleFilter2);*/
                 })
             } else if (oSearchString.length == 1) {
                 var nameFilter = new sap.ui.model.Filter({
@@ -241,9 +250,18 @@ sap.ui.define([
                     value1: oSearchString[0]
                 });
                 aFilters.push(nameFilter);
+                
+                 //filter for voting-status types
+             /*var nameFilter2 = new sap.ui.model.Filter({
+                    path: "MVPCategoryVotingStatus",
+                    operator: "Contains",
+                    value1: oSearchString[0]
+                });
+                aFilters2.push(nameFilter2);*/
             }
 
             this.byId("categoryMasterList").getBinding("items").filter(aFilters);
+         //this.byId("categoryMasterList").getBinding("items").filter(aFilters2);
 
 
         },
